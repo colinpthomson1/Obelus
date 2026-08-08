@@ -42,7 +42,7 @@ import { cn } from '../../utils';
 import { errorMessage } from '../../utils/conversionUtils';
 import { getProtocol, isProtocolSafe } from '../../utils/urlSecurity';
 import { defineMessages, useIntl } from '../../i18n';
-import FlyingBird from '../FlyingBird';
+import { Goose } from '../icons/Goose';
 import { formatExtensionName } from '../settings/extensions/subcomponents/ExtensionList';
 import {
   GooseDisplayMode,
@@ -1035,7 +1035,7 @@ export default function McpAppRenderer({
                 'linear-gradient(90deg, transparent 0%, rgba(128,128,128,0.08) 40%, rgba(128,128,128,0.12) 50%, rgba(128,128,128,0.08) 60%, transparent 100%)',
             }}
           />
-          <FlyingBird className="relative z-10 scale-200 opacity-30" cycleInterval={120} />
+          <Goose className="relative z-10 size-4 scale-200 animate-pulse opacity-30" />
         </div>
       );
     }
