@@ -125,7 +125,8 @@ ui/desktop/            # Electron app
 This checkout is Colin Thomson's learning fork. Read `PROJECT_GUIDE.md` before changing repository-level workflow, deployment, or security configuration.
 
 - Treat `origin` as `https://github.com/colinpthomson1/goose.git` and `upstream` as `https://github.com/aaif-goose/goose.git`. Never push to `upstream`.
-- Keep local `main` as a clean, fast-forward-only mirror of `upstream/main`. Do feature work on a short-lived branch such as `codex/<topic>` or `feat/<topic>`.
+- Keep local `main` as a clean, fast-forward-only mirror of `upstream/main`. Keep personal product changes on the long-lived `product` branch.
+- Start short-lived branches such as `codex/<topic>` or `feat/<topic>` from `product` and target pull requests back to `product`.
 - Never force-push `main`, commit directly to `main`, or mix an upstream sync with feature changes.
 - Activate the repository-pinned toolchain with `source bin/activate-hermit`; do not replace its Node, pnpm, Rust, or `just` versions with global tooling.
 - Use `pnpm install --frozen-lockfile` for reproducible JavaScript installs. Do not use `npm install` in the `ui` workspace.

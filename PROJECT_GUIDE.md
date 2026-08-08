@@ -16,7 +16,8 @@ The local repository is configured as follows:
 | --- | --- | --- |
 | `origin` | `https://github.com/colinpthomson1/goose.git` | Colin's writable public fork |
 | `upstream` | `https://github.com/aaif-goose/goose.git` | Read-only source of canonical changes |
-| `main` | Tracks `origin/main` | Clean mirror branch; do not develop here |
+| `main` | Tracks `origin/main` | Clean mirror of `upstream/main`; do not develop here |
+| `product` | Tracks `origin/product` | Colin's long-lived integration and default branch |
 
 Repository-local Git settings use fast-forward-only pulls, prune deleted remote branches on fetch, and push the current branch by default.
 
@@ -63,6 +64,7 @@ git config pull.ff only
 git config fetch.prune true
 git config push.default current
 source bin/activate-hermit
+git switch product
 ./scripts/fork-doctor.sh
 ```
 
@@ -99,15 +101,30 @@ git switch main
 
 The script fetches both remotes, fast-forwards from `upstream/main`, and pushes the same commit to `origin/main`. It refuses to run with local changes or from another branch.
 
-### 2. Create a focused branch
+### 2. Bring upstream changes into the product safely
+
+Do not merge a newly synchronized `main` directly into `product`. Use a temporary integration branch so conflicts and regressions are reviewed in a pull request:
 
 ```bash
+git switch product
+git pull --ff-only origin product
+git switch -c chore/sync-upstream-YYYY-MM-DD
+git merge main
+```
+
+Resolve any conflicts, run the relevant Node and Rust checks, push the temporary branch, and open a pull request targeting `product`.
+
+### 3. Create a focused feature branch
+
+```bash
+git switch product
+git pull --ff-only origin product
 git switch -c codex/short-description
 ```
 
 Use one branch for one coherent change. Keep learning experiments small enough to review and revert.
 
-### 3. Isolate Goose state
+### 4. Isolate Goose state
 
 Manual agent sessions must not share the installed Goose profile:
 
@@ -118,7 +135,7 @@ mkdir -p "$GOOSE_PATH_ROOT"
 
 `.local/` is ignored by Git. Do not put provider keys in this repository; configure secrets through the system keychain or process environment and never echo them.
 
-### 4. Make and validate the change
+### 5. Make and validate the change
 
 Use the smallest relevant verification first.
 
@@ -150,7 +167,7 @@ just run-ui
 
 `just run-ui` performs a release Rust build before launching Electron, so it is much slower than UI unit tests. It may also reach provider services after onboarding; use an isolated `GOOSE_PATH_ROOT` and a test account or tightly scoped credentials.
 
-### 5. Review and publish the branch
+### 6. Review and publish the branch
 
 ```bash
 git status --short
@@ -160,7 +177,7 @@ git log --oneline upstream/main..HEAD
 git push -u origin HEAD
 ```
 
-Open a pull request into Colin's `main` for personal product work. Open a pull request into `aaif-goose/goose:main` only when following upstream's issue workflow in `CONTRIBUTING.md`: substantial external changes need an agreed issue in **Ready** status.
+Open a pull request into Colin's `product` branch for personal product work. Open a pull request into `aaif-goose/goose:main` only when following upstream's issue workflow in `CONTRIBUTING.md`: substantial external changes need an agreed issue in **Ready** status.
 
 ## Dependency and Supply-Chain Rules
 
@@ -215,7 +232,7 @@ The pnpm install reported expected cross-platform optional-package warnings and 
 3. Launch the desktop app with isolated state and understand the Electron-to-ACP-to-Rust request path.
 4. Make one small UI-only change with a focused unit test.
 5. Make one small Rust change with a focused crate test.
-6. Practice syncing `upstream/main` and rebasing or merging a feature branch.
+6. Practice syncing `upstream/main`, then bring the new mirror commit into `product` through a temporary integration branch and pull request.
 7. Design the multi-user authorization and sandbox boundary before creating `ui/web`.
 8. Add a minimal web client and deploy previews to Vercel only after the security gates in `VERCEL_ARCHITECTURE.md` are met.
 
