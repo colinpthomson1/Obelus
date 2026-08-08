@@ -1,6 +1,6 @@
 import GooseLogo from './GooseLogo';
 import AnimatedIcons from './AnimatedIcons';
-import FlyingBird from './FlyingBird';
+import { Goose } from './icons/Goose';
 import { ChatState } from '../types/chatState';
 import { defineMessages, useIntl } from '../i18n';
 
@@ -43,12 +43,12 @@ const i18n = defineMessages({
 const STATE_ICONS: Record<ChatState, React.ReactNode> = {
   [ChatState.LoadingConversation]: <AnimatedIcons className="flex-shrink-0" cycleInterval={600} />,
   [ChatState.Thinking]: <AnimatedIcons className="flex-shrink-0" cycleInterval={600} />,
-  [ChatState.Streaming]: <FlyingBird className="flex-shrink-0" cycleInterval={150} />,
+  [ChatState.Streaming]: <Goose className="size-4 flex-shrink-0 animate-pulse" />,
   [ChatState.WaitingForUserInput]: (
     <AnimatedIcons className="flex-shrink-0" cycleInterval={600} variant="waiting" />
   ),
   [ChatState.Compacting]: <AnimatedIcons className="flex-shrink-0" cycleInterval={600} />,
-  [ChatState.Idle]: <GooseLogo size="small" hover={false} />,
+  [ChatState.Idle]: <GooseLogo size="small" />,
   [ChatState.RestartingAgent]: <AnimatedIcons className="flex-shrink-0" cycleInterval={600} />,
 };
 
