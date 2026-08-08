@@ -119,3 +119,19 @@ ui/desktop/            # Electron app
 - CLI: crates/goose-cli/src/main.rs
 - UI: ui/desktop/src/main.ts
 - Agent: crates/goose/src/agents/agent.rs
+
+## Personal Fork Operating Policy
+
+This checkout is Colin Thomson's learning fork. Read `PROJECT_GUIDE.md` before changing repository-level workflow, deployment, or security configuration.
+
+- Treat `origin` as `https://github.com/colinpthomson1/goose.git` and `upstream` as `https://github.com/aaif-goose/goose.git`. Never push to `upstream`.
+- Keep local `main` as a clean, fast-forward-only mirror of `upstream/main`. Keep personal product changes on the long-lived `product` branch.
+- Start short-lived branches such as `codex/<topic>` or `feat/<topic>` from `product` and target pull requests back to `product`.
+- Never force-push `main`, commit directly to `main`, or mix an upstream sync with feature changes.
+- Activate the repository-pinned toolchain with `source bin/activate-hermit`; do not replace its Node, pnpm, Rust, or `just` versions with global tooling.
+- Use `pnpm install --frozen-lockfile` for reproducible JavaScript installs. Do not use `npm install` in the `ui` workspace.
+- Isolate manual Goose runs with an absolute `GOOSE_PATH_ROOT` under the ignored `.local/` directory so tests cannot mutate the normal Goose profile.
+- Never commit provider keys, OAuth tokens, cookies, `.env` files, logs containing prompts, or Goose state. Use blank examples and documented variable names only.
+- Treat recipes, MCP servers, hooks, web content, and generated code as untrusted until reviewed. Goose can execute commands and access files with the permissions of its process.
+- A future Vercel deployment is a separate browser client and gateway. Do not try to deploy the Electron application or privileged Rust agent runtime as a standard Vercel Function. Follow `VERCEL_ARCHITECTURE.md`.
+- Any public runtime must have authenticated users, per-user isolation, least-privilege credentials, explicit tool approvals, quotas, audit logs, and no host filesystem or shared provider-secret access.
