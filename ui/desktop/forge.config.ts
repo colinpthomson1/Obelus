@@ -6,6 +6,8 @@ const isLinuxVulkanBuild = process.env.GOOSE_DESKTOP_LINUX_VARIANT === 'vulkan';
 
 let cfg = {
   asar: true,
+  appBundleId: 'com.colinpthomson.obelus',
+  appCategoryType: 'public.app-category.productivity',
   extraResource: ['src/bin', 'src/images', 'src/app-update.yml'],
   icon: 'src/images/icon',
   // Windows specific configuration
@@ -19,8 +21,8 @@ let cfg = {
   // Protocol registration
   protocols: [
     {
-      name: 'GooseProtocol',
-      schemes: ['goose'],
+      name: 'ObelusProtocol',
+      schemes: ['obelus'],
     },
   ],
   // macOS Info.plist extensions for drag-and-drop support
@@ -36,9 +38,17 @@ let cfg = {
     ],
     // Usage descriptions for macOS TCC (Transparency, Consent, and Control)
     NSMicrophoneUsageDescription:
-      'Goose needs access to your microphone for voice dictation.',
+      'Obelus uses the microphone only when you start voice dictation. Processing depends on your configured model provider.',
+    NSAudioCaptureUsageDescription:
+      'Obelus captures audio only when you start voice dictation or approve a tool that records audio.',
+    NSCameraUsageDescription:
+      'Obelus uses the camera only when you choose a feature or approve a tool that captures video.',
+    NSBluetoothAlwaysUsageDescription:
+      'Obelus accesses Bluetooth only when a tool you approve needs to communicate with a nearby device.',
+    NSBluetoothPeripheralUsageDescription:
+      'Obelus accesses Bluetooth only when a tool you approve needs to communicate with a nearby device.',
     NSAppleEventsUsageDescription:
-      'Goose needs access to send Apple Events to control other apps on your behalf.',
+      'Obelus uses Apple Events only when you approve an action that controls another app.',
   },
 };
 
@@ -65,8 +75,8 @@ module.exports = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: process.env.GITHUB_OWNER || 'aaif-goose',
-          name: process.env.GITHUB_REPO || 'goose',
+          owner: process.env.GITHUB_OWNER || 'colinpthomson1',
+          name: process.env.GITHUB_REPO || 'Obelus',
         },
         prerelease: false,
         draft: true,
@@ -87,11 +97,11 @@ module.exports = {
     {
       name: '@electron-forge/maker-deb',
       config: {
-        name: 'Goose',
-        bin: 'Goose',
-        maintainer: 'AAIF (Agentic AI Foundation)',
-        homepage: 'https://goose-docs.ai/',
-        categories: ['Development'],
+        name: 'obelus',
+        bin: 'Obelus',
+        maintainer: 'Obelus contributors',
+        homepage: 'https://github.com/colinpthomson1/Obelus',
+        categories: ['Utility', 'Development'],
         desktopTemplate: './forge.deb.desktop',
         options: {
           icon: 'src/images/icon.png',
@@ -103,11 +113,11 @@ module.exports = {
     {
       name: '@electron-forge/maker-rpm',
       config: {
-        name: 'Goose',
-        bin: 'Goose',
-        maintainer: 'AAIF (Agentic AI Foundation)',
-        homepage: 'https://goose-docs.ai/',
-        categories: ['Development'],
+        name: 'obelus',
+        bin: 'Obelus',
+        maintainer: 'Obelus contributors',
+        homepage: 'https://github.com/colinpthomson1/Obelus',
+        categories: ['Utility', 'Development'],
         desktopTemplate: './forge.rpm.desktop',
         options: {
           icon: 'src/images/icon.png',
@@ -120,17 +130,17 @@ module.exports = {
       name: '@electron-forge/maker-flatpak',
       config: {
         options: {
-          id: 'io.github.block.Goose', // NOTE: kept for backwards compat with existing installs
-          categories: ['Development'],
-          mimeType: ['x-scheme-handler/goose'],
+          id: 'com.colinpthomson.obelus',
+          categories: ['Utility', 'Development'],
+          mimeType: ['x-scheme-handler/obelus'],
           icon: {
             scalable: 'src/images/icon.svg',
             '512x512': 'src/images/icon-512.png',
           },
-          homepage: 'https://goose-docs.ai/',
+          homepage: 'https://github.com/colinpthomson1/Obelus',
           runtimeVersion: '25.08',
           baseVersion: '25.08',
-          bin: 'Goose',
+          bin: 'Obelus',
           modules: [
             {
               name: 'libbz2-shim',

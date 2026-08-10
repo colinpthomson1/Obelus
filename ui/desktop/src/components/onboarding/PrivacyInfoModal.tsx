@@ -4,43 +4,33 @@ import { defineMessages, useIntl } from '../../i18n';
 const i18n = defineMessages({
   title: {
     id: 'privacyInfoModal.title',
-    defaultMessage: 'Privacy details',
+    defaultMessage: 'Privacy in this build',
   },
   description: {
     id: 'privacyInfoModal.description',
-    defaultMessage: 'Anonymous usage data helps us understand how goose is used and identify areas for improvement.',
+    defaultMessage:
+      'Obelus product analytics are disabled. The application does not send usage events to a project-owned analytics service.',
   },
   whatWeCollect: {
     id: 'privacyInfoModal.whatWeCollect',
-    defaultMessage: 'What we collect:',
+    defaultMessage: 'What may still leave this device:',
   },
   collectOs: {
     id: 'privacyInfoModal.collectOs',
-    defaultMessage: 'Operating system, version, and architecture',
+    defaultMessage: 'Prompts and files you choose to send to a cloud model provider',
   },
   collectVersion: {
     id: 'privacyInfoModal.collectVersion',
-    defaultMessage: 'goose version and install method',
+    defaultMessage: 'Requests made by tools, extensions, and connected services',
   },
   collectProvider: {
     id: 'privacyInfoModal.collectProvider',
-    defaultMessage: 'Provider and model used',
-  },
-  collectExtensions: {
-    id: 'privacyInfoModal.collectExtensions',
-    defaultMessage: 'Extensions and tool usage counts (names only)',
-  },
-  collectSession: {
-    id: 'privacyInfoModal.collectSession',
-    defaultMessage: 'Session metrics (duration, interaction count, token usage)',
-  },
-  collectErrors: {
-    id: 'privacyInfoModal.collectErrors',
-    defaultMessage: 'Error types (e.g., "rate_limit", "auth" - no details)',
+    defaultMessage: 'Information you explicitly share through session or recipe features',
   },
   neverCollect: {
     id: 'privacyInfoModal.neverCollect',
-    defaultMessage: 'We never collect your conversations, code, tool arguments, error messages, or any personal data. You can change this setting anytime in Settings.',
+    defaultMessage:
+      'Review each provider and extension policy before working with sensitive material. Local model inference keeps model requests on this device, but tools may still use the network.',
   },
 });
 
@@ -54,27 +44,22 @@ export default function PrivacyInfoModal({ isOpen, onClose }: PrivacyInfoModalPr
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-[440px]">
+      <DialogContent className="w-[440px] max-w-[calc(100vw-2rem)]">
         <DialogHeader>
           <DialogTitle className="text-center">{intl.formatMessage(i18n.title)}</DialogTitle>
         </DialogHeader>
 
         <div>
-          <p className="text-text-muted text-sm mb-3">
-            {intl.formatMessage(i18n.description)}
+          <p className="mb-3 text-sm text-text-secondary">{intl.formatMessage(i18n.description)}</p>
+          <p className="mb-1.5 text-sm font-medium text-text-primary">
+            {intl.formatMessage(i18n.whatWeCollect)}
           </p>
-          <p className="font-medium text-text-default text-sm mb-1.5">{intl.formatMessage(i18n.whatWeCollect)}</p>
-          <ul className="text-text-muted text-sm list-disc list-outside space-y-0.5 ml-5 mb-3">
+          <ul className="mb-3 ml-5 list-outside list-disc space-y-0.5 text-sm text-text-secondary">
             <li>{intl.formatMessage(i18n.collectOs)}</li>
             <li>{intl.formatMessage(i18n.collectVersion)}</li>
             <li>{intl.formatMessage(i18n.collectProvider)}</li>
-            <li>{intl.formatMessage(i18n.collectExtensions)}</li>
-            <li>{intl.formatMessage(i18n.collectSession)}</li>
-            <li>{intl.formatMessage(i18n.collectErrors)}</li>
           </ul>
-          <p className="text-text-muted text-sm">
-            {intl.formatMessage(i18n.neverCollect)}
-          </p>
+          <p className="text-sm text-text-secondary">{intl.formatMessage(i18n.neverCollect)}</p>
         </div>
       </DialogContent>
     </Dialog>

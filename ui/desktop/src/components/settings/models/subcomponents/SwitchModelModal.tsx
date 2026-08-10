@@ -170,7 +170,7 @@ const i18n = defineMessages({
   },
   quickStartGuide: {
     id: 'switchModelModal.quickStartGuide',
-    defaultMessage: 'Quick start guide',
+    defaultMessage: 'Upstream Goose quick start guide',
   },
   cancel: {
     id: 'switchModelModal.cancel',

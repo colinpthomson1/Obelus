@@ -10,6 +10,8 @@ import {
 import { trackOnboardingSetupFailed } from '../../utils/analytics';
 import { defineMessages, useIntl } from '../../i18n';
 import { errorMessage as formatErrorMessage } from '../../utils/conversionUtils';
+import { AlertCircle, CheckCircle2, ChevronDown, Info } from 'lucide-react';
+import { ObelusLoader } from '../brand/ObelusLoader';
 
 const i18n = defineMessages({
   checkingModels: {
@@ -22,7 +24,7 @@ const i18n = defineMessages({
   },
   bestForMachine: {
     id: 'localModelPicker.bestForMachine',
-    defaultMessage: 'Best for your machine',
+    defaultMessage: 'Recommended for this device',
   },
   ready: {
     id: 'localModelPicker.ready',
@@ -63,7 +65,7 @@ const i18n = defineMessages({
   localModelsNote: {
     id: 'localModelPicker.localModelsNote',
     defaultMessage:
-      'Local models keep everything on your machine for full privacy. Performance and context window size may vary compared to cloud providers depending on your hardware and model size.',
+      'Model inference stays on this device. Tools and extensions may still connect to external services, so review them before sharing sensitive material. Performance depends on your hardware and model size.',
   },
   failedToLoad: {
     id: 'localModelPicker.failedToLoad',
@@ -80,6 +82,22 @@ const i18n = defineMessages({
   lostConnection: {
     id: 'localModelPicker.lostConnection',
     defaultMessage: 'Lost connection to download. Please try again.',
+  },
+  modelOptions: {
+    id: 'localModelPicker.modelOptions',
+    defaultMessage: 'Choose a local model',
+  },
+  downloadFailed: {
+    id: 'localModelPicker.downloadFailed',
+    defaultMessage: 'The model download failed.',
+  },
+  secondsRemaining: {
+    id: 'localModelPicker.secondsRemaining',
+    defaultMessage: 'About {seconds} seconds remaining',
+  },
+  minutesRemaining: {
+    id: 'localModelPicker.minutesRemaining',
+    defaultMessage: 'About {minutes} minutes remaining',
   },
 });
 
@@ -214,7 +232,7 @@ export default function LocalModelPicker({ onConfigured }: LocalModelPickerProps
           await finishSetup(modelId);
         } else if (progress.status === 'failed') {
           cleanup();
-          setErrorMessage(progress.error || 'Download failed.');
+          setErrorMessage(progress.error || intl.formatMessage(i18n.downloadFailed));
           trackOnboardingSetupFailed(LOCAL_PROVIDER, progress.error || 'download_failed');
           setPhase('error');
         } else if (progress.status === 'cancelled') {
@@ -261,26 +279,35 @@ export default function LocalModelPicker({ onConfigured }: LocalModelPickerProps
   if (phase === 'loading') {
     return (
       <div className="flex flex-col items-center justify-center py-16">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-text-muted mb-4"></div>
-        <p className="text-text-muted text-sm">{intl.formatMessage(i18n.checkingModels)}</p>
+        <ObelusLoader
+          variant="proof-pulse"
+          className="mb-4 !h-8 !w-8 text-brand-blue dark:text-brand-aqua"
+          label={intl.formatMessage(i18n.checkingModels)}
+        />
+        <p className="text-sm text-text-secondary">{intl.formatMessage(i18n.checkingModels)}</p>
       </div>
     );
   }
 
   return (
     <div>
-      <div className="p-4 border rounded-xl bg-background-muted">
+      <div className="rounded-xl border border-border-primary bg-background-secondary p-4">
         {phase === 'error' && (
           <div className="space-y-3">
-            <div className="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 rounded-lg p-3">
-              <p className="text-sm text-red-700 dark:text-red-400">{errorMessage}</p>
+            <div
+              role="alert"
+              className="flex items-start gap-2 rounded-lg border border-status-disputed bg-status-disputed-bg p-3 text-status-disputed"
+            >
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+              <p className="text-sm">{errorMessage}</p>
             </div>
             <button
+              type="button"
               onClick={() => {
                 setErrorMessage(null);
                 setPhase('select');
               }}
-              className="w-full px-4 py-2 bg-transparent border rounded-lg text-text-default text-sm font-medium hover:bg-background-muted/80 transition-colors"
+              className="min-h-11 w-full rounded-lg border border-border-primary bg-transparent px-4 text-sm font-medium text-text-primary transition-colors hover:bg-background-primary"
             >
               {intl.formatMessage(i18n.tryAgain)}
             </button>
@@ -288,107 +315,104 @@ export default function LocalModelPicker({ onConfigured }: LocalModelPickerProps
         )}
 
         {phase === 'select' && (
-          <div className="space-y-3">
+          <fieldset className="space-y-3">
+            <legend className="sr-only">{intl.formatMessage(i18n.modelOptions)}</legend>
             {recommended && (
-              <div
-                onClick={() => setSelectedModelId(recommended.id)}
-                className={`relative w-full p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
+              <label
+                className={`relative block w-full cursor-pointer rounded-lg border p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background-secondary ${
                   selectedModelId === recommended.id
-                    ? 'border-blue-500 bg-blue-500/5'
-                    : 'border-border-subtle hover:border-border-default'
+                    ? 'border-border-info bg-background-tertiary'
+                    : 'border-border-primary bg-background-primary hover:border-border-info'
                 }`}
               >
                 <div className="absolute -top-2 -right-2 z-10">
-                  <span className="inline-block px-2 py-0.5 text-xs font-medium bg-blue-600 text-white rounded-full">
+                  <span className="inline-block rounded-full bg-brand-blue-soft px-2 py-0.5 text-xs font-medium text-brand-blue-dark">
                     {intl.formatMessage(i18n.bestForMachine)}
                   </span>
                 </div>
                 <div className="flex items-start gap-3">
                   <input
                     type="radio"
+                    name="local-model"
                     checked={selectedModelId === recommended.id}
                     onChange={() => setSelectedModelId(recommended.id)}
-                    className="cursor-pointer flex-shrink-0 mt-1"
+                    className="mt-1 h-4 w-4 flex-shrink-0 cursor-pointer accent-[var(--color-border-info)]"
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-medium text-text-default text-sm">
+                      <span className="text-sm font-medium text-text-primary">
                         {recommended.id}
                       </span>
                       {recommended.status.state === 'Downloaded' && (
-                        <span className="text-xs bg-green-600 text-white px-2 py-0.5 rounded-full">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-status-supported-bg px-2 py-0.5 text-xs font-medium text-status-supported">
+                          <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
                           {intl.formatMessage(i18n.ready)}
                         </span>
                       )}
                     </div>
-                    <p className="text-text-muted text-xs mt-1">
+                    <p className="mt-1 text-xs text-text-secondary">
                       {formatSize(recommended.sizeBytes)}
                     </p>
                   </div>
                 </div>
-              </div>
+              </label>
             )}
 
             {otherModels.length > 0 && (
               <div>
                 <button
+                  type="button"
                   onClick={() => setShowAllModels(!showAllModels)}
-                  className="text-sm text-blue-500 hover:text-blue-400 transition-colors flex items-center gap-1"
+                  aria-expanded={showAllModels}
+                  aria-controls="other-local-models"
+                  className="flex min-h-11 items-center gap-1 rounded-md px-2 text-sm text-text-info transition-colors hover:bg-background-tertiary"
                 >
                   {showAllModels
                     ? intl.formatMessage(i18n.hideOtherSizes)
                     : intl.formatMessage(i18n.showOtherSizes, { count: otherModels.length })}
-                  <svg
-                    className={`w-3.5 h-3.5 transition-transform ${showAllModels ? 'rotate-180' : ''}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+                  <ChevronDown
+                    className={`h-3.5 w-3.5 transition-transform ${showAllModels ? 'rotate-180' : ''}`}
+                    aria-hidden="true"
+                  />
                 </button>
 
                 {showAllModels && (
-                  <div className="mt-2 space-y-2">
+                  <div id="other-local-models" className="mt-2 space-y-2">
                     {otherModels.map((model) => (
-                      <div
+                      <label
                         key={model.id}
-                        onClick={() => setSelectedModelId(model.id)}
-                        className={`w-full p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
+                        className={`block w-full cursor-pointer rounded-lg border p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background-secondary ${
                           selectedModelId === model.id
-                            ? 'border-blue-500 bg-blue-500/5'
-                            : 'border-border-subtle hover:border-border-default'
+                            ? 'border-border-info bg-background-tertiary'
+                            : 'border-border-primary bg-background-primary hover:border-border-info'
                         }`}
                       >
                         <div className="flex items-start gap-3">
                           <input
                             type="radio"
+                            name="local-model"
                             checked={selectedModelId === model.id}
                             onChange={() => setSelectedModelId(model.id)}
-                            className="cursor-pointer flex-shrink-0 mt-0.5"
+                            className="mt-0.5 h-4 w-4 flex-shrink-0 cursor-pointer accent-[var(--color-border-info)]"
                           />
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-medium text-text-default text-sm">
+                              <span className="text-sm font-medium text-text-primary">
                                 {model.id}
                               </span>
-                              <span className="text-xs text-text-muted">
+                              <span className="text-xs text-text-secondary">
                                 {formatSize(model.sizeBytes)}
                               </span>
                               {model.status.state === 'Downloaded' && (
-                                <span className="text-xs bg-green-600 text-white px-2 py-0.5 rounded-full">
-                                  Ready
+                                <span className="inline-flex items-center gap-1 rounded-full bg-status-supported-bg px-2 py-0.5 text-xs font-medium text-status-supported">
+                                  <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
+                                  {intl.formatMessage(i18n.ready)}
                                 </span>
                               )}
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </label>
                     ))}
                   </div>
                 )}
@@ -396,9 +420,10 @@ export default function LocalModelPicker({ onConfigured }: LocalModelPickerProps
             )}
 
             <button
+              type="button"
               onClick={handlePrimaryAction}
               disabled={!selectedModelId}
-              className="w-full px-4 py-2.5 bg-blue-600 rounded-lg text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-blue-700 cursor-pointer"
+              className="min-h-11 w-full cursor-pointer rounded-lg bg-brand-blue px-4 text-sm font-medium text-brand-cloud transition-colors hover:bg-brand-blue-dark disabled:cursor-not-allowed disabled:opacity-40"
             >
               {selectedModel?.status.state === 'Downloaded'
                 ? intl.formatMessage(i18n.useModel, { modelId: selectedModel.id })
@@ -409,54 +434,61 @@ export default function LocalModelPicker({ onConfigured }: LocalModelPickerProps
                     })
                   : intl.formatMessage(i18n.selectModel)}
             </button>
-          </div>
+          </fieldset>
         )}
 
         {phase === 'downloading' && selectedModel && (
           <div className="space-y-3">
-            <div className="border border-border-subtle rounded-lg p-4 bg-background-default">
-              <p className="font-medium text-text-default text-sm mb-3">
+            <div className="rounded-lg border border-border-primary bg-background-primary p-4">
+              <p className="mb-3 text-sm font-medium text-text-primary">
                 {intl.formatMessage(i18n.downloading, { modelId: selectedModel.id })}
               </p>
 
               {downloadProgress ? (
-                <div className="space-y-2">
-                  <div className="w-full bg-background-subtle rounded-full h-2 overflow-hidden">
-                    <div
-                      className="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-out"
-                      style={{ width: `${downloadProgress.progressPercent}%` }}
-                    />
-                  </div>
-
-                  <div className="flex justify-between text-xs text-text-muted">
-                    <span>
-                      {formatBytes(downloadProgress.bytesDownloaded)} of{' '}
-                      {formatBytes(downloadProgress.totalBytes)}
-                    </span>
-                    <span>{downloadProgress.progressPercent.toFixed(0)}%</span>
-                  </div>
-
-                  <div className="flex justify-between text-xs text-text-muted">
-                    {downloadProgress.speedBps ? (
-                      <span>{formatBytes(downloadProgress.speedBps)}/s</span>
-                    ) : (
-                      <span />
-                    )}
-                    {downloadProgress.etaSeconds != null && downloadProgress.etaSeconds > 0 && (
+                <div className="flex items-center gap-4">
+                  <ObelusLoader
+                    variant="progress-divide"
+                    progress={downloadProgress.progressPercent / 100}
+                    className="!h-12 !w-12 text-brand-blue dark:text-brand-aqua"
+                    label={intl.formatMessage(i18n.downloading, { modelId: selectedModel.id })}
+                  />
+                  <div className="min-w-0 flex-1 space-y-1.5 font-mono text-xs text-text-secondary">
+                    <div className="flex justify-between gap-3">
                       <span>
-                        ~
-                        {downloadProgress.etaSeconds < 60
-                          ? `${Math.round(downloadProgress.etaSeconds)}s`
-                          : `${Math.round(downloadProgress.etaSeconds / 60)}m`}{' '}
-                        remaining
+                        {formatBytes(downloadProgress.bytesDownloaded)} of{' '}
+                        {formatBytes(downloadProgress.totalBytes)}
                       </span>
-                    )}
+                      <span>{downloadProgress.progressPercent.toFixed(0)}%</span>
+                    </div>
+
+                    <div className="flex justify-between gap-3">
+                      {downloadProgress.speedBps ? (
+                        <span>{formatBytes(downloadProgress.speedBps)}/s</span>
+                      ) : (
+                        <span />
+                      )}
+                      {downloadProgress.etaSeconds != null && downloadProgress.etaSeconds > 0 && (
+                        <span>
+                          {downloadProgress.etaSeconds < 60
+                            ? intl.formatMessage(i18n.secondsRemaining, {
+                                seconds: Math.round(downloadProgress.etaSeconds),
+                              })
+                            : intl.formatMessage(i18n.minutesRemaining, {
+                                minutes: Math.round(downloadProgress.etaSeconds / 60),
+                              })}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
-                  <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-text-muted"></div>
-                  <span className="text-sm text-text-muted">
+                  <ObelusLoader
+                    variant="proof-pulse"
+                    className="!h-5 !w-5 text-brand-blue dark:text-brand-aqua"
+                    label={intl.formatMessage(i18n.startingDownload)}
+                  />
+                  <span className="text-sm text-text-secondary">
                     {intl.formatMessage(i18n.startingDownload)}
                   </span>
                 </div>
@@ -464,18 +496,18 @@ export default function LocalModelPicker({ onConfigured }: LocalModelPickerProps
             </div>
 
             <button
+              type="button"
               onClick={handleCancelDownload}
-              className="w-full px-4 py-2.5 bg-transparent text-text-muted border rounded-lg text-sm hover:bg-background-default/80 transition-colors"
+              className="min-h-11 w-full rounded-lg border border-border-primary bg-transparent px-4 text-sm text-text-secondary transition-colors hover:bg-background-primary hover:text-text-primary"
             >
               {intl.formatMessage(i18n.cancelDownload)}
             </button>
           </div>
         )}
       </div>
-      <div className="rounded-lg bg-yellow-50/50 dark:bg-yellow-900/10 p-3 mt-3">
-        <p className="text-sm text-yellow-700 dark:text-yellow-300 leading-relaxed">
-          {intl.formatMessage(i18n.localModelsNote)}
-        </p>
+      <div className="mt-3 flex items-start gap-2 rounded-lg border border-status-context bg-status-context-bg p-3 text-status-context">
+        <Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+        <p className="text-sm leading-relaxed">{intl.formatMessage(i18n.localModelsNote)}</p>
       </div>
     </div>
   );

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="ob-title ob-desc" data-complete="false">
+  <title id="ob-title">Transcript Scan</title>
+  <desc id="ob-desc">Accessible decorative preview of the Transcript Scan loading animation. Pair with a textual status in production.</desc>
+  <style>
+    :root { color: #3B50E0; }
+    .ob-base { opacity: .24; }
+    .ob-art { fill: currentColor; }
+    @media (forced-colors: active) {
+      :root { color: CanvasText; }
+      .ob-base { opacity: 1; }
+      .ob-animated { display: none; }
+    }
+  </style>
+
+  <style>
+    .ob-scan-window { animation: ob-scan 1.35s linear infinite; }
+    @keyframes ob-scan { 0%,10% { transform:translateX(0) } 76%,100% { transform:translateX(88px) } }
+    @media (prefers-reduced-motion: reduce) {
+      .ob-base { opacity:1 }
+      .ob-animated { display:none }
+    }
+  </style>
+  <defs><clipPath id="ob-scan-clip"><rect class="ob-scan-window" x="-12" y="0" width="12" height="64" rx="6"/></clipPath></defs>
+  <g class="ob-art ob-base">    <circle class="top " cx="26" cy="14" r="5.6"/>
+    <path class="bar " d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle class="bottom " cx="38" cy="50" r="5.6"/></g>
+  <g class="ob-art ob-animated" clip-path="url(#ob-scan-clip)">    <circle class="top " cx="26" cy="14" r="5.6"/>
+    <path class="bar " d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle class="bottom " cx="38" cy="50" r="5.6"/></g>
+</svg>

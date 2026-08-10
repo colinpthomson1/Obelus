@@ -20,6 +20,7 @@ import { formatMessageTimestamp } from '../../utils/timeUtils';
 import { cn } from '../../utils';
 import type { ProjectGroup } from '../../utils/projectSessions';
 import { defineMessages, useIntl } from '../../i18n';
+import { ObelusReverseLockup } from '../brand/ObelusBrand';
 
 type StreamState = 'idle' | 'loading' | 'streaming' | 'error';
 
@@ -81,11 +82,11 @@ const i18n = defineMessages({
 
 const navItemClass = (active: boolean) =>
   cn(
-    'flex flex-row items-center gap-3 outline-none no-drag w-full',
-    'rounded-full px-3 py-2 text-sm font-medium transition-colors',
+    'flex min-h-11 w-full flex-row items-center gap-3 rounded-md px-3 py-2 text-sm font-medium outline-none no-drag',
+    'transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-brand-aqua focus-visible:ring-offset-2 focus-visible:ring-offset-brand-ink',
     active
-      ? 'bg-background-tertiary text-text-primary'
-      : 'text-text-primary hover:bg-background-tertiary/60'
+      ? 'bg-brand-blue text-brand-cloud'
+      : 'text-brand-cloud/80 hover:bg-brand-ink-muted hover:text-brand-cloud'
   );
 
 interface NavRowProps {
@@ -99,10 +100,10 @@ const NavRow: React.FC<NavRowProps> = ({ item, active, onClick }) => {
   const Icon = item.icon;
   return (
     <button onClick={onClick} className={navItemClass(active)}>
-      <Icon className="w-5 h-5 flex-shrink-0 text-text-secondary" />
+      <Icon className="h-5 w-5 flex-shrink-0 text-current" />
       <span className="text-left flex-1 truncate">{getNavItemLabel(item, intl)}</span>
       {item.getTag && (
-        <span className="text-xs font-mono text-text-secondary">{item.getTag()}</span>
+        <span className="font-mono text-xs text-current opacity-75">{item.getTag()}</span>
       )}
     </button>
   );
@@ -183,11 +184,10 @@ const SessionRow: React.FC<SessionRowProps> = ({ session, active, status, onClic
     <Tooltip open={tooltipOpen && !isEditing} onOpenChange={setTooltipOpen} delayDuration={400}>
       <TooltipTrigger asChild>
         <div
-          onClick={() => !isEditing && onClick()}
           className={cn(
-            'flex items-center gap-2 px-3 py-1.5 rounded-full cursor-pointer text-sm',
-            'hover:bg-background-tertiary/60 transition-colors',
-            active && 'bg-background-tertiary'
+            'flex min-h-11 items-center gap-2 rounded-md px-3 text-sm',
+            'text-brand-cloud/80 transition-colors hover:bg-brand-ink-muted hover:text-brand-cloud focus-within:ring-2 focus-within:ring-brand-aqua',
+            active && 'bg-brand-ink-muted text-brand-cloud'
           )}
         >
           <InlineEditText
@@ -204,7 +204,9 @@ const SessionRow: React.FC<SessionRowProps> = ({ session, active, status, onClic
             placeholder={intl.formatMessage(i18n.untitledSession)}
             disabled={isStreaming}
             singleClickEdit={false}
-            className="truncate text-text-primary flex-1 !px-0 !py-0 hover:bg-transparent"
+            onActivate={onClick}
+            ariaCurrent={active ? 'page' : undefined}
+            className="min-h-11 flex-1 truncate !px-0 !py-0 !text-current hover:bg-transparent focus-visible:ring-2 focus-visible:ring-brand-aqua"
             editClassName="!text-sm"
             onEditStart={() => setIsEditing(true)}
             onEditEnd={() => setIsEditing(false)}
@@ -219,7 +221,15 @@ const SessionRow: React.FC<SessionRowProps> = ({ session, active, status, onClic
   );
 };
 
-export const Navigation: React.FC<{ className?: string }> = ({ className }) => {
+interface NavigationProps {
+  className?: string;
+  reserveWindowControls?: boolean;
+}
+
+export const Navigation: React.FC<NavigationProps> = ({
+  className,
+  reserveWindowControls = false,
+}) => {
   const intl = useIntl();
   const { isNavExpanded } = useNavigationContext();
   const location = useLocation();
@@ -311,10 +321,17 @@ export const Navigation: React.FC<{ className?: string }> = ({ className }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.15 }}
-      className={cn('bg-background-primary outline-none flex flex-col h-full', className)}
+      transition={{ duration: 0.2 }}
+      className={cn('flex h-full flex-col bg-brand-ink text-brand-cloud outline-none', className)}
     >
-      <div className="h-[48px] no-drag" />
+      <div
+        className={cn(
+          'flex shrink-0 items-end px-4 pb-3 no-drag',
+          reserveWindowControls ? 'h-[104px]' : 'h-[72px]'
+        )}
+      >
+        <ObelusReverseLockup className="h-7 w-auto" />
+      </div>
 
       <div className="px-2 flex flex-col gap-0.5">
         {visibleItems.map((item) => (
@@ -330,7 +347,7 @@ export const Navigation: React.FC<{ className?: string }> = ({ className }) => {
       <div className="flex-1 min-h-0 flex flex-col mt-3">
         <button
           onClick={() => setIsChatsExpanded((v) => !v)}
-          className="flex items-center gap-1 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-text-secondary hover:text-text-primary transition-colors self-start"
+          className="flex min-h-11 items-center gap-1 self-start rounded-md px-4 text-xs font-semibold text-brand-cloud/70 transition-colors hover:text-brand-cloud focus-visible:ring-2 focus-visible:ring-brand-aqua"
         >
           {isChatsExpanded ? (
             <ChevronDown className="w-3 h-3" />
@@ -342,7 +359,7 @@ export const Navigation: React.FC<{ className?: string }> = ({ className }) => {
         {isChatsExpanded && (
           <div className="flex-1 min-h-0 overflow-y-auto px-2 pb-2 mt-1">
             {recentSessions.length === 0 ? (
-              <div className="px-3 py-2 text-xs text-text-secondary">
+              <div className="px-3 py-2 text-xs text-brand-cloud/70">
                 {intl.formatMessage(i18n.noChats)}
               </div>
             ) : recentSessionsByProject.length > 1 ? (
@@ -353,7 +370,7 @@ export const Navigation: React.FC<{ className?: string }> = ({ className }) => {
                     <button
                       onClick={() => toggleProjectCollapsed(group.path)}
                       aria-expanded={!isCollapsed}
-                      className="flex items-center gap-1 w-full px-3 pt-2 pb-0.5 text-[10px] uppercase tracking-wider text-text-tertiary hover:text-text-secondary transition-colors"
+                      className="flex min-h-11 w-full items-center gap-1 rounded-md px-3 font-mono text-[11px] tracking-[0.04em] text-brand-cloud/55 transition-colors hover:text-brand-cloud/80 focus-visible:ring-2 focus-visible:ring-brand-aqua"
                       title={group.path}
                     >
                       {isCollapsed ? (
@@ -399,7 +416,7 @@ export const Navigation: React.FC<{ className?: string }> = ({ className }) => {
         )}
       </div>
 
-      <div className="px-2 pt-2 pb-2 border-t border-border-secondary">
+      <div className="border-t border-brand-ink-muted px-2 pb-2 pt-2">
         <NavRow
           item={SETTINGS_NAV_ITEM}
           active={isActive(SETTINGS_NAV_ITEM.path)}

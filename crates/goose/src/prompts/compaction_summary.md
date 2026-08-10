@@ -2,7 +2,7 @@
   This template is user-overridable: place a modified copy at
   ~/.config/goose/prompts/compaction_summary.md to experiment with what the
   post-compaction context contains (e.g. `user_intent[:3]` to keep only the
-  three most important goals) without rebuilding goose.
+  three most important goals) without rebuilding Obelus.
 
   key_code is wrapped via the code_fence filter so embedded fences cannot
   break out of the block.

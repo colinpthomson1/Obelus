@@ -1,0 +1,17 @@
+/* Source Exchange implementation wrapper */
+.ob-loader-source-exchange {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  color: var(--ob-action, #3B50E0);
+  flex: 0 0 auto;
+}
+
+.ob-loader-source-exchange[aria-hidden="true"] { pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-loader-source-exchange { animation: none; }
+}
+
+@media (forced-colors: active) {
+  .ob-loader-source-exchange { color: CanvasText; }
+}

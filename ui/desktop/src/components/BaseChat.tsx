@@ -31,10 +31,10 @@ import {
 } from '../types/message';
 import { substituteParameters } from '../utils/parameterSubstitution';
 import { useAutoSubmit } from '../hooks/useAutoSubmit';
-import { Goose } from './icons';
 import EnvironmentBadge from './GooseSidebar/EnvironmentBadge';
 import SessionActionsHeader from './SessionActionsHeader';
 import { isAcpRecovering, subscribeToAcpRecovery } from '../acp/acpConnection';
+import { ObelusLockup } from './brand/ObelusBrand';
 
 const i18n = defineMessages({
   failedToLoadSession: {
@@ -142,7 +142,7 @@ export default function BaseChat({
   }, [initialMessage, recipe?.prompt, session?.user_recipe_values]);
 
   // noAutoSubmit only suppresses auto-submitting the initial prompt of a fresh session
-  // (goose://new-session?prompt=...). Once the conversation has messages, later flows
+  // (obelus://new-session?prompt=...). Once the conversation has messages, later flows
   // such as forks or resumes should auto-submit normally.
   const suppressInitialAutoSubmit = noAutoSubmit && messages.length === 0;
   const canAutoSubmit =
@@ -378,7 +378,7 @@ export default function BaseChat({
           <div className="flex flex-col flex-1 min-h-0 relative">
             <div className="flex-1 flex items-center justify-center">
               <div className="flex flex-col items-center justify-center p-8">
-                <div className="text-red-700 dark:text-red-300 bg-red-400/50 p-4 rounded-lg mb-4 max-w-md">
+                <div className="mb-4 max-w-md rounded-md border border-status-disputed bg-status-disputed-bg p-4 text-status-disputed">
                   <h3 className="font-semibold mb-2">
                     {intl.formatMessage(i18n.failedToLoadSession)}
                   </h3>
@@ -388,7 +388,7 @@ export default function BaseChat({
                   onClick={() => {
                     setView('chat');
                   }}
-                  className="px-4 py-2 text-center cursor-pointer text-text-primary border border-border-primary hover:bg-background-secondary rounded-lg transition-all duration-150"
+                  className="min-h-11 cursor-pointer rounded-md border border-border-primary px-4 py-2 text-center text-text-primary transition-colors duration-200 hover:bg-background-secondary"
                 >
                   {intl.formatMessage(i18n.goHome)}
                 </button>
@@ -412,19 +412,8 @@ export default function BaseChat({
 
         {/* Chat container with sticky recipe header */}
         <div className="flex flex-col flex-1 min-h-0 relative">
-          {/* Goose watermark - top right */}
-          <div className="absolute top-[14px] right-4 z-[60] flex flex-row items-center gap-1">
-            <a
-              href="https://goose-docs.ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="no-drag flex flex-row items-center gap-1 hover:opacity-80 transition-opacity"
-            >
-              <Goose className="size-5 goose-icon-animation" />
-              <span className="text-sm leading-none text-text-secondary -translate-y-px">
-                goose
-              </span>
-            </a>
+          <div className="absolute right-4 top-[14px] z-[60] flex flex-row items-center gap-2">
+            <ObelusLockup className="h-5 no-drag" />
             <EnvironmentBadge className="translate-y-px" />
           </div>
 
@@ -480,7 +469,9 @@ export default function BaseChat({
 
           {chatState !== ChatState.Idle && (
             <div className="absolute bottom-1 left-4 z-20 pointer-events-none">
-              <LoadingGoose chatState={chatState} message={progressMessage} />
+              <div className="rounded-md border border-border-primary bg-background-primary px-3 shadow-sm">
+                <LoadingGoose chatState={chatState} message={progressMessage} />
+              </div>
             </div>
           )}
         </div>
@@ -493,7 +484,7 @@ export default function BaseChat({
 
         <ChatInputCard
           className={cn(
-            'relative z-10 mx-4 mb-4',
+            'relative z-10 mx-4 mb-4 border-border-tertiary focus-within:border-brand-blue focus-within:ring-2 focus-within:ring-brand-blue/15 dark:focus-within:border-brand-aqua dark:focus-within:ring-brand-aqua/15',
             !disableAnimation && 'animate-[fadein_400ms_ease-in_forwards]'
           )}
         >

@@ -8,7 +8,7 @@ import { providerConfigSubmitHandler } from '../settings/providers/modal/subcomp
 import ProviderLogo from '../settings/providers/modal/subcomponents/ProviderLogo';
 import { SecureStorageNotice } from '../settings/providers/modal/subcomponents/SecureStorageNotice';
 import { Button } from '../ui/button';
-import { LogIn, ChevronRight } from 'lucide-react';
+import { AlertCircle, ChevronRight, LogIn } from 'lucide-react';
 import { defineMessages, useIntl } from '../../i18n';
 import { errorMessage } from '../../utils/conversionUtils';
 
@@ -17,12 +17,12 @@ type OnConfigured = (name: string) => void | Promise<void>;
 const i18n = defineMessages({
   browserWindowOpen: {
     id: 'providerConfigForm.browserWindowOpen',
-    defaultMessage: 'A browser window will open for you to complete the login.',
+    defaultMessage: 'Your browser will open so you can finish signing in with the provider.',
   },
   deviceCodeFlowHint: {
     id: 'providerConfigForm.deviceCodeFlowHint',
     defaultMessage:
-      'A browser window will open and the verification code will be copied to your clipboard. Paste it in the browser to complete sign-in.',
+      'Your browser will open and the verification code will be copied to your clipboard. Paste the code there to finish signing in.',
   },
   signingIn: {
     id: 'providerConfigForm.signingIn',
@@ -44,19 +44,32 @@ const i18n = defineMessages({
     id: 'providerConfigForm.continue',
     defaultMessage: 'Continue',
   },
+  setupFailed: {
+    id: 'providerConfigForm.setupFailed',
+    defaultMessage: 'Could not complete setup: {error}',
+  },
+  fieldRequired: {
+    id: 'providerConfigForm.fieldRequired',
+    defaultMessage: '{field} is required',
+  },
+  openExternalLink: {
+    id: 'providerConfigForm.openExternalLink',
+    defaultMessage: 'Open {url} in your browser',
+  },
 });
 
-function parseLinks(text: string) {
+function parseLinks(text: string, openExternalLabel: (url: string) => string) {
   return text.split(/(https?:\/\/[^\s]+)/g).map((part, i) =>
     /^https?:\/\//.test(part) ? (
       <a
         key={i}
-        href="#"
+        href={part}
         onClick={(e) => {
           e.preventDefault();
           window.electron.openExternal(part);
         }}
-        className="underline hover:text-text-default cursor-pointer"
+        className="cursor-pointer rounded-sm text-text-info underline underline-offset-2 hover:text-brand-blue dark:hover:text-brand-aqua"
+        aria-label={openExternalLabel(part)}
       >
         {part}
       </a>
@@ -84,7 +97,11 @@ function OAuthForm({
       await acpAuthenticateProvider(provider.name);
       await onConfigured(provider.name);
     } catch (err) {
-      onError(`Setup failed: ${errorMessage(err)}`);
+      onError(
+        intl.formatMessage(i18n.setupFailed, {
+          error: errorMessage(err),
+        })
+      );
     } finally {
       setIsLoading(false);
     }
@@ -97,7 +114,7 @@ function OAuthForm({
       <Button
         onClick={handleLogin}
         disabled={isLoading}
-        className="flex items-center gap-2 px-6 py-3"
+        className="flex items-center gap-2 px-6"
         size="lg"
       >
         <LogIn size={20} />
@@ -105,7 +122,7 @@ function OAuthForm({
           ? intl.formatMessage(i18n.signingIn)
           : intl.formatMessage(i18n.signInWith, { providerName: provider.metadata.display_name })}
       </Button>
-      <p className="text-xs text-text-muted text-center">
+      <p className="text-center text-xs text-text-secondary">
         {isDeviceCodeFlow
           ? intl.formatMessage(i18n.deviceCodeFlowHint)
           : intl.formatMessage(i18n.browserWindowOpen)}
@@ -142,7 +159,7 @@ function ApiKeyForm({
         !configValues[param.name]?.value &&
         !configValues[param.name]?.serverValue
       ) {
-        errors[param.name] = `${param.name} is required`;
+        errors[param.name] = intl.formatMessage(i18n.fieldRequired, { field: param.name });
       }
     });
 
@@ -183,7 +200,9 @@ function ApiKeyForm({
           <button
             type="button"
             onClick={() => setShowSetupHelp(!showSetupHelp)}
-            className="flex items-center gap-1 text-sm text-text-muted hover:text-text-default transition-colors"
+            aria-expanded={showSetupHelp}
+            aria-controls={`provider-setup-help-${provider.name}`}
+            className="flex min-h-11 items-center gap-1 rounded-md px-2 text-sm text-text-secondary transition-colors hover:text-text-primary"
           >
             <ChevronRight
               size={14}
@@ -192,16 +211,21 @@ function ApiKeyForm({
             {intl.formatMessage(i18n.noApiKey)}
           </button>
           {showSetupHelp && (
-            <ol className="mt-2 ml-5 list-decimal text-sm text-text-muted space-y-1">
+            <ol
+              id={`provider-setup-help-${provider.name}`}
+              className="mt-2 ml-5 list-decimal space-y-1 text-sm text-text-secondary"
+            >
               {setupSteps.map((step, i) => (
-                <li key={i}>{parseLinks(step)}</li>
+                <li key={i}>
+                  {parseLinks(step, (url) => intl.formatMessage(i18n.openExternalLink, { url }))}
+                </li>
               ))}
             </ol>
           )}
         </div>
       )}
       <div className="mt-4">
-        <Button type="submit" disabled={isSubmitting} className="w-full">
+        <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
           {isSubmitting ? intl.formatMessage(i18n.configuring) : intl.formatMessage(i18n.continue)}
         </Button>
       </div>
@@ -228,20 +252,24 @@ export default function ProviderConfigForm({ provider, onConfigured }: ProviderC
 
   return (
     <div>
-      <div className="p-4 border rounded-xl bg-background-muted">
+      <div className="rounded-xl border border-border-primary bg-background-secondary p-4">
         <div className="flex items-center gap-3 mb-4">
           <ProviderLogo providerName={provider.name} />
           <div>
-            <h3 className="font-medium text-text-default">{provider.metadata.display_name}</h3>
-            <p className="text-xs text-text-muted">{provider.metadata.description}</p>
+            <h3 className="font-medium text-text-primary">{provider.metadata.display_name}</h3>
+            <p className="text-xs text-text-secondary">{provider.metadata.description}</p>
           </div>
         </div>
 
         {renderForm()}
 
         {error && (
-          <div className="mt-3 p-3 rounded-lg bg-red-50 text-red-800 border border-red-200 dark:bg-red-900/20 dark:text-red-200 dark:border-red-800 text-sm">
-            {error}
+          <div
+            role="alert"
+            className="mt-3 flex items-start gap-2 rounded-lg border border-status-disputed bg-status-disputed-bg p-3 text-sm text-status-disputed"
+          >
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+            <span>{error}</span>
           </div>
         )}
       </div>

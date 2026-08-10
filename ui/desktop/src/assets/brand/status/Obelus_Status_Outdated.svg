@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-labelledby="title desc" >
+  <title id="title">Outdated status icon</title>
+  <desc id="desc">Obelus outdated status icon.</desc>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 12a8 8 0 1 0 2.3-5.7"/>
+    <path d="M4 5v5h5M12 8v5l3 2"/>
+  </g>
+</svg>

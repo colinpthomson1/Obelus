@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 500" role="img" aria-labelledby="title desc" >
+  <title id="title">Obelus Core Palette</title>
+  <desc id="desc">Core and semantic colors for the Obelus identity.</desc>
+  <rect width="1050" height="500" fill="#F7F8FC"/>
+  <g transform="translate(0 0)">
+    <rect width="186" height="216" rx="14" fill="#111528"/>
+    <text x="16" y="164" fill="#FCFCF8" font-family="Instrument Sans, sans-serif" font-size="18" font-weight="600">Obelus Ink</text>
+    <text x="16" y="190" fill="#FCFCF8" font-family="IBM Plex Mono, monospace" font-size="14">#111528</text>
+  </g>  <g transform="translate(210 0)">
+    <rect width="186" height="216" rx="14" fill="#F7F8FC"/>
+    <text x="16" y="164" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="18" font-weight="600">Paper</text>
+    <text x="16" y="190" fill="#111528" font-family="IBM Plex Mono, monospace" font-size="14">#F7F8FC</text>
+  </g>  <g transform="translate(420 0)">
+    <rect width="186" height="216" rx="14" fill="#FCFCF8"/>
+    <text x="16" y="164" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="18" font-weight="600">Cloud</text>
+    <text x="16" y="190" fill="#111528" font-family="IBM Plex Mono, monospace" font-size="14">#FCFCF8</text>
+  </g>  <g transform="translate(630 0)">
+    <rect width="186" height="216" rx="14" fill="#3B50E0"/>
+    <text x="16" y="164" fill="#FCFCF8" font-family="Instrument Sans, sans-serif" font-size="18" font-weight="600">Evidence Blue</text>
+    <text x="16" y="190" fill="#FCFCF8" font-family="IBM Plex Mono, monospace" font-size="14">#3B50E0</text>
+  </g>  <g transform="translate(840 0)">
+    <rect width="186" height="216" rx="14" fill="#2BC7B9"/>
+    <text x="16" y="164" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="18" font-weight="600">Live Aqua</text>
+    <text x="16" y="190" fill="#111528" font-family="IBM Plex Mono, monospace" font-size="14">#2BC7B9</text>
+  </g>  <g transform="translate(0 250)">
+    <rect width="186" height="216" rx="14" fill="#FF7568"/>
+    <text x="16" y="164" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="18" font-weight="600">Voice Coral</text>
+    <text x="16" y="190" fill="#111528" font-family="IBM Plex Mono, monospace" font-size="14">#FF7568</text>
+  </g>  <g transform="translate(210 250)">
+    <rect width="186" height="216" rx="14" fill="#08705B"/>
+    <text x="16" y="164" fill="#FCFCF8" font-family="Instrument Sans, sans-serif" font-size="18" font-weight="600">Supported</text>
+    <text x="16" y="190" fill="#FCFCF8" font-family="IBM Plex Mono, monospace" font-size="14">#08705B</text>
+  </g>  <g transform="translate(420 250)">
+    <rect width="186" height="216" rx="14" fill="#8A4B00"/>
+    <text x="16" y="164" fill="#FCFCF8" font-family="Instrument Sans, sans-serif" font-size="18" font-weight="600">Needs context</text>
+    <text x="16" y="190" fill="#FCFCF8" font-family="IBM Plex Mono, monospace" font-size="14">#8A4B00</text>
+  </g>  <g transform="translate(630 250)">
+    <rect width="186" height="216" rx="14" fill="#B12D47"/>
+    <text x="16" y="164" fill="#FCFCF8" font-family="Instrument Sans, sans-serif" font-size="18" font-weight="600">Disputed</text>
+    <text x="16" y="190" fill="#FCFCF8" font-family="IBM Plex Mono, monospace" font-size="14">#B12D47</text>
+  </g>  <g transform="translate(840 250)">
+    <rect width="186" height="216" rx="14" fill="#2F3FB5"/>
+    <text x="16" y="164" fill="#FCFCF8" font-family="Instrument Sans, sans-serif" font-size="18" font-weight="600">Unverified</text>
+    <text x="16" y="190" fill="#FCFCF8" font-family="IBM Plex Mono, monospace" font-size="14">#2F3FB5</text>
+  </g>
+</svg>

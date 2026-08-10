@@ -12,11 +12,11 @@ const i18n = defineMessages({
   // Shortcut labels
   focusWindowLabel: {
     id: 'keyboardShortcuts.focusWindowLabel',
-    defaultMessage: 'Focus Goose Window',
+    defaultMessage: 'Focus Obelus window',
   },
   focusWindowDescription: {
     id: 'keyboardShortcuts.focusWindowDescription',
-    defaultMessage: 'Bring Goose window to front from anywhere',
+    defaultMessage: 'Bring the Obelus window to the front from anywhere',
   },
   quickLauncherLabel: {
     id: 'keyboardShortcuts.quickLauncherLabel',
@@ -40,7 +40,7 @@ const i18n = defineMessages({
   },
   newChatWindowDescription: {
     id: 'keyboardShortcuts.newChatWindowDescription',
-    defaultMessage: 'Open a new Goose window',
+    defaultMessage: 'Open a new Obelus window',
   },
   openDirectoryLabel: {
     id: 'keyboardShortcuts.openDirectoryLabel',
@@ -106,7 +106,7 @@ const i18n = defineMessages({
   },
   categoryGlobalDescription: {
     id: 'keyboardShortcuts.categoryGlobalDescription',
-    defaultMessage: 'These shortcuts work system-wide, even when Goose is not focused',
+    defaultMessage: 'These shortcuts work system-wide, even when Obelus is not focused',
   },
   categoryApplication: {
     id: 'keyboardShortcuts.categoryApplication',
@@ -114,7 +114,7 @@ const i18n = defineMessages({
   },
   categoryApplicationDescription: {
     id: 'keyboardShortcuts.categoryApplicationDescription',
-    defaultMessage: 'These shortcuts work when Goose is the active application',
+    defaultMessage: 'These shortcuts work when Obelus is the active application',
   },
   categorySearch: {
     id: 'keyboardShortcuts.categorySearch',
@@ -145,7 +145,7 @@ const i18n = defineMessages({
   restartDescription: {
     id: 'keyboardShortcuts.restartDescription',
     defaultMessage:
-      'Changes to application shortcuts (like New Chat, Settings, etc.) require restarting Goose to take effect. Global shortcuts (Focus Window, Quick Launcher) work immediately.',
+      'Restart Obelus to apply application shortcut changes. Global shortcuts such as Focus Window and Quick Launcher work immediately.',
   },
   dismiss: {
     id: 'keyboardShortcuts.dismiss',
@@ -179,8 +179,7 @@ const i18n = defineMessages({
   },
   shortcutConflictToggleMessage: {
     id: 'keyboardShortcuts.shortcutConflictToggleMessage',
-    defaultMessage:
-      'The shortcut {shortcut} is already assigned to "{conflictLabel}".',
+    defaultMessage: 'The shortcut {shortcut} is already assigned to "{conflictLabel}".',
   },
   shortcutConflictToggleDetail: {
     id: 'keyboardShortcuts.shortcutConflictToggleDetail',
@@ -371,10 +370,7 @@ export default function KeyboardShortcutsSection() {
             conflictLabel: getShortcutLabel(conflictingKey, intl.formatMessage),
             targetLabel: getShortcutLabel(key, intl.formatMessage),
           }),
-          buttons: [
-            intl.formatMessage(i18n.reassignShortcut),
-            intl.formatMessage(i18n.cancel),
-          ],
+          buttons: [intl.formatMessage(i18n.reassignShortcut), intl.formatMessage(i18n.cancel)],
           defaultId: 1,
         });
 
@@ -421,10 +417,7 @@ export default function KeyboardShortcutsSection() {
           conflictLabel: getShortcutLabel(conflictingKey, intl.formatMessage),
           targetLabel: getShortcutLabel(editingKey, intl.formatMessage),
         }),
-        buttons: [
-          intl.formatMessage(i18n.reassignShortcut),
-          intl.formatMessage(i18n.cancel),
-        ],
+        buttons: [intl.formatMessage(i18n.reassignShortcut), intl.formatMessage(i18n.cancel)],
         defaultId: 1,
       });
 
@@ -459,10 +452,7 @@ export default function KeyboardShortcutsSection() {
       title: intl.formatMessage(i18n.resetShortcutsTitle),
       message: intl.formatMessage(i18n.resetShortcutsMessage),
       detail: intl.formatMessage(i18n.resetShortcutsDetail),
-      buttons: [
-        intl.formatMessage(i18n.resetToDefaultsHeading),
-        intl.formatMessage(i18n.cancel),
-      ],
+      buttons: [intl.formatMessage(i18n.resetToDefaultsHeading), intl.formatMessage(i18n.cancel)],
       defaultId: 1,
     });
 

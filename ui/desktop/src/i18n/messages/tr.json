@@ -17,6 +17,9 @@
   "appLayout.openNavigation": {
     "defaultMessage": "Gezinmeyi aç"
   },
+  "appLayout.resizeNavigation": {
+    "defaultMessage": "Resize navigation"
+  },
   "appsView.customApp": {
     "defaultMessage": "Özel uygulama"
   },
@@ -27,7 +30,7 @@
     "defaultMessage": "Delete \"{name}\"? This cannot be undone."
   },
   "appsView.description": {
-    "defaultMessage": "MCP sunucularınızdaki uygulamalar ve goose tarafından oluşturulan Uygulamalar. Sohbet arayüzü aracılığıyla yeni uygulamalar oluşturmasını isteyebilirsiniz; bunlar burada görünecektir."
+    "defaultMessage": "Applications from your MCP servers and apps built through Obelus. Ask Obelus to create an app and it will appear here."
   },
   "appsView.errorLoading": {
     "defaultMessage": "Uygulamalar yüklenirken hata oluştu: {error}"
@@ -45,7 +48,7 @@
     "defaultMessage": "Uygulamalar yükleniyor..."
   },
   "appsView.noAppsDescription": {
-    "defaultMessage": "Bir sohbet açın ve istediğiniz uygulamayı goose'a sorun. Sizin için bir uygulama oluşturabilir ve bu uygulama burada görünür. Birisi bir uygulama paylaştıysa yukarıdaki düğmeyi kullanarak içe aktarabilirsiniz."
+    "defaultMessage": "Open a thread and ask Obelus to build the app you need. You can also import an app that someone shared with you."
   },
   "appsView.noAppsTitle": {
     "defaultMessage": "Kullanılabilir uygulama yok"
@@ -84,7 +87,7 @@
     "defaultMessage": "Kimlik bilgisi silindi"
   },
   "authSettings.description": {
-    "defaultMessage": "goose tarafından yerel olarak saklanan sağlayıcı kimlik bilgilerini yönetin."
+    "defaultMessage": "Manage provider credentials stored locally by Obelus."
   },
   "authSettings.empty": {
     "defaultMessage": "Yerel olarak saklanan sağlayıcı kimlik bilgisi bulunamadı."
@@ -168,10 +171,10 @@
     "defaultMessage": "Başlat"
   },
   "chat.notification.taskComplete.body": {
-    "defaultMessage": "Goose'yi tekrar odağa almak için buraya tıklayın."
+    "defaultMessage": "Click to bring Obelus back into focus."
   },
   "chat.notification.taskComplete.title": {
-    "defaultMessage": "Goose görevi tamamladı."
+    "defaultMessage": "Obelus finished the task."
   },
   "chatInput.contextWindow": {
     "defaultMessage": "Bağlam penceresi"
@@ -183,7 +186,7 @@
     "defaultMessage": "Resim dosyası okunamadı"
   },
   "chatInput.navigationShortcut": {
-    "defaultMessage": "Mesajlarda gezinmek için {prefix}↑/{prefix}↓"
+    "defaultMessage": "Ask Obelus anything · {prefix}↑/{prefix}↓ for history"
   },
   "chatInput.processingDroppedFiles": {
     "defaultMessage": "Bırakılan dosyalar işleniyor..."
@@ -222,13 +225,13 @@
     "defaultMessage": "Resimlerin kaydedilmesi bekleniyor..."
   },
   "chatSettings.modeDescription": {
-    "defaultMessage": "Goose'nin araçlar ve uzantılarla nasıl etkileşimde bulunacağını yapılandırın"
+    "defaultMessage": "Choose the default mode Obelus uses for new sessions. Existing sessions keep their current mode."
   },
   "chatSettings.modeTitle": {
     "defaultMessage": "Mod"
   },
   "chatSettings.responseStylesDescription": {
-    "defaultMessage": "Goose'nin yanıtlarını nasıl biçimlendireceğini ve stillendireceğini seçin"
+    "defaultMessage": "Choose how Obelus formats and styles its responses"
   },
   "chatSettings.responseStylesTitle": {
     "defaultMessage": "Yanıt Stilleri"
@@ -249,10 +252,10 @@
     "defaultMessage": "Yapılandırma Düzenleyici"
   },
   "configSettings.description": {
-    "defaultMessage": "goose yapılandırma ayarlarınızı düzenleyin"
+    "defaultMessage": "Edit your Obelus configuration settings"
   },
   "configSettings.descriptionWithProvider": {
-    "defaultMessage": "goose yapılandırma ayarlarınızı düzenleyin ({provider} için geçerli ayarlar)"
+    "defaultMessage": "Edit your Obelus configuration settings (current provider: {provider})"
   },
   "configSettings.done": {
     "defaultMessage": "Bitti"
@@ -324,7 +327,7 @@
     "defaultMessage": "Maksimum Dönüş"
   },
   "conversationLimitsDropdown.maxTurnsDescription": {
-    "defaultMessage": "Goose kullanıcı girişi istemeden önce maksimum aracı dönüşü"
+    "defaultMessage": "Maximum agent turns before Obelus asks for your input"
   },
   "costTracker.costUnavailable": {
     "defaultMessage": "{model} için maliyet verileri mevcut değil ({inputTokens} girişi, {outputTokens} çıkış jetonları)"
@@ -366,7 +369,7 @@
     "defaultMessage": "Derin bağlantı oluşturuluyor..."
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Daha fazla bilgi edinin"
+    "defaultMessage": "Upstream recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Tarif başarıyla kaydedildi ve başlatıldı"
@@ -777,7 +780,7 @@
     "defaultMessage": "{name} ayarlarını düzenleyin"
   },
   "defaultCardButtons.getStarted": {
-    "defaultMessage": "goose'yi kullanmaya başlayın!"
+    "defaultMessage": "Use with Obelus"
   },
   "defaultProviderSetupForm.apiHostLabel": {
     "defaultMessage": "API Ana Bilgisayar"
@@ -936,7 +939,7 @@
     "defaultMessage": "Bilgi talebi iptal edildi."
   },
   "elicitationRequest.defaultMessage": {
-    "defaultMessage": "Goose'nin sizden bazı bilgilere ihtiyacı var."
+    "defaultMessage": "Obelus needs a little more information."
   },
   "elicitationRequest.expired": {
     "defaultMessage": "Bu isteğin süresi doldu. Uzantının tekrar sorması gerekecek."
@@ -981,10 +984,10 @@
     "defaultMessage": "Bir hata oluştu."
   },
   "errorBoundary.errorWithVersion": {
-    "defaultMessage": "Goose v{version}'de bir hata oluştu."
+    "defaultMessage": "An error occurred in Obelus v{version}."
   },
   "errorBoundary.heading": {
-    "defaultMessage": "Korna!"
+    "defaultMessage": "Something interrupted the thread"
   },
   "errorBoundary.reload": {
     "defaultMessage": "Yeniden yükle"
@@ -1146,7 +1149,7 @@
     "defaultMessage": "Uzantı Ekle"
   },
   "extensionsSection.browseExtensions": {
-    "defaultMessage": "Uzantılara göz atın"
+    "defaultMessage": "Upstream extension guide"
   },
   "extensionsSection.saveChanges": {
     "defaultMessage": "Değişiklikleri Kaydet"
@@ -1161,13 +1164,13 @@
     "defaultMessage": "Uzantı Ekle"
   },
   "extensionsView.browseExtensions": {
-    "defaultMessage": "Uzantılara göz atın"
+    "defaultMessage": "Upstream extension guide"
   },
   "extensionsView.defaultNote": {
     "defaultMessage": "Burada etkinleştirilen uzantılar, yeni sohbetler için varsayılan olarak kullanılır. Ayrıca sohbet sırasında etkin uzantıları da değiştirebilirsiniz."
   },
   "extensionsView.description": {
-    "defaultMessage": "Bu uzantılar Model Bağlam Protokolünü (MCP) kullanır. Üç ana bileşeni kullanarak Goose'nin yeteneklerini genişletebilirler: İstemler, Kaynaklar ve Araçlar. Aramak için {searchShortcut}."
+    "defaultMessage": "Extensions use the Model Context Protocol (MCP) to add prompts, resources, and tools to Obelus. {searchShortcut} to search."
   },
   "extensionsView.heading": {
     "defaultMessage": "Uzantılar"
@@ -1185,19 +1188,19 @@
     "defaultMessage": "AA:BB:CC:... veya sha256/base64"
   },
   "externalBackendSection.description": {
-    "defaultMessage": "Varsayılan olarak goose sizin için bir sunucu başlatır; harici bir goose sunucusuna bağlanmak için bunu kullanın"
+    "defaultMessage": "Obelus starts a local backend by default. Use this setting to connect to an external ACP-compatible backend."
   },
   "externalBackendSection.fingerprintRequiresHttps": {
     "defaultMessage": "Certificate fingerprint requires an https URL"
   },
   "externalBackendSection.restartNote": {
-    "defaultMessage": "Değişikliklerin etkili olması için Goose'nin yeniden başlatılması gerekir. Yeni sohbet pencereleri harici sunucuya bağlanacaktır."
+    "defaultMessage": "Changes apply to new windows. Restart Obelus to update windows already open."
   },
   "externalBackendSection.secretKey": {
     "defaultMessage": "Gizli Anahtar"
   },
   "externalBackendSection.secretKeyHelp": {
-    "defaultMessage": "Goose sunucusunda yapılandırılan gizli anahtar (GOOSE_SERVER__SECRET_KEY)"
+    "defaultMessage": "Obelus sunucusunda yapılandırılan gizli anahtar (GOOSE_SERVER__SECRET_KEY)"
   },
   "externalBackendSection.secretKeyPlaceholder": {
     "defaultMessage": "Sunucunun gizli anahtarını girin"
@@ -1206,10 +1209,10 @@
     "defaultMessage": "Sunucu URL'si"
   },
   "externalBackendSection.serverUrlHelp": {
-    "defaultMessage": "Enter the HTTP(S) base URL. Goose checks /status and connects to /acp under this base."
+    "defaultMessage": "Enter the HTTP(S) base URL. Obelus checks /status and connects to /acp under this base."
   },
   "externalBackendSection.title": {
-    "defaultMessage": "Goose Sunucu"
+    "defaultMessage": "Obelus Sunucu"
   },
   "externalBackendSection.urlBaseError": {
     "defaultMessage": "URL must be the backend base URL before /acp, without query parameters or fragments"
@@ -1224,7 +1227,7 @@
     "defaultMessage": "Harici sunucu kullan"
   },
   "externalBackendSection.useExternalServerDescription": {
-    "defaultMessage": "Başka bir yerde çalışan bir goose sunucusuna bağlanın (uygulamanın yeniden başlatılmasını gerektirir)"
+    "defaultMessage": "Başka bir yerde çalışan bir Obelus sunucusuna bağlanın (uygulamanın yeniden başlatılmasını gerektirir)"
   },
   "goosehintsModal.close": {
     "defaultMessage": "Kapat"
@@ -1233,7 +1236,7 @@
     "defaultMessage": "Geliştirici"
   },
   "goosehintsModal.dialogDescription": {
-    "defaultMessage": "Goose ile iletişimi geliştirmek için projeniz hakkında ek bağlam sağlayın"
+    "defaultMessage": "Provide project context to help Obelus respond more precisely"
   },
   "goosehintsModal.dialogTitle": {
     "defaultMessage": "Proje İpuçlarını Yapılandırma (.goosehints)"
@@ -1254,7 +1257,7 @@
     "defaultMessage": ".goosehints dosyası şu konumda bulundu: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".goosehints, projeniz hakkında ek bağlam sağlamak ve Goose ile iletişimi geliştirmek için kullanılan bir metin dosyasıdır."
+    "defaultMessage": ".goosehints is a compatibility file that gives Obelus additional context about your project."
   },
   "goosehintsModal.helpText2": {
     "defaultMessage": "Lütfen uzantılar sayfasında {bold} uzantısının etkinleştirildiğinden emin olun. Bu uzantı.goosehints'i kullanmak için gereklidir..goosehints güncellemelerinin etkili olması için oturumunuzu yeniden başlatmanız gerekir."
@@ -1263,7 +1266,7 @@
     "defaultMessage": "Daha fazla bilgi için {link}'ye bakın."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": ".goosehints'i kullanma"
+    "defaultMessage": "the upstream .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Proje ipuçlarını buraya girin..."
@@ -1281,13 +1284,13 @@
     "defaultMessage": "Yapılandır"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Goose'a ek bağlam sağlamak için projenizin.goosehints dosyasını yapılandırın"
+    "defaultMessage": "Configure your project's compatible .goosehints file to give Obelus additional context"
   },
   "goosehintsSection.title": {
     "defaultMessage": "Proje İpuçları (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
-    "defaultMessage": "goose'a sorun"
+    "defaultMessage": "Ask Obelus"
   },
   "groupedExtensionLoadingToast.collapseDetails": {
     "defaultMessage": "Ayrıntıları daralt"
@@ -1346,14 +1349,38 @@
   "headersSection.value": {
     "defaultMessage": "Değer"
   },
-  "hub.goodAfternoon": {
-    "defaultMessage": "İyi günler"
+  "hub.capabilityBuild": {
+    "defaultMessage": "Build"
   },
-  "hub.goodEvening": {
-    "defaultMessage": "İyi akşamlar"
+  "hub.capabilityBuildDescription": {
+    "defaultMessage": "Write code, automate tasks, and use tools"
   },
-  "hub.goodMorning": {
-    "defaultMessage": "Günaydın"
+  "hub.capabilityCreate": {
+    "defaultMessage": "Create"
+  },
+  "hub.capabilityCreateDescription": {
+    "defaultMessage": "Draft, revise, explain, and structure ideas"
+  },
+  "hub.capabilityResearch": {
+    "defaultMessage": "Research"
+  },
+  "hub.capabilityResearchDescription": {
+    "defaultMessage": "Find, compare, and synthesize information"
+  },
+  "hub.category": {
+    "defaultMessage": "Evidence-led AI workspace"
+  },
+  "hub.description": {
+    "defaultMessage": "Bring a question, document, or task. Obelus can research, reason, write, code, and work with the tools you connect—keeping the work visible in the conversation."
+  },
+  "hub.headline": {
+    "defaultMessage": "What should we examine?"
+  },
+  "hub.privacy": {
+    "defaultMessage": "Your files stay on this device unless you choose to share them with a model or connected tool."
+  },
+  "hub.startThread": {
+    "defaultMessage": "Start a new research thread"
   },
   "huggingFaceModelSearch.download": {
     "defaultMessage": "İndir"
@@ -1407,7 +1434,7 @@
     "defaultMessage": "Hugging Face"
   },
   "imagePreview.altText": {
-    "defaultMessage": "goose resmi"
+    "defaultMessage": "Image shared with Obelus"
   },
   "imagePreview.clickToCollapse": {
     "defaultMessage": "Daraltmak için tıklayın"
@@ -1422,10 +1449,10 @@
     "defaultMessage": "İptal"
   },
   "importRecipeForm.deeplinkHint": {
-    "defaultMessage": "\"goose://recipe?config=\" ile başlayan bir tarif derin bağlantısı yapıştırın"
+    "defaultMessage": "Paste a recipe deep link starting with \"obelus://recipe?config=\""
   },
   "importRecipeForm.deeplinkPlaceholder": {
-    "defaultMessage": "goose://recipe?config=... derin bağlantınızı buraya yapıştırın"
+    "defaultMessage": "Paste your obelus://recipe?config=... deep link here"
   },
   "importRecipeForm.example": {
     "defaultMessage": "örnek"
@@ -1455,7 +1482,7 @@
     "defaultMessage": "Tarif Dosyası"
   },
   "importRecipeForm.reviewWarning": {
-    "defaultMessage": "Tarif dosyalarının içeriğini goose arayüzünüze eklemeden önce incelediğinizden emin olun."
+    "defaultMessage": "Review every recipe before adding it to Obelus. Recipes can configure tools and external services."
   },
   "importRecipeForm.schemaDescription": {
     "defaultMessage": "YAML veya JSON dosyanız bu yapıyı takip etmelidir. Zorunlu alanlar şunlardır: başlık, açıklama ve talimatlar veya bilgi istemi."
@@ -1566,13 +1593,13 @@
     "defaultMessage": "Uygulama Kısayolları"
   },
   "keyboardShortcuts.categoryApplicationDescription": {
-    "defaultMessage": "Bu kısayollar Goose etkin uygulama olduğunda çalışır"
+    "defaultMessage": "These shortcuts work when Obelus is the active application"
   },
   "keyboardShortcuts.categoryGlobal": {
     "defaultMessage": "Genel Kısayollar"
   },
   "keyboardShortcuts.categoryGlobalDescription": {
-    "defaultMessage": "Bu kısayollar, Goose odaklanmadığında bile sistem genelinde çalışır"
+    "defaultMessage": "These shortcuts work system-wide, even when Obelus is not focused"
   },
   "keyboardShortcuts.categorySearch": {
     "defaultMessage": "Arama Kısayolları"
@@ -1614,10 +1641,10 @@
     "defaultMessage": "Öncekini Bul"
   },
   "keyboardShortcuts.focusWindowDescription": {
-    "defaultMessage": "Goose penceresini istediğiniz yerden öne getirin"
+    "defaultMessage": "Bring the Obelus window to the front from anywhere"
   },
   "keyboardShortcuts.focusWindowLabel": {
-    "defaultMessage": "Odak Goose Penceresi"
+    "defaultMessage": "Focus Obelus window"
   },
   "keyboardShortcuts.loading": {
     "defaultMessage": "Yükleniyor..."
@@ -1629,7 +1656,7 @@
     "defaultMessage": "Yeni Sohbet"
   },
   "keyboardShortcuts.newChatWindowDescription": {
-    "defaultMessage": "Yeni bir Goose penceresi aç"
+    "defaultMessage": "Open a new Obelus window"
   },
   "keyboardShortcuts.newChatWindowLabel": {
     "defaultMessage": "Yeni Sohbet Penceresi"
@@ -1668,7 +1695,7 @@
     "defaultMessage": "Varsayılanlara Sıfırla"
   },
   "keyboardShortcuts.restartDescription": {
-    "defaultMessage": "Uygulama kısayollarında yapılan değişikliklerin (Yeni Sohbet, Ayarlar vb.) etkili olması için Goose'nin yeniden başlatılması gerekir. Genel kısayollar (Odak Penceresi, Hızlı Başlatıcı) hemen çalışır."
+    "defaultMessage": "Restart Obelus to apply application shortcut changes. Global shortcuts such as Focus Window and Quick Launcher work immediately."
   },
   "keyboardShortcuts.restartRequired": {
     "defaultMessage": "Yeniden Başlatma Gerekli"
@@ -1697,29 +1724,35 @@
   "keyboardShortcuts.toggleNavigationLabel": {
     "defaultMessage": "Gezinmeyi Değiştir"
   },
+  "launcher.inputLabel": {
+    "defaultMessage": "Start a new Obelus research thread"
+  },
   "launcher.placeholder": {
-    "defaultMessage": "goose'a herhangi bir şey sorun..."
+    "defaultMessage": "Ask Obelus to research, write, build, or explain…"
+  },
+  "launcher.submit": {
+    "defaultMessage": "Open research thread"
   },
   "loadingGoose.compacting": {
-    "defaultMessage": "goose konuşmayı sıkıştırıyor..."
+    "defaultMessage": "Refining the conversation…"
   },
   "loadingGoose.idle": {
-    "defaultMessage": "goose bunun üzerinde çalışıyor…"
+    "defaultMessage": "Ready"
   },
   "loadingGoose.loadingConversation": {
-    "defaultMessage": "konuşma yükleniyor..."
+    "defaultMessage": "Opening the research thread…"
   },
   "loadingGoose.restartingAgent": {
-    "defaultMessage": "oturum yeniden başlatılıyor..."
+    "defaultMessage": "Restarting the session…"
   },
   "loadingGoose.streaming": {
-    "defaultMessage": "goose bunun üzerinde çalışıyor…"
+    "defaultMessage": "Obelus is building the response…"
   },
   "loadingGoose.thinking": {
-    "defaultMessage": "goose düşünüyor…"
+    "defaultMessage": "Obelus is examining the request…"
   },
   "loadingGoose.waiting": {
-    "defaultMessage": "goose bekliyor…"
+    "defaultMessage": "Waiting for your direction…"
   },
   "localInferenceSettings.deleteConfirm": {
     "defaultMessage": "Bu model silinsin mi? Daha sonra tekrar indirebilirsiniz."
@@ -1827,13 +1860,16 @@
     "defaultMessage": "Yalnızca önerilenleri göster"
   },
   "localModelPicker.bestForMachine": {
-    "defaultMessage": "Makineniz için en iyisi"
+    "defaultMessage": "Recommended for this device"
   },
   "localModelPicker.cancelDownload": {
     "defaultMessage": "İndirmeyi İptal Et"
   },
   "localModelPicker.checkingModels": {
     "defaultMessage": "Mevcut modeller kontrol ediliyor..."
+  },
+  "localModelPicker.downloadFailed": {
+    "defaultMessage": "The model download failed."
   },
   "localModelPicker.downloadModel": {
     "defaultMessage": "{modelId}'yi ({size}) indirin"
@@ -1851,16 +1887,25 @@
     "defaultMessage": "Diğer boyutları gizle"
   },
   "localModelPicker.localModelsNote": {
-    "defaultMessage": "Yerel modeller, tam gizlilik için her şeyi makinenizde tutar. Performans ve bağlam penceresi boyutu, donanım ve model boyutunuza bağlı olarak bulut sağlayıcılara göre farklılık gösterebilir."
+    "defaultMessage": "Model inference stays on this device. Tools and extensions may still connect to external services, so review them before sharing sensitive material. Performance depends on your hardware and model size."
   },
   "localModelPicker.lostConnection": {
     "defaultMessage": "İndirmek için bağlantı kesildi. Lütfen tekrar deneyin."
   },
+  "localModelPicker.minutesRemaining": {
+    "defaultMessage": "About {minutes} minutes remaining"
+  },
   "localModelPicker.modelNotFound": {
     "defaultMessage": "Model bulunamadı"
   },
+  "localModelPicker.modelOptions": {
+    "defaultMessage": "Choose a local model"
+  },
   "localModelPicker.ready": {
     "defaultMessage": "Hazır"
+  },
+  "localModelPicker.secondsRemaining": {
+    "defaultMessage": "About {seconds} seconds remaining"
   },
   "localModelPicker.selectModel": {
     "defaultMessage": "Bir model seçin"
@@ -2394,43 +2439,40 @@
     "defaultMessage": "Başlıksız oturum"
   },
   "onboardingGuard.checkProviderErrorDescription": {
-    "defaultMessage": "Sunucu başlatılıyor veya geçici olarak kullanılamıyor olabilir."
+    "defaultMessage": "The local service may still be starting. Wait a moment, then try again."
   },
   "onboardingGuard.checkProviderErrorTitle": {
-    "defaultMessage": "Goose sunucusuna bağlanılamıyor"
+    "defaultMessage": "Unable to connect to Obelus"
+  },
+  "onboardingGuard.checkingProvider": {
+    "defaultMessage": "Preparing Obelus…"
   },
   "onboardingGuard.retry": {
     "defaultMessage": "Yeniden dene"
   },
   "onboardingGuard.welcomeDescription": {
-    "defaultMessage": "Yerel AI temsilciniz. Başlamak için bir AI model sağlayıcısına bağlanın."
+    "defaultMessage": "A local AI workspace for careful research and clear answers. Connect a model provider to begin."
   },
   "onboardingGuard.welcomeTitle": {
-    "defaultMessage": "goose'a hoş geldiniz"
+    "defaultMessage": "Welcome to Obelus"
   },
   "onboardingSuccess.allSet": {
-    "defaultMessage": "goose'yi kullanmaya başlamaya hazırsınız."
+    "defaultMessage": "Obelus is ready. Start a research thread or open a project."
   },
   "onboardingSuccess.connectedTo": {
     "defaultMessage": "{providerName}'ye bağlanıldı"
   },
   "onboardingSuccess.getStarted": {
-    "defaultMessage": "Başlayın"
-  },
-  "onboardingSuccess.learnMore": {
-    "defaultMessage": "Daha fazla bilgi edinin"
+    "defaultMessage": "Open Obelus"
   },
   "onboardingSuccess.localModelReady": {
     "defaultMessage": "Yerli model hazır"
   },
   "onboardingSuccess.privacyDescription": {
-    "defaultMessage": "Anonim kullanım verileri goose'nin iyileştirilmesine yardımcı olur. Konuşmalarınızı, kodlarınızı veya kişisel verilerinizi asla toplamıyoruz."
+    "defaultMessage": "Product analytics and automatic updates are off in this build. Model providers, tools, and extensions follow their own data policies."
   },
   "onboardingSuccess.privacyTitle": {
-    "defaultMessage": "Gizlilik"
-  },
-  "onboardingSuccess.shareUsageData": {
-    "defaultMessage": "Anonim kullanım verilerini paylaşın"
+    "defaultMessage": "A private starting point"
   },
   "parameterInput.defaultValue": {
     "defaultMessage": "Varsayılan Değer"
@@ -2576,35 +2618,26 @@
   "permissionSetting.permissionRulesDescription": {
     "defaultMessage": "Yanıtlarınızı yönlendirmeye ve bağlam eklemeye yardımcı olmak için sağlayıcıya iletilecek gizli talimatlar."
   },
-  "privacyInfoModal.collectErrors": {
-    "defaultMessage": "Hata türleri (ör. \"rate_limit\", \"auth\" - ayrıntı yok)"
-  },
-  "privacyInfoModal.collectExtensions": {
-    "defaultMessage": "Uzantılar ve araç kullanım sayıları (yalnızca adlar)"
-  },
   "privacyInfoModal.collectOs": {
-    "defaultMessage": "İşletim sistemi, sürümü ve mimarisi"
+    "defaultMessage": "Prompts and files you choose to send to a cloud model provider"
   },
   "privacyInfoModal.collectProvider": {
-    "defaultMessage": "Sağlayıcı ve kullanılan model"
-  },
-  "privacyInfoModal.collectSession": {
-    "defaultMessage": "Oturum metrikleri (süre, etkileşim sayısı, belirteç kullanımı)"
+    "defaultMessage": "Information you explicitly share through session or recipe features"
   },
   "privacyInfoModal.collectVersion": {
-    "defaultMessage": "goose sürümü ve yükleme yöntemi"
+    "defaultMessage": "Requests made by tools, extensions, and connected services"
   },
   "privacyInfoModal.description": {
-    "defaultMessage": "Anonim kullanım verileri, goose'nin nasıl kullanıldığını anlamamıza ve iyileştirilecek alanları belirlememize yardımcı olur."
+    "defaultMessage": "Obelus product analytics are disabled. The application does not send usage events to a project-owned analytics service."
   },
   "privacyInfoModal.neverCollect": {
-    "defaultMessage": "Konuşmalarınızı, kodunuzu, araç argümanlarınızı, hata mesajlarınızı veya herhangi bir kişisel verinizi asla toplamıyoruz. Bu ayarı istediğiniz zaman Ayarlar'dan değiştirebilirsiniz."
+    "defaultMessage": "Review each provider and extension policy before working with sensitive material. Local model inference keeps model requests on this device, but tools may still use the network."
   },
   "privacyInfoModal.title": {
-    "defaultMessage": "Gizlilik ayrıntıları"
+    "defaultMessage": "Privacy in this build"
   },
   "privacyInfoModal.whatWeCollect": {
-    "defaultMessage": "Ne topluyoruz:"
+    "defaultMessage": "What may still leave this device:"
   },
   "progressiveMessageList.loadingMessages": {
     "defaultMessage": "Mesajlar yükleniyor... ({renderedCount}/{totalCount})"
@@ -2664,7 +2697,7 @@
     "defaultMessage": "İstem kaydedilemedi"
   },
   "promptsSettings.promptEditingDescription": {
-    "defaultMessage": "goose'nin farklı bağlamlardaki davranışını tanımlayan istemleri özelleştirin. Bu istemler Jinja2 şablon oluşturma sözdizimini kullanır. Yanlış değişiklikler işlevselliği bozabileceğinden şablon değişkenlerini değiştirirken dikkatli olun. Lütfen iyileştirmeleri toplulukla paylaşın."
+    "defaultMessage": "Customize the prompts that guide Obelus in different contexts. These prompts use Jinja2 templates; changing template variables incorrectly can break the corresponding workflow."
   },
   "promptsSettings.promptEditingTitle": {
     "defaultMessage": "İstemi Düzenleme"
@@ -2739,7 +2772,7 @@
     "defaultMessage": "Bir API formatı ve sağlayıcı seçin. Yapılandırmayı sizin için otomatik olarak dolduracağız."
   },
   "providerConfigForm.browserWindowOpen": {
-    "defaultMessage": "Oturum açma işlemini tamamlamanız için bir tarayıcı penceresi açılacaktır."
+    "defaultMessage": "Your browser will open so you can finish signing in with the provider."
   },
   "providerConfigForm.configuring": {
     "defaultMessage": "Yapılandırılıyor..."
@@ -2748,10 +2781,19 @@
     "defaultMessage": "Devam et"
   },
   "providerConfigForm.deviceCodeFlowHint": {
-    "defaultMessage": "Bir tarayıcı penceresi açılacak ve doğrulama kodu panonuza kopyalanacaktır. Oturum açmayı tamamlamak için tarayıcıya yapıştırın."
+    "defaultMessage": "Your browser will open and the verification code will be copied to your clipboard. Paste the code there to finish signing in."
+  },
+  "providerConfigForm.fieldRequired": {
+    "defaultMessage": "{field} is required"
   },
   "providerConfigForm.noApiKey": {
     "defaultMessage": "API anahtarınız yok mu?"
+  },
+  "providerConfigForm.openExternalLink": {
+    "defaultMessage": "Open {url} in your browser"
+  },
+  "providerConfigForm.setupFailed": {
+    "defaultMessage": "Could not complete setup: {error}"
   },
   "providerConfigForm.signInWith": {
     "defaultMessage": "{providerName} ile oturum açın"
@@ -2760,7 +2802,7 @@
     "defaultMessage": "Oturum açılıyor..."
   },
   "providerConfigurationModal.addApiKeyDescription": {
-    "defaultMessage": "Bu sağlayıcının goose'a entegre olması için API anahtarlarınızı ekleyin"
+    "defaultMessage": "Add provider credentials for use with Obelus"
   },
   "providerConfigurationModal.browserWindowHint": {
     "defaultMessage": "Oturum açma işlemini tamamlamanız için bir tarayıcı penceresi açılacaktır."
@@ -2796,7 +2838,7 @@
     "defaultMessage": "Hata"
   },
   "providerConfigurationModal.externalSetupIntro": {
-    "defaultMessage": "Bu sağlayıcı goose dışında yapılandırılmıştır. Şu adımları izleyin:"
+    "defaultMessage": "This provider is configured outside Obelus. Follow these steps:"
   },
   "providerConfigurationModal.goBack": {
     "defaultMessage": "Geri Dön"
@@ -2856,22 +2898,25 @@
     "defaultMessage": "Özel bir sağlayıcı ekleyin"
   },
   "providerSelector.addCustomProviderTitle": {
-    "defaultMessage": "Özel Sağlayıcı Ekle"
+    "defaultMessage": "Add a custom provider"
   },
   "providerSelector.connectProvider": {
-    "defaultMessage": "Bir Sağlayıcıya Bağlan"
+    "defaultMessage": "Connect a provider"
   },
   "providerSelector.connectProviderDescription": {
-    "defaultMessage": "OpenAI, Anthropic, Google, vb.'yi bağlayın"
+    "defaultMessage": "Use OpenAI, Anthropic, Google, or another supported provider."
+  },
+  "providerSelector.connectionChoices": {
+    "defaultMessage": "Model connection"
   },
   "providerSelector.localModelDescription": {
-    "defaultMessage": "Bir model indirin ve tamamen makinenizde çalıştırın. API anahtarı yok, hesap yok."
+    "defaultMessage": "Keep model requests on this device. No API key or account is required."
   },
   "providerSelector.selectProvider": {
     "defaultMessage": "Bir sağlayıcı seçin"
   },
   "providerSelector.useLocalModel": {
-    "defaultMessage": "Yerel Bir Model Kullanın"
+    "defaultMessage": "Run a model locally"
   },
   "providerSettings.configurationSettings": {
     "defaultMessage": "Sağlayıcı Yapılandırma Ayarları"
@@ -2880,7 +2925,7 @@
     "defaultMessage": "Sağlayıcılar yükleniyor..."
   },
   "providerSettings.onboardingDescription": {
-    "defaultMessage": "goose'yi kullanmaya başlamak için bir yapay zeka modeli sağlayıcısı seçin. Her sağlayıcı tarafından oluşturulan ve yerel olarak şifrelenecek ve saklanacak API anahtarlarını kullanmanız gerekecektir. Sağlayıcınızı istediğiniz zaman ayarlardan değiştirebilirsiniz."
+    "defaultMessage": "Choose a model provider for Obelus. Provider credentials are encrypted and stored locally, and you can change providers at any time in settings."
   },
   "providerSettings.otherProviders": {
     "defaultMessage": "Diğer sağlayıcılar"
@@ -3450,7 +3495,7 @@
     "defaultMessage": "Derin bağlantı"
   },
   "scheduleModal.deepLinkPlaceholder": {
-    "defaultMessage": "goose://tarif bağlantısını buraya yapıştırın..."
+    "defaultMessage": "Paste an obelus://recipe link here…"
   },
   "scheduleModal.editSchedule": {
     "defaultMessage": "Programı Düzenle"
@@ -3462,7 +3507,7 @@
     "defaultMessage": "Seçilen dosya okunamadı."
   },
   "scheduleModal.invalidDeepLink": {
-    "defaultMessage": "Geçersiz derin bağlantı. Lütfen goose://tarif bağlantısını kullanın."
+    "defaultMessage": "Invalid deep link. Use an obelus://recipe link."
   },
   "scheduleModal.invalidFileType": {
     "defaultMessage": "Geçersiz dosya türü: Lütfen bir YAML dosyası seçin (.yaml veya.yml)"
@@ -3789,7 +3834,7 @@
     "defaultMessage": "Sohbet geçmişi"
   },
   "sessions.chatHistoryDesc": {
-    "defaultMessage": "Goose ile geçmiş konuşmalarınızı görüntüleyin ve arayın. Aramak için {shortcut}."
+    "defaultMessage": "View and search your past Obelus conversations. {shortcut} to search."
   },
   "sessions.close": {
     "defaultMessage": "Kapat"
@@ -3825,10 +3870,10 @@
     "defaultMessage": "Bağlantıyı İçe Aktar"
   },
   "sessions.importNostr.description": {
-    "defaultMessage": "Oturumu almak, şifresini çözmek ve içe aktarmak için bir Goose Nostr paylaşım bağlantısını yapıştırın."
+    "defaultMessage": "Paste an Obelus Nostr share link to fetch, decrypt, and import the session."
   },
   "sessions.importNostr.placeholder": {
-    "defaultMessage": "goose://sessions/nostr?nevent=...&key=..."
+    "defaultMessage": "obelus://sessions/nostr?nevent=...&key=..."
   },
   "sessions.importNostr.title": {
     "defaultMessage": "Nostr Oturumunu İçe Aktar"
@@ -3900,7 +3945,7 @@
     "defaultMessage": "Oturum açıklaması başarıyla güncellendi"
   },
   "settings.appearance.description": {
-    "defaultMessage": "goose'nin sisteminizde nasıl görüneceğini yapılandırın"
+    "defaultMessage": "Choose how Obelus appears and behaves on this device"
   },
   "settings.appearance.title": {
     "defaultMessage": "Görünüm"
@@ -3912,28 +3957,28 @@
     "defaultMessage": "Model fiyatlandırmasını ve kullanım maliyetlerini göster"
   },
   "settings.costTracking.title": {
-    "defaultMessage": "Maliyet Takibi"
+    "defaultMessage": "Cost tracking"
   },
   "settings.dockIcon.description": {
-    "defaultMessage": "Dock'ta goose'yi göster"
+    "defaultMessage": "Show Obelus in the Dock"
   },
   "settings.dockIcon.title": {
     "defaultMessage": "Bağlantı noktası simgesi"
   },
   "settings.help.description": {
-    "defaultMessage": "Sorunları bildirerek veya yeni özellikler talep ederek goose'yi geliştirmemize yardımcı olun"
+    "defaultMessage": "Report an issue or suggest a considered improvement to Obelus"
   },
   "settings.help.reportBug": {
-    "defaultMessage": "Hata Bildir"
+    "defaultMessage": "Report an issue"
   },
   "settings.help.requestFeature": {
-    "defaultMessage": "Özellik Talep Edin"
+    "defaultMessage": "Suggest a feature"
   },
   "settings.help.title": {
     "defaultMessage": "Yardım ve geri bildirim"
   },
   "settings.language.description": {
-    "defaultMessage": "goose için görüntüleme dilini seçin"
+    "defaultMessage": "Choose the display language for Obelus"
   },
   "settings.language.english": {
     "defaultMessage": "İngilizce"
@@ -3972,7 +4017,7 @@
     "defaultMessage": "İspanyolca"
   },
   "settings.language.systemDefault": {
-    "defaultMessage": "Sistem varsayılanı"
+    "defaultMessage": "System default"
   },
   "settings.language.title": {
     "defaultMessage": "Dil"
@@ -3990,7 +4035,7 @@
     "defaultMessage": "Çince (Geleneksel)"
   },
   "settings.menuBarIcon.description": {
-    "defaultMessage": "Menü çubuğunda goose'yi göster"
+    "defaultMessage": "Show Obelus in the menu bar"
   },
   "settings.menuBarIcon.title": {
     "defaultMessage": "Menü çubuğu simgesi"
@@ -4005,19 +4050,19 @@
     "defaultMessage": "MacOS'ta bildirimleri etkinleştirmek için:"
   },
   "settings.notifications.modal.macStep1": {
-    "defaultMessage": "Sistem Tercihlerini Aç"
+    "defaultMessage": "Open System Settings"
   },
   "settings.notifications.modal.macStep2": {
     "defaultMessage": "Bildirimler'e tıklayın"
   },
   "settings.notifications.modal.macStep3": {
-    "defaultMessage": "Uygulama listesinde goose'yi bulun ve seçin"
+    "defaultMessage": "Find and select Obelus in the application list"
   },
   "settings.notifications.modal.macStep4": {
     "defaultMessage": "Bildirimleri etkinleştirin ve ayarları istediğiniz gibi yapın"
   },
   "settings.notifications.modal.title": {
-    "defaultMessage": "Bildirimler Nasıl Etkinleştirilir"
+    "defaultMessage": "Enable notifications"
   },
   "settings.notifications.modal.winInstructions": {
     "defaultMessage": "Windows'ta bildirimleri etkinleştirmek için:"
@@ -4029,7 +4074,7 @@
     "defaultMessage": "Sistem > Bildirimler'e gidin"
   },
   "settings.notifications.modal.winStep3": {
-    "defaultMessage": "Uygulama listesinde goose'yi bulun ve seçin"
+    "defaultMessage": "Find and select Obelus in the application list"
   },
   "settings.notifications.modal.winStep4": {
     "defaultMessage": "Bildirimleri açın ve ayarları istediğiniz gibi yapın"
@@ -4038,7 +4083,7 @@
     "defaultMessage": "Ayarları Aç"
   },
   "settings.notifications.task.description": {
-    "defaultMessage": "Pencere arka plandayken Goose bir görevi tamamladığında bildirim al"
+    "defaultMessage": "Notify you when Obelus finishes a task in the background"
   },
   "settings.notifications.task.title": {
     "defaultMessage": "Görev tamamlama bildirimleri"
@@ -4047,25 +4092,31 @@
     "defaultMessage": "Bildirimler"
   },
   "settings.preventSleep.description": {
-    "defaultMessage": "goose bir görevi çalıştırırken bilgisayarınızı uyanık tutun (ekran hala kilitlenebilir)"
+    "defaultMessage": "Keep your computer awake while Obelus is working; the screen can still lock"
   },
   "settings.preventSleep.title": {
-    "defaultMessage": "Uykuyu Önleyin"
+    "defaultMessage": "Prevent sleep"
   },
   "settings.theme.description": {
-    "defaultMessage": "goose'nin görünümünü ve hissini özelleştirin"
+    "defaultMessage": "Choose a light, dark, or system appearance for Obelus"
   },
   "settings.theme.title": {
     "defaultMessage": "Tema"
   },
   "settings.updates.description": {
-    "defaultMessage": "goose'nin en iyi şekilde çalışmasını sağlamak için güncellemeleri kontrol edin ve yükleyin"
+    "defaultMessage": "Release channel status for this Obelus build"
   },
   "settings.updates.title": {
     "defaultMessage": "Güncellemeler"
   },
+  "settings.version.description": {
+    "defaultMessage": "Evidence-led local AI, built on the open-source Goose core."
+  },
+  "settings.version.label": {
+    "defaultMessage": "Version {version}"
+  },
   "settings.version.title": {
-    "defaultMessage": "Sürüm"
+    "defaultMessage": "About Obelus"
   },
   "settingsView.tabApp": {
     "defaultMessage": "Uygulama"
@@ -4134,7 +4185,7 @@
     "defaultMessage": "Arama becerileri..."
   },
   "skillsView.skillsDescription": {
-    "defaultMessage": "Goose yeteneklerini genişleten yüklü becerileri görüntüleyin. Aramak için {shortcut}."
+    "defaultMessage": "View installed skills that extend Obelus. {shortcut} to search."
   },
   "skillsView.skillsTitle": {
     "defaultMessage": "Beceriler"
@@ -4320,7 +4371,7 @@
     "defaultMessage": "Sağlayıcı, aramak için yazın"
   },
   "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Hızlı başlangıç kılavuzu"
+    "defaultMessage": "Upstream Goose quick start guide"
   },
   "switchModelModal.recommended": {
     "defaultMessage": "Önerilen"
@@ -4376,44 +4427,17 @@
   "switchModelModal.useOtherProvider": {
     "defaultMessage": "Başka sağlayıcı kullan"
   },
-  "telemetryConsentPrompt.description": {
-    "defaultMessage": "goose'nin iyileştirilmesine yardımcı olmak için anonim kullanım verilerini paylaşmak ister misiniz? Konuşmalarınızı, kodlarınızı veya kişisel verilerinizi asla toplamıyoruz."
+  "telemetrySettings.analyticsOff": {
+    "defaultMessage": "Product analytics are off"
   },
-  "telemetryConsentPrompt.heading": {
-    "defaultMessage": "goose'nin iyileştirilmesine yardımcı olun"
-  },
-  "telemetryConsentPrompt.learnMore": {
-    "defaultMessage": "Daha fazla bilgi edinin"
-  },
-  "telemetryConsentPrompt.optIn": {
-    "defaultMessage": "Evet, anonim kullanım verilerini paylaş"
-  },
-  "telemetryConsentPrompt.optOut": {
-    "defaultMessage": "Hayır teşekkürler"
-  },
-  "telemetrySettings.configErrorTitle": {
-    "defaultMessage": "Yapılandırma Hatası"
+  "telemetrySettings.analyticsOffDescription": {
+    "defaultMessage": "Obelus does not send usage events to an analytics service. Providers, tools, and extensions may still process data you choose to share with them."
   },
   "telemetrySettings.description": {
-    "defaultMessage": "Verilerinizin nasıl kullanıldığını kontrol edin"
-  },
-  "telemetrySettings.learnMore": {
-    "defaultMessage": "Daha fazla bilgi edinin"
-  },
-  "telemetrySettings.loadError": {
-    "defaultMessage": "Telemetri ayarları yüklenemedi."
+    "defaultMessage": "Clear boundaries for this Obelus build"
   },
   "telemetrySettings.title": {
     "defaultMessage": "Gizlilik"
-  },
-  "telemetrySettings.toggleDescription": {
-    "defaultMessage": "Anonim kullanım istatistiklerini paylaşarak goose'nin geliştirilmesine yardımcı olun."
-  },
-  "telemetrySettings.toggleLabel": {
-    "defaultMessage": "Anonim kullanım verileri"
-  },
-  "telemetrySettings.updateError": {
-    "defaultMessage": "Telemetri ayarları güncellenemedi."
   },
   "themeSelector.dark": {
     "defaultMessage": "Karanlık"
@@ -4485,82 +4509,19 @@
     "defaultMessage": "{toolName}'ye izin verilsin mi?"
   },
   "toolConfirmation.gooseWouldLikeToCallWithName": {
-    "defaultMessage": "Goose, {toolName}'yi aramak istiyor. İzin vermek?"
-  },
-  "updateSection.autoDownload": {
-    "defaultMessage": "Güncelleme arka planda otomatik olarak indirilecektir."
-  },
-  "updateSection.autoDownloadDisabledByEnv": {
-    "defaultMessage": "Otomatik indirmeler GOOSE_DISABLE_AUTO_DOWNLOAD ortam değişkeni aracılığıyla devre dışı bırakılmıştır."
-  },
-  "updateSection.autoDownloadDisabledNote": {
-    "defaultMessage": "Otomatik indirme devre dışı. Manuel olarak indirmek için \"Şimdi İndir\"e tıklayın."
-  },
-  "updateSection.autoInstallNote": {
-    "defaultMessage": "Uygulamadan çıktığınızda güncelleme otomatik olarak yüklenecektir."
-  },
-  "updateSection.checkForUpdates": {
-    "defaultMessage": "Güncellemeleri Kontrol Et"
-  },
-  "updateSection.checking": {
-    "defaultMessage": "Güncellemeler kontrol ediliyor..."
+    "defaultMessage": "Obelus would like to use {toolName}. Allow it?"
   },
   "updateSection.currentVersion": {
     "defaultMessage": "Güncel sürüm"
   },
-  "updateSection.disableAutoDownload": {
-    "defaultMessage": "Otomatik güncelleme indirmelerini devre dışı bırak"
+  "updateSection.updateChannelDescription": {
+    "defaultMessage": "This build is not connected to an Obelus release service. It will not check Goose or any other upstream channel for updates."
   },
-  "updateSection.disableAutoDownloadDesc": {
-    "defaultMessage": "Etkinleştirildiğinde, Goose yeni sürümleri bildirir ancak bunları otomatik olarak indirmez."
+  "updateSection.updateChannelOff": {
+    "defaultMessage": "Automatic updates are off"
   },
-  "updateSection.downloadNow": {
-    "defaultMessage": "Şimdi İndir"
-  },
-  "updateSection.downloadReady": {
-    "defaultMessage": "Güncelleme indirildi ve kuruluma hazır!"
-  },
-  "updateSection.downloadingProgress": {
-    "defaultMessage": "Güncelleme indiriliyor... {percent}%"
-  },
-  "updateSection.downloadingUpdate": {
-    "defaultMessage": "Güncelleme indiriliyor..."
-  },
-  "updateSection.installAndRestart": {
-    "defaultMessage": "Yükle ve Yeniden Başlat"
-  },
-  "updateSection.installNowHint": {
-    "defaultMessage": "Veya şimdi güncellemek için \"Yükle ve Yeniden Başlat\"ı tıklayın."
-  },
-  "updateSection.latestVersion": {
-    "defaultMessage": "En son sürümü çalıştırıyorsunuz!"
-  },
-  "updateSection.loading": {
-    "defaultMessage": "Yükleniyor..."
-  },
-  "updateSection.manualInstallNote": {
-    "defaultMessage": "İndirdikten sonra güncellemeyi manuel olarak yüklemeniz gerekecektir."
-  },
-  "updateSection.manualInstallRequired": {
-    "defaultMessage": "Bu güncelleme yöntemi için manuel kurulum gereklidir."
-  },
-  "updateSection.readyInstallAuto": {
-    "defaultMessage": "✓ Güncelleme hazır! Goose'den çıktığınızda yüklenecektir."
-  },
-  "updateSection.readyInstallManual": {
-    "defaultMessage": "✓ Güncelleme hazır! Kurulum talimatları için \"Yükle ve Yeniden Başlat\"a tıklayın."
-  },
-  "updateSection.upToDate": {
-    "defaultMessage": "(güncel)"
-  },
-  "updateSection.updateAvailable": {
-    "defaultMessage": "Güncelleme mevcut!"
-  },
-  "updateSection.versionAvailable": {
-    "defaultMessage": "→ {version} mevcut"
-  },
-  "updateSection.versionIsAvailable": {
-    "defaultMessage": "Sürüm {version} mevcut"
+  "updateSection.viewRepository": {
+    "defaultMessage": "View Obelus repository"
   },
   "userMessage.cancel": {
     "defaultMessage": "İptal"

@@ -17,6 +17,9 @@
   "appLayout.openNavigation": {
     "defaultMessage": "Navigation öffnen"
   },
+  "appLayout.resizeNavigation": {
+    "defaultMessage": "Resize navigation"
+  },
   "appsView.customApp": {
     "defaultMessage": "Benutzerdefinierte App"
   },
@@ -27,7 +30,7 @@
     "defaultMessage": "Delete \"{name}\"? This cannot be undone."
   },
   "appsView.description": {
-    "defaultMessage": "Anwendungen von Ihren MCP-Servern und Apps, die goose selbst erstellt hat. Sie können über die Chat-Oberfläche neue Apps anfordern, die dann hier erscheinen."
+    "defaultMessage": "Applications from your MCP servers and apps built through Obelus. Ask Obelus to create an app and it will appear here."
   },
   "appsView.errorLoading": {
     "defaultMessage": "Fehler beim Laden der Apps: {error}"
@@ -45,7 +48,7 @@
     "defaultMessage": "Apps werden geladen..."
   },
   "appsView.noAppsDescription": {
-    "defaultMessage": "Öffnen Sie einen Chat und bitten Sie goose um die gewünschte App. goose kann eine für Sie erstellen, die dann hier erscheint. Oder wenn jemand eine App geteilt hat, können Sie sie über die Schaltfläche oben importieren."
+    "defaultMessage": "Open a thread and ask Obelus to build the app you need. You can also import an app that someone shared with you."
   },
   "appsView.noAppsTitle": {
     "defaultMessage": "Keine Apps verfügbar"
@@ -84,7 +87,7 @@
     "defaultMessage": "Anmeldeinformation gelöscht"
   },
   "authSettings.description": {
-    "defaultMessage": "Verwalten Sie die lokal von goose gespeicherten Anbieter-Anmeldeinformationen."
+    "defaultMessage": "Manage provider credentials stored locally by Obelus."
   },
   "authSettings.empty": {
     "defaultMessage": "Es wurden keine lokal gespeicherten Anbieter-Anmeldeinformationen gefunden."
@@ -168,10 +171,10 @@
     "defaultMessage": "Starten"
   },
   "chat.notification.taskComplete.body": {
-    "defaultMessage": "Klicken Sie hier, um Goose wieder in den Vordergrund zu holen."
+    "defaultMessage": "Click to bring Obelus back into focus."
   },
   "chat.notification.taskComplete.title": {
-    "defaultMessage": "Goose hat die Aufgabe abgeschlossen."
+    "defaultMessage": "Obelus finished the task."
   },
   "chatInput.contextWindow": {
     "defaultMessage": "Kontextfenster"
@@ -183,7 +186,7 @@
     "defaultMessage": "Bilddatei konnte nicht gelesen werden"
   },
   "chatInput.navigationShortcut": {
-    "defaultMessage": "{prefix}↑/{prefix}↓ zum Navigieren der Nachrichten"
+    "defaultMessage": "Ask Obelus anything · {prefix}↑/{prefix}↓ for history"
   },
   "chatInput.processingDroppedFiles": {
     "defaultMessage": "Abgelegte Dateien werden verarbeitet..."
@@ -222,13 +225,13 @@
     "defaultMessage": "Warten auf das Speichern der Bilder..."
   },
   "chatSettings.modeDescription": {
-    "defaultMessage": "Wählen Sie den Standardmodus, den Goose für neue Sitzungen verwendet. Bestehende Sitzungen behalten ihren aktuellen Modus bei."
+    "defaultMessage": "Choose the default mode Obelus uses for new sessions. Existing sessions keep their current mode."
   },
   "chatSettings.modeTitle": {
     "defaultMessage": "Standardmodus"
   },
   "chatSettings.responseStylesDescription": {
-    "defaultMessage": "Wählen Sie, wie Goose seine Antworten formatieren und gestalten soll"
+    "defaultMessage": "Choose how Obelus formats and styles its responses"
   },
   "chatSettings.responseStylesTitle": {
     "defaultMessage": "Antwortstile"
@@ -249,10 +252,10 @@
     "defaultMessage": "Konfigurationseditor"
   },
   "configSettings.description": {
-    "defaultMessage": "Bearbeiten Sie Ihre goose-Konfigurationseinstellungen"
+    "defaultMessage": "Edit your Obelus configuration settings"
   },
   "configSettings.descriptionWithProvider": {
-    "defaultMessage": "Bearbeiten Sie Ihre goose-Konfigurationseinstellungen (aktuelle Einstellungen für {provider})"
+    "defaultMessage": "Edit your Obelus configuration settings (current provider: {provider})"
   },
   "configSettings.done": {
     "defaultMessage": "Fertig"
@@ -324,7 +327,7 @@
     "defaultMessage": "Max. Durchgänge"
   },
   "conversationLimitsDropdown.maxTurnsDescription": {
-    "defaultMessage": "Maximale Anzahl an Agentendurchgängen, bevor Goose eine Benutzereingabe anfordert"
+    "defaultMessage": "Maximum agent turns before Obelus asks for your input"
   },
   "costTracker.costUnavailable": {
     "defaultMessage": "Kostendaten für {model} nicht verfügbar ({inputTokens} Eingabe, {outputTokens} Ausgabe-Token)"
@@ -366,7 +369,7 @@
     "defaultMessage": "Deeplink wird generiert..."
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Mehr erfahren"
+    "defaultMessage": "Upstream recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Rezept erfolgreich gespeichert und gestartet"
@@ -777,7 +780,7 @@
     "defaultMessage": "{name}-Einstellungen bearbeiten"
   },
   "defaultCardButtons.getStarted": {
-    "defaultMessage": "Loslegen mit goose!"
+    "defaultMessage": "Use with Obelus"
   },
   "defaultProviderSetupForm.apiHostLabel": {
     "defaultMessage": "API-Host"
@@ -936,7 +939,7 @@
     "defaultMessage": "Die Informationsanfrage wurde abgebrochen."
   },
   "elicitationRequest.defaultMessage": {
-    "defaultMessage": "Goose benötigt einige Informationen von Ihnen."
+    "defaultMessage": "Obelus needs a little more information."
   },
   "elicitationRequest.expired": {
     "defaultMessage": "Diese Anfrage ist abgelaufen. Die Erweiterung muss erneut nachfragen."
@@ -981,10 +984,10 @@
     "defaultMessage": "Ein Fehler ist aufgetreten."
   },
   "errorBoundary.errorWithVersion": {
-    "defaultMessage": "In Goose v{version} ist ein Fehler aufgetreten."
+    "defaultMessage": "An error occurred in Obelus v{version}."
   },
   "errorBoundary.heading": {
-    "defaultMessage": "Honk!"
+    "defaultMessage": "Something interrupted the thread"
   },
   "errorBoundary.reload": {
     "defaultMessage": "Neu laden"
@@ -1146,7 +1149,7 @@
     "defaultMessage": "Erweiterung hinzufügen"
   },
   "extensionsSection.browseExtensions": {
-    "defaultMessage": "Erweiterungen durchsuchen"
+    "defaultMessage": "Upstream extension guide"
   },
   "extensionsSection.saveChanges": {
     "defaultMessage": "Änderungen speichern"
@@ -1161,13 +1164,13 @@
     "defaultMessage": "Erweiterung hinzufügen"
   },
   "extensionsView.browseExtensions": {
-    "defaultMessage": "Erweiterungen durchsuchen"
+    "defaultMessage": "Upstream extension guide"
   },
   "extensionsView.defaultNote": {
     "defaultMessage": "Hier aktivierte Erweiterungen werden als Standard für neue Chats verwendet. Sie können aktive Erweiterungen auch während eines Chats umschalten."
   },
   "extensionsView.description": {
-    "defaultMessage": "Diese Erweiterungen nutzen das Model Context Protocol (MCP). Sie können die Fähigkeiten von Goose mit drei Hauptkomponenten erweitern: Prompts, Ressourcen und Tools. {searchShortcut} zum Suchen."
+    "defaultMessage": "Extensions use the Model Context Protocol (MCP) to add prompts, resources, and tools to Obelus. {searchShortcut} to search."
   },
   "extensionsView.heading": {
     "defaultMessage": "Erweiterungen"
@@ -1185,19 +1188,19 @@
     "defaultMessage": "AA:BB:CC:... oder sha256/base64"
   },
   "externalBackendSection.description": {
-    "defaultMessage": "Standardmäßig startet goose einen Server für Sie. Verwenden Sie dies, um eine Verbindung zu einem externen goose-Server herzustellen"
+    "defaultMessage": "Obelus starts a local backend by default. Use this setting to connect to an external ACP-compatible backend."
   },
   "externalBackendSection.fingerprintRequiresHttps": {
     "defaultMessage": "Certificate fingerprint requires an https URL"
   },
   "externalBackendSection.restartNote": {
-    "defaultMessage": "Änderungen werden erst nach einem Neustart von Goose wirksam. Neue Chat-Fenster verbinden sich mit dem externen Server."
+    "defaultMessage": "Changes apply to new windows. Restart Obelus to update windows already open."
   },
   "externalBackendSection.secretKey": {
     "defaultMessage": "Geheimer Schlüssel"
   },
   "externalBackendSection.secretKeyHelp": {
-    "defaultMessage": "Der auf dem Goose-Server konfigurierte geheime Schlüssel (GOOSE_SERVER__SECRET_KEY)"
+    "defaultMessage": "Der auf dem Obelus-Server konfigurierte geheime Schlüssel (GOOSE_SERVER__SECRET_KEY)"
   },
   "externalBackendSection.secretKeyPlaceholder": {
     "defaultMessage": "Geben Sie den geheimen Schlüssel des Servers ein"
@@ -1206,10 +1209,10 @@
     "defaultMessage": "Server-URL"
   },
   "externalBackendSection.serverUrlHelp": {
-    "defaultMessage": "Enter the HTTP(S) base URL. Goose checks /status and connects to /acp under this base."
+    "defaultMessage": "Enter the HTTP(S) base URL. Obelus checks /status and connects to /acp under this base."
   },
   "externalBackendSection.title": {
-    "defaultMessage": "Goose-Server"
+    "defaultMessage": "Obelus-Server"
   },
   "externalBackendSection.urlBaseError": {
     "defaultMessage": "URL must be the backend base URL before /acp, without query parameters or fragments"
@@ -1224,7 +1227,7 @@
     "defaultMessage": "Externen Server verwenden"
   },
   "externalBackendSection.useExternalServerDescription": {
-    "defaultMessage": "Verbindung zu einem anderswo laufenden goose-Server herstellen (erfordert Neustart der App)"
+    "defaultMessage": "Verbindung zu einem anderswo laufenden Obelus-Server herstellen (erfordert Neustart der App)"
   },
   "goosehintsModal.close": {
     "defaultMessage": "Schließen"
@@ -1233,7 +1236,7 @@
     "defaultMessage": "Entwickler"
   },
   "goosehintsModal.dialogDescription": {
-    "defaultMessage": "Stellen Sie zusätzlichen Kontext zu Ihrem Projekt bereit, um die Kommunikation mit Goose zu verbessern"
+    "defaultMessage": "Provide project context to help Obelus respond more precisely"
   },
   "goosehintsModal.dialogTitle": {
     "defaultMessage": "Projekt-Hinweise konfigurieren (.goosehints)"
@@ -1254,7 +1257,7 @@
     "defaultMessage": ".goosehints-Datei gefunden unter: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".goosehints ist eine Textdatei, mit der zusätzlicher Kontext zu Ihrem Projekt bereitgestellt und die Kommunikation mit Goose verbessert wird."
+    "defaultMessage": ".goosehints is a compatibility file that gives Obelus additional context about your project."
   },
   "goosehintsModal.helpText2": {
     "defaultMessage": "Bitte stellen Sie sicher, dass die Erweiterung {bold} auf der Erweiterungsseite aktiviert ist. Diese Erweiterung ist erforderlich, um .goosehints zu verwenden. Sie müssen Ihre Sitzung neu starten, damit Aktualisierungen an .goosehints wirksam werden."
@@ -1263,7 +1266,7 @@
     "defaultMessage": "Weitere Informationen finden Sie unter {link}."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": ".goosehints verwenden"
+    "defaultMessage": "the upstream .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Projekt-Hinweise hier eingeben..."
@@ -1281,13 +1284,13 @@
     "defaultMessage": "Konfigurieren"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Konfigurieren Sie die .goosehints-Datei Ihres Projekts, um Goose zusätzlichen Kontext bereitzustellen"
+    "defaultMessage": "Configure your project's compatible .goosehints file to give Obelus additional context"
   },
   "goosehintsSection.title": {
     "defaultMessage": "Projekt-Hinweise (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
-    "defaultMessage": "goose fragen"
+    "defaultMessage": "Ask Obelus"
   },
   "groupedExtensionLoadingToast.collapseDetails": {
     "defaultMessage": "Details einklappen"
@@ -1346,14 +1349,38 @@
   "headersSection.value": {
     "defaultMessage": "Wert"
   },
-  "hub.goodAfternoon": {
-    "defaultMessage": "Guten Tag"
+  "hub.capabilityBuild": {
+    "defaultMessage": "Build"
   },
-  "hub.goodEvening": {
-    "defaultMessage": "Guten Abend"
+  "hub.capabilityBuildDescription": {
+    "defaultMessage": "Write code, automate tasks, and use tools"
   },
-  "hub.goodMorning": {
-    "defaultMessage": "Guten Morgen"
+  "hub.capabilityCreate": {
+    "defaultMessage": "Create"
+  },
+  "hub.capabilityCreateDescription": {
+    "defaultMessage": "Draft, revise, explain, and structure ideas"
+  },
+  "hub.capabilityResearch": {
+    "defaultMessage": "Research"
+  },
+  "hub.capabilityResearchDescription": {
+    "defaultMessage": "Find, compare, and synthesize information"
+  },
+  "hub.category": {
+    "defaultMessage": "Evidence-led AI workspace"
+  },
+  "hub.description": {
+    "defaultMessage": "Bring a question, document, or task. Obelus can research, reason, write, code, and work with the tools you connect—keeping the work visible in the conversation."
+  },
+  "hub.headline": {
+    "defaultMessage": "What should we examine?"
+  },
+  "hub.privacy": {
+    "defaultMessage": "Your files stay on this device unless you choose to share them with a model or connected tool."
+  },
+  "hub.startThread": {
+    "defaultMessage": "Start a new research thread"
   },
   "huggingFaceModelSearch.download": {
     "defaultMessage": "Herunterladen"
@@ -1407,7 +1434,7 @@
     "defaultMessage": "Hugging Face"
   },
   "imagePreview.altText": {
-    "defaultMessage": "goose-Bild"
+    "defaultMessage": "Image shared with Obelus"
   },
   "imagePreview.clickToCollapse": {
     "defaultMessage": "Zum Einklappen klicken"
@@ -1422,10 +1449,10 @@
     "defaultMessage": "Abbrechen"
   },
   "importRecipeForm.deeplinkHint": {
-    "defaultMessage": "Fügen Sie einen Recipe-Deeplink ein, der mit „goose://recipe?config=“ beginnt"
+    "defaultMessage": "Paste a recipe deep link starting with \"obelus://recipe?config=\""
   },
   "importRecipeForm.deeplinkPlaceholder": {
-    "defaultMessage": "Fügen Sie hier Ihren goose://recipe?config=...-Deeplink ein"
+    "defaultMessage": "Paste your obelus://recipe?config=... deep link here"
   },
   "importRecipeForm.example": {
     "defaultMessage": "Beispiel"
@@ -1455,7 +1482,7 @@
     "defaultMessage": "Recipe-Datei"
   },
   "importRecipeForm.reviewWarning": {
-    "defaultMessage": "Stellen Sie sicher, dass Sie den Inhalt von Recipe-Dateien überprüfen, bevor Sie sie zu Ihrer goose-Oberfläche hinzufügen."
+    "defaultMessage": "Review every recipe before adding it to Obelus. Recipes can configure tools and external services."
   },
   "importRecipeForm.schemaDescription": {
     "defaultMessage": "Ihre YAML- oder JSON-Datei sollte dieser Struktur folgen. Erforderliche Felder sind: title, description und entweder instructions oder prompt."
@@ -1566,13 +1593,13 @@
     "defaultMessage": "Anwendungstastenkürzel"
   },
   "keyboardShortcuts.categoryApplicationDescription": {
-    "defaultMessage": "Diese Tastenkürzel funktionieren, wenn Goose die aktive Anwendung ist"
+    "defaultMessage": "These shortcuts work when Obelus is the active application"
   },
   "keyboardShortcuts.categoryGlobal": {
     "defaultMessage": "Globale Tastenkürzel"
   },
   "keyboardShortcuts.categoryGlobalDescription": {
-    "defaultMessage": "Diese Tastenkürzel funktionieren systemweit, auch wenn Goose nicht im Fokus ist"
+    "defaultMessage": "These shortcuts work system-wide, even when Obelus is not focused"
   },
   "keyboardShortcuts.categorySearch": {
     "defaultMessage": "Such-Tastenkürzel"
@@ -1614,10 +1641,10 @@
     "defaultMessage": "Rückwärts suchen"
   },
   "keyboardShortcuts.focusWindowDescription": {
-    "defaultMessage": "Goose-Fenster von überall in den Vordergrund holen"
+    "defaultMessage": "Bring the Obelus window to the front from anywhere"
   },
   "keyboardShortcuts.focusWindowLabel": {
-    "defaultMessage": "Goose-Fenster fokussieren"
+    "defaultMessage": "Focus Obelus window"
   },
   "keyboardShortcuts.loading": {
     "defaultMessage": "Wird geladen..."
@@ -1629,7 +1656,7 @@
     "defaultMessage": "Neuer Chat"
   },
   "keyboardShortcuts.newChatWindowDescription": {
-    "defaultMessage": "Ein neues Goose-Fenster öffnen"
+    "defaultMessage": "Open a new Obelus window"
   },
   "keyboardShortcuts.newChatWindowLabel": {
     "defaultMessage": "Neues Chat-Fenster"
@@ -1668,7 +1695,7 @@
     "defaultMessage": "Auf Standard zurücksetzen"
   },
   "keyboardShortcuts.restartDescription": {
-    "defaultMessage": "Änderungen an Anwendungstastenkürzeln (wie Neuer Chat, Einstellungen usw.) erfordern einen Neustart von Goose, um wirksam zu werden. Globale Tastenkürzel (Fenster fokussieren, Schnellstart) funktionieren sofort."
+    "defaultMessage": "Restart Obelus to apply application shortcut changes. Global shortcuts such as Focus Window and Quick Launcher work immediately."
   },
   "keyboardShortcuts.restartRequired": {
     "defaultMessage": "Neustart erforderlich"
@@ -1697,29 +1724,35 @@
   "keyboardShortcuts.toggleNavigationLabel": {
     "defaultMessage": "Navigation umschalten"
   },
+  "launcher.inputLabel": {
+    "defaultMessage": "Start a new Obelus research thread"
+  },
   "launcher.placeholder": {
-    "defaultMessage": "Frag goose irgendetwas..."
+    "defaultMessage": "Ask Obelus to research, write, build, or explain…"
+  },
+  "launcher.submit": {
+    "defaultMessage": "Open research thread"
   },
   "loadingGoose.compacting": {
-    "defaultMessage": "goose komprimiert die Unterhaltung..."
+    "defaultMessage": "Refining the conversation…"
   },
   "loadingGoose.idle": {
-    "defaultMessage": "goose arbeitet daran…"
+    "defaultMessage": "Ready"
   },
   "loadingGoose.loadingConversation": {
-    "defaultMessage": "Unterhaltung wird geladen..."
+    "defaultMessage": "Opening the research thread…"
   },
   "loadingGoose.restartingAgent": {
-    "defaultMessage": "Sitzung wird neu gestartet..."
+    "defaultMessage": "Restarting the session…"
   },
   "loadingGoose.streaming": {
-    "defaultMessage": "goose arbeitet daran…"
+    "defaultMessage": "Obelus is building the response…"
   },
   "loadingGoose.thinking": {
-    "defaultMessage": "goose denkt nach…"
+    "defaultMessage": "Obelus is examining the request…"
   },
   "loadingGoose.waiting": {
-    "defaultMessage": "goose wartet…"
+    "defaultMessage": "Waiting for your direction…"
   },
   "localInferenceSettings.deleteConfirm": {
     "defaultMessage": "Dieses Modell löschen? Sie können es später erneut herunterladen."
@@ -1827,13 +1860,16 @@
     "defaultMessage": "Nur empfohlene anzeigen"
   },
   "localModelPicker.bestForMachine": {
-    "defaultMessage": "Am besten für Ihren Computer"
+    "defaultMessage": "Recommended for this device"
   },
   "localModelPicker.cancelDownload": {
     "defaultMessage": "Download abbrechen"
   },
   "localModelPicker.checkingModels": {
     "defaultMessage": "Verfügbare Modelle werden geprüft..."
+  },
+  "localModelPicker.downloadFailed": {
+    "defaultMessage": "The model download failed."
   },
   "localModelPicker.downloadModel": {
     "defaultMessage": "{modelId} ({size}) herunterladen"
@@ -1851,16 +1887,25 @@
     "defaultMessage": "Andere Größen ausblenden"
   },
   "localModelPicker.localModelsNote": {
-    "defaultMessage": "Lokale Modelle behalten alles auf Ihrem Computer für vollständige Privatsphäre. Leistung und Kontextfenstergröße können je nach Hardware und Modellgröße im Vergleich zu Cloud-Anbietern variieren."
+    "defaultMessage": "Model inference stays on this device. Tools and extensions may still connect to external services, so review them before sharing sensitive material. Performance depends on your hardware and model size."
   },
   "localModelPicker.lostConnection": {
     "defaultMessage": "Verbindung zum Download verloren. Bitte versuchen Sie es erneut."
   },
+  "localModelPicker.minutesRemaining": {
+    "defaultMessage": "About {minutes} minutes remaining"
+  },
   "localModelPicker.modelNotFound": {
     "defaultMessage": "Modell nicht gefunden"
   },
+  "localModelPicker.modelOptions": {
+    "defaultMessage": "Choose a local model"
+  },
   "localModelPicker.ready": {
     "defaultMessage": "Bereit"
+  },
+  "localModelPicker.secondsRemaining": {
+    "defaultMessage": "About {seconds} seconds remaining"
   },
   "localModelPicker.selectModel": {
     "defaultMessage": "Modell auswählen"
@@ -2394,43 +2439,40 @@
     "defaultMessage": "Unbenannte Sitzung"
   },
   "onboardingGuard.checkProviderErrorDescription": {
-    "defaultMessage": "Der Server startet möglicherweise gerade oder ist vorübergehend nicht verfügbar."
+    "defaultMessage": "The local service may still be starting. Wait a moment, then try again."
   },
   "onboardingGuard.checkProviderErrorTitle": {
-    "defaultMessage": "Verbindung zum Goose-Server nicht möglich"
+    "defaultMessage": "Unable to connect to Obelus"
+  },
+  "onboardingGuard.checkingProvider": {
+    "defaultMessage": "Preparing Obelus…"
   },
   "onboardingGuard.retry": {
     "defaultMessage": "Erneut versuchen"
   },
   "onboardingGuard.welcomeDescription": {
-    "defaultMessage": "Ihr lokaler KI-Agent. Verbinden Sie einen KI-Modellanbieter, um zu beginnen."
+    "defaultMessage": "A local AI workspace for careful research and clear answers. Connect a model provider to begin."
   },
   "onboardingGuard.welcomeTitle": {
-    "defaultMessage": "Willkommen bei goose"
+    "defaultMessage": "Welcome to Obelus"
   },
   "onboardingSuccess.allSet": {
-    "defaultMessage": "Sie können jetzt mit goose loslegen."
+    "defaultMessage": "Obelus is ready. Start a research thread or open a project."
   },
   "onboardingSuccess.connectedTo": {
     "defaultMessage": "Verbunden mit {providerName}"
   },
   "onboardingSuccess.getStarted": {
-    "defaultMessage": "Loslegen"
-  },
-  "onboardingSuccess.learnMore": {
-    "defaultMessage": "Mehr erfahren"
+    "defaultMessage": "Open Obelus"
   },
   "onboardingSuccess.localModelReady": {
     "defaultMessage": "Lokales Modell bereit"
   },
   "onboardingSuccess.privacyDescription": {
-    "defaultMessage": "Anonyme Nutzungsdaten helfen, goose zu verbessern. Wir erfassen niemals Ihre Konversationen, Ihren Code oder Ihre persönlichen Daten."
+    "defaultMessage": "Product analytics and automatic updates are off in this build. Model providers, tools, and extensions follow their own data policies."
   },
   "onboardingSuccess.privacyTitle": {
-    "defaultMessage": "Datenschutz"
-  },
-  "onboardingSuccess.shareUsageData": {
-    "defaultMessage": "Anonyme Nutzungsdaten teilen"
+    "defaultMessage": "A private starting point"
   },
   "parameterInput.defaultValue": {
     "defaultMessage": "Standardwert"
@@ -2576,35 +2618,26 @@
   "permissionSetting.permissionRulesDescription": {
     "defaultMessage": "Versteckte Anweisungen, die an den Anbieter übergeben werden, um Ihre Antworten zu steuern und mit Kontext anzureichern."
   },
-  "privacyInfoModal.collectErrors": {
-    "defaultMessage": "Fehlertypen (z. B. \"rate_limit\", \"auth\" – keine Details)"
-  },
-  "privacyInfoModal.collectExtensions": {
-    "defaultMessage": "Erweiterungen und Anzahl der Tool-Nutzungen (nur Namen)"
-  },
   "privacyInfoModal.collectOs": {
-    "defaultMessage": "Betriebssystem, Version und Architektur"
+    "defaultMessage": "Prompts and files you choose to send to a cloud model provider"
   },
   "privacyInfoModal.collectProvider": {
-    "defaultMessage": "Verwendeter Anbieter und verwendetes Modell"
-  },
-  "privacyInfoModal.collectSession": {
-    "defaultMessage": "Sitzungsmetriken (Dauer, Anzahl der Interaktionen, Token-Nutzung)"
+    "defaultMessage": "Information you explicitly share through session or recipe features"
   },
   "privacyInfoModal.collectVersion": {
-    "defaultMessage": "goose-Version und Installationsmethode"
+    "defaultMessage": "Requests made by tools, extensions, and connected services"
   },
   "privacyInfoModal.description": {
-    "defaultMessage": "Anonyme Nutzungsdaten helfen uns zu verstehen, wie goose genutzt wird, und Verbesserungsbereiche zu identifizieren."
+    "defaultMessage": "Obelus product analytics are disabled. The application does not send usage events to a project-owned analytics service."
   },
   "privacyInfoModal.neverCollect": {
-    "defaultMessage": "Wir erfassen niemals Ihre Konversationen, Ihren Code, Tool-Argumente, Fehlermeldungen oder persönliche Daten. Sie können diese Einstellung jederzeit in den Einstellungen ändern."
+    "defaultMessage": "Review each provider and extension policy before working with sensitive material. Local model inference keeps model requests on this device, but tools may still use the network."
   },
   "privacyInfoModal.title": {
-    "defaultMessage": "Datenschutzdetails"
+    "defaultMessage": "Privacy in this build"
   },
   "privacyInfoModal.whatWeCollect": {
-    "defaultMessage": "Was wir erfassen:"
+    "defaultMessage": "What may still leave this device:"
   },
   "progressiveMessageList.loadingMessages": {
     "defaultMessage": "Nachrichten werden geladen... ({renderedCount}/{totalCount})"
@@ -2664,7 +2697,7 @@
     "defaultMessage": "Prompt konnte nicht gespeichert werden"
   },
   "promptsSettings.promptEditingDescription": {
-    "defaultMessage": "Passen Sie die Prompts an, die das Verhalten von goose in verschiedenen Kontexten definieren. Diese Prompts verwenden die Jinja2-Templating-Syntax. Seien Sie vorsichtig beim Ändern von Template-Variablen, da fehlerhafte Änderungen die Funktionalität beeinträchtigen können. Bitte teilen Sie etwaige Verbesserungen mit der Community."
+    "defaultMessage": "Customize the prompts that guide Obelus in different contexts. These prompts use Jinja2 templates; changing template variables incorrectly can break the corresponding workflow."
   },
   "promptsSettings.promptEditingTitle": {
     "defaultMessage": "Prompt-Bearbeitung"
@@ -2739,7 +2772,7 @@
     "defaultMessage": "Wählen Sie ein API-Format und einen Anbieter aus. Wir füllen die Konfiguration automatisch für Sie aus."
   },
   "providerConfigForm.browserWindowOpen": {
-    "defaultMessage": "Es öffnet sich ein Browserfenster, in dem Sie die Anmeldung abschließen können."
+    "defaultMessage": "Your browser will open so you can finish signing in with the provider."
   },
   "providerConfigForm.configuring": {
     "defaultMessage": "Wird konfiguriert..."
@@ -2748,10 +2781,19 @@
     "defaultMessage": "Weiter"
   },
   "providerConfigForm.deviceCodeFlowHint": {
-    "defaultMessage": "Es öffnet sich ein Browserfenster und der Bestätigungscode wird in Ihre Zwischenablage kopiert. Fügen Sie ihn im Browser ein, um die Anmeldung abzuschließen."
+    "defaultMessage": "Your browser will open and the verification code will be copied to your clipboard. Paste the code there to finish signing in."
+  },
+  "providerConfigForm.fieldRequired": {
+    "defaultMessage": "{field} is required"
   },
   "providerConfigForm.noApiKey": {
     "defaultMessage": "Sie haben keinen API-Schlüssel?"
+  },
+  "providerConfigForm.openExternalLink": {
+    "defaultMessage": "Open {url} in your browser"
+  },
+  "providerConfigForm.setupFailed": {
+    "defaultMessage": "Could not complete setup: {error}"
   },
   "providerConfigForm.signInWith": {
     "defaultMessage": "Anmelden mit {providerName}"
@@ -2760,7 +2802,7 @@
     "defaultMessage": "Anmeldung läuft..."
   },
   "providerConfigurationModal.addApiKeyDescription": {
-    "defaultMessage": "Fügen Sie Ihre API-Schlüssel für diesen Anbieter hinzu, um ihn in goose zu integrieren"
+    "defaultMessage": "Add provider credentials for use with Obelus"
   },
   "providerConfigurationModal.browserWindowHint": {
     "defaultMessage": "Es öffnet sich ein Browserfenster, in dem Sie die Anmeldung abschließen können."
@@ -2796,7 +2838,7 @@
     "defaultMessage": "Fehler"
   },
   "providerConfigurationModal.externalSetupIntro": {
-    "defaultMessage": "Dieser Anbieter wird außerhalb von goose konfiguriert. Befolgen Sie diese Schritte:"
+    "defaultMessage": "This provider is configured outside Obelus. Follow these steps:"
   },
   "providerConfigurationModal.goBack": {
     "defaultMessage": "Zurück"
@@ -2856,22 +2898,25 @@
     "defaultMessage": "Benutzerdefinierten Anbieter hinzufügen"
   },
   "providerSelector.addCustomProviderTitle": {
-    "defaultMessage": "Benutzerdefinierten Anbieter hinzufügen"
+    "defaultMessage": "Add a custom provider"
   },
   "providerSelector.connectProvider": {
-    "defaultMessage": "Mit einem Anbieter verbinden"
+    "defaultMessage": "Connect a provider"
   },
   "providerSelector.connectProviderDescription": {
-    "defaultMessage": "Verbinden Sie OpenAI, Anthropic, Google usw."
+    "defaultMessage": "Use OpenAI, Anthropic, Google, or another supported provider."
+  },
+  "providerSelector.connectionChoices": {
+    "defaultMessage": "Model connection"
   },
   "providerSelector.localModelDescription": {
-    "defaultMessage": "Laden Sie ein Modell herunter und führen Sie es vollständig auf Ihrem Rechner aus. Keine API-Schlüssel, keine Konten."
+    "defaultMessage": "Keep model requests on this device. No API key or account is required."
   },
   "providerSelector.selectProvider": {
     "defaultMessage": "Einen Anbieter auswählen"
   },
   "providerSelector.useLocalModel": {
-    "defaultMessage": "Ein lokales Modell verwenden"
+    "defaultMessage": "Run a model locally"
   },
   "providerSettings.configurationSettings": {
     "defaultMessage": "Einstellungen zur Anbieterkonfiguration"
@@ -2880,7 +2925,7 @@
     "defaultMessage": "Anbieter werden geladen..."
   },
   "providerSettings.onboardingDescription": {
-    "defaultMessage": "Wählen Sie einen KI-Modellanbieter aus, um mit goose zu beginnen. Sie benötigen API-Schlüssel, die von jedem Anbieter generiert werden und die verschlüsselt und lokal gespeichert werden. Sie können Ihren Anbieter jederzeit in den Einstellungen ändern."
+    "defaultMessage": "Choose a model provider for Obelus. Provider credentials are encrypted and stored locally, and you can change providers at any time in settings."
   },
   "providerSettings.otherProviders": {
     "defaultMessage": "Andere Anbieter"
@@ -3450,7 +3495,7 @@
     "defaultMessage": "Deep-Link"
   },
   "scheduleModal.deepLinkPlaceholder": {
-    "defaultMessage": "goose://recipe-Link hier einfügen..."
+    "defaultMessage": "Paste an obelus://recipe link here…"
   },
   "scheduleModal.editSchedule": {
     "defaultMessage": "Zeitplan bearbeiten"
@@ -3462,7 +3507,7 @@
     "defaultMessage": "Die ausgewählte Datei konnte nicht gelesen werden."
   },
   "scheduleModal.invalidDeepLink": {
-    "defaultMessage": "Ungültiger Deep-Link. Bitte verwenden Sie einen goose://recipe-Link."
+    "defaultMessage": "Invalid deep link. Use an obelus://recipe link."
   },
   "scheduleModal.invalidFileType": {
     "defaultMessage": "Ungültiger Dateityp: Bitte wählen Sie eine YAML-Datei (.yaml oder .yml)"
@@ -3789,7 +3834,7 @@
     "defaultMessage": "Chatverlauf"
   },
   "sessions.chatHistoryDesc": {
-    "defaultMessage": "Sehen und durchsuchen Sie Ihre vergangenen Unterhaltungen mit Goose. {shortcut} zum Suchen."
+    "defaultMessage": "View and search your past Obelus conversations. {shortcut} to search."
   },
   "sessions.close": {
     "defaultMessage": "Schließen"
@@ -3825,10 +3870,10 @@
     "defaultMessage": "Link importieren"
   },
   "sessions.importNostr.description": {
-    "defaultMessage": "Fügen Sie einen Goose-Nostr-Freigabelink ein, um die Sitzung abzurufen, zu entschlüsseln und zu importieren."
+    "defaultMessage": "Paste an Obelus Nostr share link to fetch, decrypt, and import the session."
   },
   "sessions.importNostr.placeholder": {
-    "defaultMessage": "goose://sessions/nostr?nevent=...&key=..."
+    "defaultMessage": "obelus://sessions/nostr?nevent=...&key=..."
   },
   "sessions.importNostr.title": {
     "defaultMessage": "Nostr-Sitzung importieren"
@@ -3900,7 +3945,7 @@
     "defaultMessage": "Sitzungsbeschreibung erfolgreich aktualisiert"
   },
   "settings.appearance.description": {
-    "defaultMessage": "Konfigurieren Sie, wie goose auf Ihrem System angezeigt wird"
+    "defaultMessage": "Choose how Obelus appears and behaves on this device"
   },
   "settings.appearance.title": {
     "defaultMessage": "Darstellung"
@@ -3912,28 +3957,28 @@
     "defaultMessage": "Modellpreise und Nutzungskosten anzeigen"
   },
   "settings.costTracking.title": {
-    "defaultMessage": "Kostenverfolgung"
+    "defaultMessage": "Cost tracking"
   },
   "settings.dockIcon.description": {
-    "defaultMessage": "goose im Dock anzeigen"
+    "defaultMessage": "Show Obelus in the Dock"
   },
   "settings.dockIcon.title": {
     "defaultMessage": "Dock-Symbol"
   },
   "settings.help.description": {
-    "defaultMessage": "Helfen Sie uns, goose zu verbessern, indem Sie Probleme melden oder neue Funktionen anfordern"
+    "defaultMessage": "Report an issue or suggest a considered improvement to Obelus"
   },
   "settings.help.reportBug": {
-    "defaultMessage": "Fehler melden"
+    "defaultMessage": "Report an issue"
   },
   "settings.help.requestFeature": {
-    "defaultMessage": "Funktion anfordern"
+    "defaultMessage": "Suggest a feature"
   },
   "settings.help.title": {
     "defaultMessage": "Hilfe & Feedback"
   },
   "settings.language.description": {
-    "defaultMessage": "Wählen Sie die Anzeigesprache für goose"
+    "defaultMessage": "Choose the display language for Obelus"
   },
   "settings.language.english": {
     "defaultMessage": "English"
@@ -3972,7 +4017,7 @@
     "defaultMessage": "Spanisch"
   },
   "settings.language.systemDefault": {
-    "defaultMessage": "Systemstandard"
+    "defaultMessage": "System default"
   },
   "settings.language.title": {
     "defaultMessage": "Sprache"
@@ -3990,7 +4035,7 @@
     "defaultMessage": "Chinesisch (traditionell)"
   },
   "settings.menuBarIcon.description": {
-    "defaultMessage": "goose in der Menüleiste anzeigen"
+    "defaultMessage": "Show Obelus in the menu bar"
   },
   "settings.menuBarIcon.title": {
     "defaultMessage": "Menüleisten-Symbol"
@@ -4005,19 +4050,19 @@
     "defaultMessage": "So aktivieren Sie Benachrichtigungen unter macOS:"
   },
   "settings.notifications.modal.macStep1": {
-    "defaultMessage": "Öffnen Sie die Systemeinstellungen"
+    "defaultMessage": "Open System Settings"
   },
   "settings.notifications.modal.macStep2": {
     "defaultMessage": "Klicken Sie auf Benachrichtigungen"
   },
   "settings.notifications.modal.macStep3": {
-    "defaultMessage": "Suchen und wählen Sie goose in der Anwendungsliste aus"
+    "defaultMessage": "Find and select Obelus in the application list"
   },
   "settings.notifications.modal.macStep4": {
     "defaultMessage": "Aktivieren Sie Benachrichtigungen und passen Sie die Einstellungen nach Wunsch an"
   },
   "settings.notifications.modal.title": {
-    "defaultMessage": "So aktivieren Sie Benachrichtigungen"
+    "defaultMessage": "Enable notifications"
   },
   "settings.notifications.modal.winInstructions": {
     "defaultMessage": "So aktivieren Sie Benachrichtigungen unter Windows:"
@@ -4029,7 +4074,7 @@
     "defaultMessage": "Gehen Sie zu System > Benachrichtigungen"
   },
   "settings.notifications.modal.winStep3": {
-    "defaultMessage": "Suchen und wählen Sie goose in der Anwendungsliste aus"
+    "defaultMessage": "Find and select Obelus in the application list"
   },
   "settings.notifications.modal.winStep4": {
     "defaultMessage": "Schalten Sie Benachrichtigungen ein und passen Sie die Einstellungen nach Wunsch an"
@@ -4038,7 +4083,7 @@
     "defaultMessage": "Einstellungen öffnen"
   },
   "settings.notifications.task.description": {
-    "defaultMessage": "Benachrichtigen, wenn Goose eine Aufgabe abschließt, während sich das Fenster im Hintergrund befindet"
+    "defaultMessage": "Notify you when Obelus finishes a task in the background"
   },
   "settings.notifications.task.title": {
     "defaultMessage": "Benachrichtigungen bei Aufgabenabschluss"
@@ -4047,25 +4092,31 @@
     "defaultMessage": "Benachrichtigungen"
   },
   "settings.preventSleep.description": {
-    "defaultMessage": "Halten Sie Ihren Computer wach, während goose eine Aufgabe ausführt (der Bildschirm kann sich weiterhin sperren)"
+    "defaultMessage": "Keep your computer awake while Obelus is working; the screen can still lock"
   },
   "settings.preventSleep.title": {
-    "defaultMessage": "Energiesparmodus verhindern"
+    "defaultMessage": "Prevent sleep"
   },
   "settings.theme.description": {
-    "defaultMessage": "Passen Sie das Erscheinungsbild von goose an"
+    "defaultMessage": "Choose a light, dark, or system appearance for Obelus"
   },
   "settings.theme.title": {
     "defaultMessage": "Design"
   },
   "settings.updates.description": {
-    "defaultMessage": "Suchen und installieren Sie Updates, damit goose stets optimal läuft"
+    "defaultMessage": "Release channel status for this Obelus build"
   },
   "settings.updates.title": {
     "defaultMessage": "Updates"
   },
+  "settings.version.description": {
+    "defaultMessage": "Evidence-led local AI, built on the open-source Goose core."
+  },
+  "settings.version.label": {
+    "defaultMessage": "Version {version}"
+  },
   "settings.version.title": {
-    "defaultMessage": "Version"
+    "defaultMessage": "About Obelus"
   },
   "settingsView.tabApp": {
     "defaultMessage": "App"
@@ -4134,7 +4185,7 @@
     "defaultMessage": "Skills durchsuchen..."
   },
   "skillsView.skillsDescription": {
-    "defaultMessage": "Zeigen Sie installierte Skills an, die die Fähigkeiten von Goose erweitern. {shortcut} zum Suchen."
+    "defaultMessage": "View installed skills that extend Obelus. {shortcut} to search."
   },
   "skillsView.skillsTitle": {
     "defaultMessage": "Skills"
@@ -4320,7 +4371,7 @@
     "defaultMessage": "Anbieter, zum Suchen tippen"
   },
   "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Schnellstartanleitung"
+    "defaultMessage": "Upstream Goose quick start guide"
   },
   "switchModelModal.recommended": {
     "defaultMessage": "Empfohlen"
@@ -4376,44 +4427,17 @@
   "switchModelModal.useOtherProvider": {
     "defaultMessage": "Anderen Anbieter verwenden"
   },
-  "telemetryConsentPrompt.description": {
-    "defaultMessage": "Möchten Sie anonyme Nutzungsdaten teilen, um goose zu verbessern? Wir erfassen niemals Ihre Unterhaltungen, Ihren Code oder Ihre persönlichen Daten."
+  "telemetrySettings.analyticsOff": {
+    "defaultMessage": "Product analytics are off"
   },
-  "telemetryConsentPrompt.heading": {
-    "defaultMessage": "Helfen Sie, goose zu verbessern"
-  },
-  "telemetryConsentPrompt.learnMore": {
-    "defaultMessage": "Mehr erfahren"
-  },
-  "telemetryConsentPrompt.optIn": {
-    "defaultMessage": "Ja, anonyme Nutzungsdaten teilen"
-  },
-  "telemetryConsentPrompt.optOut": {
-    "defaultMessage": "Nein danke"
-  },
-  "telemetrySettings.configErrorTitle": {
-    "defaultMessage": "Konfigurationsfehler"
+  "telemetrySettings.analyticsOffDescription": {
+    "defaultMessage": "Obelus does not send usage events to an analytics service. Providers, tools, and extensions may still process data you choose to share with them."
   },
   "telemetrySettings.description": {
-    "defaultMessage": "Steuern Sie, wie Ihre Daten verwendet werden"
-  },
-  "telemetrySettings.learnMore": {
-    "defaultMessage": "Mehr erfahren"
-  },
-  "telemetrySettings.loadError": {
-    "defaultMessage": "Telemetrie-Einstellungen konnten nicht geladen werden."
+    "defaultMessage": "Clear boundaries for this Obelus build"
   },
   "telemetrySettings.title": {
     "defaultMessage": "Datenschutz"
-  },
-  "telemetrySettings.toggleDescription": {
-    "defaultMessage": "Helfen Sie, goose zu verbessern, indem Sie anonyme Nutzungsstatistiken teilen."
-  },
-  "telemetrySettings.toggleLabel": {
-    "defaultMessage": "Anonyme Nutzungsdaten"
-  },
-  "telemetrySettings.updateError": {
-    "defaultMessage": "Telemetrie-Einstellungen konnten nicht aktualisiert werden."
   },
   "themeSelector.dark": {
     "defaultMessage": "Dunkel"
@@ -4485,82 +4509,19 @@
     "defaultMessage": "{toolName} erlauben?"
   },
   "toolConfirmation.gooseWouldLikeToCallWithName": {
-    "defaultMessage": "Goose möchte {toolName} aufrufen. Erlauben?"
-  },
-  "updateSection.autoDownload": {
-    "defaultMessage": "Goose lädt das Update im Hintergrund herunter und installiert es beim nächsten Beenden oder Neustart."
-  },
-  "updateSection.autoDownloadDisabledByEnv": {
-    "defaultMessage": "Automatische Downloads sind über die Umgebungsvariable GOOSE_DISABLE_AUTO_DOWNLOAD deaktiviert."
-  },
-  "updateSection.autoDownloadDisabledNote": {
-    "defaultMessage": "Automatischer Download ist deaktiviert. Klicken Sie auf \"Jetzt herunterladen\", um manuell herunterzuladen."
-  },
-  "updateSection.autoInstallNote": {
-    "defaultMessage": "Keine manuelle Installation erforderlich."
-  },
-  "updateSection.checkForUpdates": {
-    "defaultMessage": "Nach Updates suchen"
-  },
-  "updateSection.checking": {
-    "defaultMessage": "Suche nach Updates..."
+    "defaultMessage": "Obelus would like to use {toolName}. Allow it?"
   },
   "updateSection.currentVersion": {
     "defaultMessage": "Aktuelle Version"
   },
-  "updateSection.disableAutoDownload": {
-    "defaultMessage": "Automatische Update-Downloads deaktivieren"
+  "updateSection.updateChannelDescription": {
+    "defaultMessage": "This build is not connected to an Obelus release service. It will not check Goose or any other upstream channel for updates."
   },
-  "updateSection.disableAutoDownloadDesc": {
-    "defaultMessage": "Wenn aktiviert, benachrichtigt Goose Sie über neue Versionen, lädt sie aber nicht automatisch herunter."
+  "updateSection.updateChannelOff": {
+    "defaultMessage": "Automatic updates are off"
   },
-  "updateSection.downloadNow": {
-    "defaultMessage": "Jetzt herunterladen"
-  },
-  "updateSection.downloadReady": {
-    "defaultMessage": "Update heruntergeladen und installationsbereit!"
-  },
-  "updateSection.downloadingProgress": {
-    "defaultMessage": "Update wird heruntergeladen... {percent}%"
-  },
-  "updateSection.downloadingUpdate": {
-    "defaultMessage": "Update wird heruntergeladen..."
-  },
-  "updateSection.installAndRestart": {
-    "defaultMessage": "Installieren & Neustarten"
-  },
-  "updateSection.installNowHint": {
-    "defaultMessage": "Klicken Sie auf \"Installieren & Neustarten\", um jetzt zu aktualisieren."
-  },
-  "updateSection.latestVersion": {
-    "defaultMessage": "Sie verwenden die neueste Version!"
-  },
-  "updateSection.loading": {
-    "defaultMessage": "Wird geladen..."
-  },
-  "updateSection.manualInstallNote": {
-    "defaultMessage": "Nach dem Download müssen Sie das Update manuell installieren."
-  },
-  "updateSection.manualInstallRequired": {
-    "defaultMessage": "Für diese Update-Methode ist eine manuelle Installation erforderlich."
-  },
-  "updateSection.readyInstallAuto": {
-    "defaultMessage": "✓ Update ist bereit. Starten Sie Goose neu, um die Installation abzuschließen, oder beenden Sie es, wenn Sie fertig sind."
-  },
-  "updateSection.readyInstallManual": {
-    "defaultMessage": "✓ Update ist bereit! Klicken Sie auf \"Installieren & Neustarten\", um die Installationsanweisungen zu erhalten."
-  },
-  "updateSection.upToDate": {
-    "defaultMessage": "(aktuell)"
-  },
-  "updateSection.updateAvailable": {
-    "defaultMessage": "Update verfügbar!"
-  },
-  "updateSection.versionAvailable": {
-    "defaultMessage": "→ {version} verfügbar"
-  },
-  "updateSection.versionIsAvailable": {
-    "defaultMessage": "Version {version} ist verfügbar"
+  "updateSection.viewRepository": {
+    "defaultMessage": "View Obelus repository"
   },
   "userMessage.cancel": {
     "defaultMessage": "Abbrechen"

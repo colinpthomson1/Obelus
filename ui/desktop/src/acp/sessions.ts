@@ -231,7 +231,7 @@ export async function acpNewSession(
   recipe?: AcpRecipeOptions
 ): Promise<AcpNewSessionResult> {
   const client = await getAcpClient();
-  const meta: Record<string, unknown> = { client: 'goose-desktop' };
+  const meta: Record<string, unknown> = { client: 'obelus-desktop' };
   if (gooseExtensions.length > 0) {
     meta.enabledExtensions = gooseExtensions;
   }

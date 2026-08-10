@@ -1,0 +1,17 @@
+/* Proof Pulse implementation wrapper */
+.ob-loader-proof-pulse {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  color: var(--ob-action, #3B50E0);
+  flex: 0 0 auto;
+}
+
+.ob-loader-proof-pulse[aria-hidden="true"] { pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-loader-proof-pulse { animation: none; }
+}
+
+@media (forced-colors: active) {
+  .ob-loader-proof-pulse { color: CanvasText; }
+}

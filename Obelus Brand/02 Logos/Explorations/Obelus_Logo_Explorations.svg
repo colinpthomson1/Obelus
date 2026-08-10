@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 640" role="img" aria-labelledby="title desc" >
+  <title id="title">Obelus Logo Explorations</title>
+  <desc id="desc">Contact sheet of eight Obelus logo directions with Dialogue Axis selected.</desc>
+  <rect width="1120" height="640" fill="#F7F8FC"/>
+  <text x="0" y="620" fill="#69708C" font-family="Instrument Sans, sans-serif" font-size="13">Eight routes were tested in monochrome, small scale, and motion. Dialogue Axis was selected for its balance of recognition, warmth, and product relevance.</text>
+  <g transform="translate(0 0)">
+    <rect width="248" height="280" rx="20" fill="#FCFCF8" stroke="#D9DEEA"/>
+    <g transform="translate(60 42) scale(2)">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g>
+    <text x="24" y="226" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="20" font-weight="600">01 Dialogue Axis</text>
+    <text x="24" y="252" fill="#515B78" font-family="Instrument Sans, sans-serif" font-size="13">SELECTED MASTER</text>
+  </g>  <g transform="translate(280 0)">
+    <rect width="248" height="280" rx="20" fill="#FCFCF8" stroke="#D9DEEA"/>
+    <g transform="translate(60 42) scale(2)">  <g fill="#3B50E0">
+    <circle cx="32" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="32" cy="50" r="5.6"/>
+  </g></g>
+    <text x="24" y="226" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="20" font-weight="600">02 Critical Stroke</text>
+    <text x="24" y="252" fill="#515B78" font-family="Instrument Sans, sans-serif" font-size="13">EXPLORATION</text>
+  </g>  <g transform="translate(560 0)">
+    <rect width="248" height="280" rx="20" fill="#FCFCF8" stroke="#D9DEEA"/>
+    <g transform="translate(60 42) scale(2)">  <g fill="none" stroke="#3B50E0" stroke-width="4" stroke-linecap="round">
+    <path d="M27 8A7 7 0 1 0 31 18"/>
+    <path d="M37 46A7 7 0 1 0 41 56" transform="rotate(180 38 50)"/>
+  </g>
+  <rect x="12" y="27" width="40" height="10" rx="5" fill="#3B50E0"/></g>
+    <text x="24" y="226" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="20" font-weight="600">03 Listening Obelus</text>
+    <text x="24" y="252" fill="#515B78" font-family="Instrument Sans, sans-serif" font-size="13">EXPLORATION</text>
+  </g>  <g transform="translate(840 0)">
+    <rect width="248" height="280" rx="20" fill="#FCFCF8" stroke="#D9DEEA"/>
+    <g transform="translate(60 42) scale(2)">  <g fill="#3B50E0">
+    <circle cx="32" cy="14" r="5.6"/>
+    <rect x="12" y="27" width="18" height="10" rx="5"/>
+    <rect x="34" y="27" width="18" height="10" rx="5"/>
+    <circle cx="32" cy="50" r="5.6"/>
+  </g></g>
+    <text x="24" y="226" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="20" font-weight="600">04 Evidence Gate</text>
+    <text x="24" y="252" fill="#515B78" font-family="Instrument Sans, sans-serif" font-size="13">EXPLORATION</text>
+  </g>  <g transform="translate(0 320)">
+    <rect width="248" height="280" rx="20" fill="#FCFCF8" stroke="#D9DEEA"/>
+    <g transform="translate(60 42) scale(2)">  <circle cx="32" cy="14" r="5.6" fill="#3B50E0"/>
+  <rect x="12" y="27" width="40" height="10" rx="5" fill="#3B50E0"/>
+  <circle cx="32" cy="50" r="4" fill="none" stroke="#3B50E0" stroke-width="3.2"/></g>
+    <text x="24" y="226" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="20" font-weight="600">05 Claim Source State</text>
+    <text x="24" y="252" fill="#515B78" font-family="Instrument Sans, sans-serif" font-size="13">EXPLORATION</text>
+  </g>  <g transform="translate(280 320)">
+    <rect width="248" height="280" rx="20" fill="#FCFCF8" stroke="#D9DEEA"/>
+    <g transform="translate(60 42) scale(2)">  <g fill="#3B50E0">
+    <rect x="17" y="11" width="6" height="42" rx="3"/>
+    <circle cx="20" cy="11" r="5.5"/>
+    <circle cx="20" cy="53" r="5.5"/>
+    <rect x="20" y="27" width="32" height="10" rx="5"/>
+  </g></g>
+    <text x="24" y="226" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="20" font-weight="600">06 Transcript Marker</text>
+    <text x="24" y="252" fill="#515B78" font-family="Instrument Sans, sans-serif" font-size="13">EXPLORATION</text>
+  </g>  <g transform="translate(560 320)">
+    <rect width="248" height="280" rx="20" fill="#FCFCF8" stroke="#D9DEEA"/>
+    <g transform="translate(60 42) scale(2)">  <path d="M49.5 14.5A24 24 0 1 0 52 46" fill="none" stroke="#111528" stroke-width="6" stroke-linecap="round"/>
+  <g fill="#3B50E0" transform="translate(12 12) scale(.625)">
+    <circle cx="32" cy="14" r="5.6"/>
+    <rect x="12" y="27" width="40" height="10" rx="5"/>
+    <circle cx="32" cy="50" r="5.6"/>
+  </g></g>
+    <text x="24" y="226" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="20" font-weight="600">07 Open O</text>
+    <text x="24" y="252" fill="#515B78" font-family="Instrument Sans, sans-serif" font-size="13">EXPLORATION</text>
+  </g>  <g transform="translate(840 320)">
+    <rect width="248" height="280" rx="20" fill="#FCFCF8" stroke="#D9DEEA"/>
+    <g transform="translate(60 42) scale(2)">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="4.5"/>
+    <rect x="12" y="27" width="40" height="10" rx="5"/>
+    <circle cx="38" cy="50" r="4.5"/>
+  </g>
+  <g fill="none" stroke="#3B50E0" stroke-width="2.2" stroke-linecap="round">
+    <path d="M15 9A13 13 0 0 1 31 1"/>
+    <path d="M49 55A13 13 0 0 1 33 63"/>
+  </g></g>
+    <text x="24" y="226" fill="#111528" font-family="Instrument Sans, sans-serif" font-size="20" font-weight="600">08 Echo Obelus</text>
+    <text x="24" y="252" fill="#515B78" font-family="Instrument Sans, sans-serif" font-size="13">EXPLORATION</text>
+  </g>
+</svg>

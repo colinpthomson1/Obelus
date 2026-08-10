@@ -586,7 +586,7 @@ enum SessionCommand {
     )]
     Import {
         #[arg(
-            help = "Path to a goose session export, a Claude Code, Codex, or Pi .jsonl transcript, or a goose://sessions/nostr share link"
+            help = "Path to a goose session export, a Claude Code, Codex, or Pi .jsonl transcript, or an obelus://sessions/nostr share link"
         )]
         input: String,
 
@@ -759,8 +759,8 @@ enum RecipeCommand {
         params: Vec<String>,
     },
 
-    /// Open a recipe in Goose Desktop
-    #[command(about = "Open a recipe in Goose Desktop")]
+    /// Open a recipe in Obelus Desktop
+    #[command(about = "Open a recipe in Obelus Desktop")]
     Open {
         /// Recipe name to get recipe file to open
         #[arg(help = "recipe name or full path to the recipe file")]

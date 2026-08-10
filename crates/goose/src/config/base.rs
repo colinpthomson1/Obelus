@@ -39,7 +39,7 @@ fn write_secrets_file(path: &Path, content: &str) -> std::io::Result<()> {
 }
 
 #[cfg(feature = "system-keyring")]
-const KEYRING_SERVICE: &str = "goose";
+const KEYRING_SERVICE: &str = "obelus";
 #[cfg(feature = "system-keyring")]
 const KEYRING_USERNAME: &str = "secrets";
 pub const CONFIG_YAML_NAME: &str = "config.yaml";
@@ -93,13 +93,13 @@ impl From<keyring::Error> for ConfigError {
 ///
 /// Configuration values are loaded with the following precedence:
 /// 1. Environment variables (exact key match)
-/// 2. Configuration file (~/.config/goose/config.yaml by default)
+/// 2. Configuration file (~/.config/obelus/config.yaml on Linux by default)
 ///
 /// Secrets are loaded with the following precedence:
 /// 1. Environment variables (exact key match)
 /// 2. System keyring (which can be disabled with GOOSE_DISABLE_KEYRING)
 /// 3. If the keyring is disabled, secrets are stored in a secrets file
-///    (~/.config/goose/secrets.yaml by default)
+///    (~/.config/obelus/secrets.yaml on Linux by default)
 ///
 /// # Examples
 ///
@@ -153,13 +153,13 @@ static GLOBAL_CONFIG: OnceCell<Config> = OnceCell::new();
 fn system_config_path() -> PathBuf {
     #[cfg(unix)]
     {
-        PathBuf::from("/etc/goose/config.yaml")
+        PathBuf::from("/etc/obelus/config.yaml")
     }
     #[cfg(windows)]
     {
         env::var("PROGRAMDATA")
-            .map(|d| PathBuf::from(d).join("goose").join("config.yaml"))
-            .unwrap_or_else(|_| PathBuf::from(r"C:\ProgramData\goose\config.yaml"))
+            .map(|d| PathBuf::from(d).join("obelus").join("config.yaml"))
+            .unwrap_or_else(|_| PathBuf::from(r"C:\ProgramData\obelus\config.yaml"))
     }
 }
 
@@ -191,7 +191,8 @@ impl Default for Config {
             || no_secrets_config
                 .get_param::<serde_yaml::Value>("GOOSE_DISABLE_KEYRING")
                 .is_ok_and(|v| keyring_disabled_value(&v));
-        let secrets = secret_storage(&config_dir, keyring_disabled, default_keyring_service());
+        let keyring_service = default_keyring_service();
+        let secrets = secret_storage(&config_dir, keyring_disabled, &keyring_service);
         Self {
             config_paths,
             secrets,
@@ -355,13 +356,17 @@ fn keyring_disabled_in_config(config_path: &Path) -> bool {
 }
 
 #[cfg(feature = "system-keyring")]
-fn default_keyring_service() -> &'static str {
-    KEYRING_SERVICE
+fn default_keyring_service() -> String {
+    env::var("GOOSE_KEYRING_SERVICE")
+        .ok()
+        .map(|service| service.trim().to_string())
+        .filter(|service| !service.is_empty())
+        .unwrap_or_else(|| KEYRING_SERVICE.to_string())
 }
 
 #[cfg(not(feature = "system-keyring"))]
-fn default_keyring_service() -> &'static str {
-    ""
+fn default_keyring_service() -> String {
+    String::new()
 }
 
 fn secrets_file_path_in(config_dir: &Path) -> PathBuf {

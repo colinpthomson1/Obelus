@@ -1,0 +1,99 @@
+@font-face {
+  font-family: "Instrument Sans";
+  src: url("../../03 Typography/Fonts/Instrument Sans/InstrumentSans-Variable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../../03 Typography/Fonts/IBM Plex Mono/Web/IBMPlexMono-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --ob-color-ink-950: #111528;
+  --ob-color-ink-900: #181D34;
+  --ob-color-ink-800: #252C49;
+  --ob-color-ink-700: #38415F;
+  --ob-color-ink-600: #515B78;
+  --ob-color-ink-500: #69708C;
+  --ob-color-ink-400: #8D95AD;
+  --ob-color-ink-300: #B5BBCD;
+  --ob-color-ink-200: #D9DEEA;
+  --ob-color-ink-100: #ECEFF5;
+  --ob-color-ink-50: #F5F6FA;
+  --ob-color-paper: #F7F8FC;
+  --ob-color-cloud: #FCFCF8;
+  --ob-color-blue-900: #192462;
+  --ob-color-blue-800: #24318A;
+  --ob-color-blue-700: #2F3FB5;
+  --ob-color-blue-600: #3B50E0;
+  --ob-color-blue-500: #6172EA;
+  --ob-color-blue-400: #8794F2;
+  --ob-color-blue-300: #AEB6F7;
+  --ob-color-blue-200: #D1D6FB;
+  --ob-color-blue-100: #EAECFE;
+  --ob-color-aqua-700: #08766D;
+  --ob-color-aqua-600: #0D998D;
+  --ob-color-aqua-500: #2BC7B9;
+  --ob-color-aqua-300: #8BE2D9;
+  --ob-color-aqua-100: #DCF8F4;
+  --ob-color-coral-700: #B33F38;
+  --ob-color-coral-600: #D65348;
+  --ob-color-coral-500: #FF7568;
+  --ob-color-coral-300: #FFB2AA;
+  --ob-color-coral-100: #FFE7E4;
+  --ob-color-amber-700: #8A4B00;
+  --ob-color-amber-600: #A85B00;
+  --ob-color-amber-500: #E99416;
+  --ob-color-amber-300: #FFC76F;
+  --ob-color-amber-100: #FFF0CF;
+  --ob-color-supported: #08705B;
+  --ob-color-supported-bg: #E0F5EF;
+  --ob-color-disputed: #B12D47;
+  --ob-color-disputed-bg: #FCE8ED;
+  --ob-color-context: #8A4B00;
+  --ob-color-context-bg: #FFF0CF;
+  --ob-color-unverified: #2F3FB5;
+  --ob-color-unverified-bg: #EAECFE;
+  --ob-space-4: 0.25rem;
+  --ob-space-8: 0.5rem;
+  --ob-space-12: 0.75rem;
+  --ob-space-16: 1rem;
+  --ob-space-24: 1.5rem;
+  --ob-space-32: 2rem;
+  --ob-space-48: 3rem;
+  --ob-space-64: 4rem;
+  --ob-space-96: 6rem;
+  --ob-space-128: 8rem;
+  --ob-radius-small: 6px;
+  --ob-radius-medium: 12px;
+  --ob-radius-large: 20px;
+  --ob-radius-round: 999px;
+  --ob-font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --ob-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  --ob-text: var(--ob-color-ink-950);
+  --ob-text-secondary: var(--ob-color-ink-600);
+  --ob-background: var(--ob-color-paper);
+  --ob-surface: var(--ob-color-cloud);
+  --ob-border: var(--ob-color-ink-200);
+  --ob-action: var(--ob-color-blue-600);
+  --ob-live: var(--ob-color-aqua-500);
+  --ob-focus-ring: var(--ob-color-blue-600);
+}
+
+[data-theme="dark"] {
+  --ob-text: var(--ob-color-cloud);
+  --ob-text-secondary: var(--ob-color-ink-300);
+  --ob-background: var(--ob-color-ink-950);
+  --ob-surface: var(--ob-color-ink-900);
+  --ob-border: var(--ob-color-ink-700);
+  --ob-action: var(--ob-color-blue-400);
+  --ob-live: var(--ob-color-aqua-300);
+  --ob-focus-ring: var(--ob-color-aqua-300);
+}

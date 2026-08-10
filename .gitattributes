@@ -1,1 +1,6 @@
 crates/goose/src/agents/snapshots/*.snap linguist-language=Text
+
+# Preserve the canonical brand-source package and verbatim font licenses.
+# Generated manifests depend on these bytes, including CRLF and hard line breaks.
+"Obelus Brand/**" -text -whitespace
+/ui/desktop/src/assets/brand/fonts/*-OFL.txt -text -whitespace

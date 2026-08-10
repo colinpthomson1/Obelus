@@ -1,0 +1,58 @@
+{
+  "motion": {
+    "duration": {
+      "instant": {
+        "value": "120ms",
+        "type": "duration"
+      },
+      "fast": {
+        "value": "200ms",
+        "type": "duration"
+      },
+      "standard": {
+        "value": "280ms",
+        "type": "duration"
+      },
+      "emphasis": {
+        "value": "480ms",
+        "type": "duration"
+      }
+    },
+    "loop": {
+      "compact": {
+        "value": "1200ms",
+        "type": "duration"
+      },
+      "scan": {
+        "value": "1350ms",
+        "type": "duration"
+      },
+      "research": {
+        "value": "1600ms",
+        "type": "duration"
+      },
+      "signature": {
+        "value": "1840ms",
+        "type": "duration"
+      }
+    },
+    "easing": {
+      "enter": {
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "type": "cubicBezier"
+      },
+      "exit": {
+        "value": "cubic-bezier(.7,0,.84,0)",
+        "type": "cubicBezier"
+      },
+      "shift": {
+        "value": "cubic-bezier(.65,0,.35,1)",
+        "type": "cubicBezier"
+      },
+      "refine": {
+        "value": "cubic-bezier(.25,1,.5,1)",
+        "type": "cubicBezier"
+      }
+    }
+  }
+}

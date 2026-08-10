@@ -592,7 +592,7 @@ async fn refresh_access_token_with_issuer(
 const HTML_SUCCESS_TEMPLATE: &str = r#"<!doctype html>
 <html>
   <head>
-    <title>goose - ChatGPT Authorization Successful</title>
+    <title>Obelus - ChatGPT authorization successful</title>
     <style>
       body {
         font-family: system-ui, -apple-system, sans-serif;
@@ -612,7 +612,7 @@ const HTML_SUCCESS_TEMPLATE: &str = r#"<!doctype html>
   <body>
     <div class="container">
       <h1>Authorization Successful</h1>
-      <p>You can close this window and return to goose.</p>
+      <p>You can close this window and return to Obelus.</p>
     </div>
     <script>const AUTO_CLOSE_TIMEOUT_MS = __AUTO_CLOSE_TIMEOUT_MS__; setTimeout(() => window.close(), AUTO_CLOSE_TIMEOUT_MS)</script>
   </body>
@@ -631,7 +631,7 @@ fn html_error(error: &str) -> String {
         r#"<!doctype html>
 <html>
   <head>
-    <title>goose - ChatGPT Authorization Failed</title>
+    <title>Obelus - ChatGPT authorization failed</title>
     <style>
       body {{
         font-family: system-ui, -apple-system, sans-serif;

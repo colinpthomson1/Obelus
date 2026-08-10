@@ -1,13 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { IpcRendererEvent } from 'electron';
-import {
-  HashRouter,
-  Routes,
-  Route,
-  useNavigate,
-  useLocation,
-  useSearchParams,
-} from 'react-router';
+import { HashRouter, Routes, Route, useNavigate, useLocation, useSearchParams } from 'react-router';
 import { importNostrSessionFromDeepLink } from './sessionLinks';
 import { ErrorUI } from './components/ErrorBoundary';
 import { ExtensionInstallModal } from './components/ExtensionInstallModal';
@@ -53,6 +46,7 @@ import { View, ViewOptions } from './utils/navigationUtils';
 
 import { useNavigation } from './hooks/useNavigation';
 import { errorMessage } from './utils/conversionUtils';
+import { isSupportedProductDeepLink } from './utils/deepLinks';
 import { getInitialWorkingDir } from './utils/workingDir';
 import { usePageViewTracking } from './hooks/useAnalytics';
 import { trackErrorWithContext } from './utils/analytics';
@@ -421,7 +415,7 @@ export function AppInner() {
       const link = args[0] as string;
       window.electron.logInfo('Opening session share link');
 
-      if (!link.startsWith('goose://sessions/nostr')) {
+      if (!isSupportedProductDeepLink(link, 'sessions', '/nostr')) {
         toast.error('Unsupported session share link');
         navigate('/sessions');
         return;

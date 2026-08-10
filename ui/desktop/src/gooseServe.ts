@@ -98,7 +98,7 @@ export const findGooseBinaryPath = (options: FindGooseBinaryOptions = {}): strin
   }
 
   throw new Error(
-    `Goose binary not found in any of the possible paths: ${possiblePaths.join(', ')}`
+    `Obelus backend binary not found in any of the possible paths: ${possiblePaths.join(', ')}`
   );
 };
 
@@ -137,10 +137,7 @@ const appendErrorTail = (target: string[], lines: string[], maxLines = 100): voi
 const CERT_FINGERPRINT_PREFIX = 'GOOSED_CERT_FINGERPRINT=';
 const TLS_FINGERPRINT_TIMEOUT_MS = 5000;
 
-const fetchStatus = async (
-  statusUrl: string,
-  readinessFetch: ReadinessFetch
-): Promise<boolean> => {
+const fetchStatus = async (statusUrl: string, readinessFetch: ReadinessFetch): Promise<boolean> => {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 1000);
 
@@ -339,7 +336,7 @@ export const startGooseServe = async ({
   const startupDiagnosticsPath = startupTrace?.diagnosticsPath ?? null;
   const secretKey = serverSecret.trim();
   if (!secretKey) {
-    const message = 'GOOSE_SERVER__SECRET_KEY is required for goose serve';
+    const message = 'GOOSE_SERVER__SECRET_KEY is required for the Obelus backend';
     startupTrace?.record('configuration_error', { message });
     throw new Error(withStartupDiagnosticsPath(message, startupDiagnosticsPath));
   }
@@ -557,7 +554,7 @@ export const startGooseServe = async ({
     const stderrDetails = errorLog.length ? ` Stderr: ${errorLog.join('\n')}` : '';
     throw new Error(
       withStartupDiagnosticsPath(
-        `goose serve did not become ready on ${statusUrl}.${exitDetails}${stderrDetails}`,
+        `Obelus backend did not become ready on ${statusUrl}.${exitDetails}${stderrDetails}`,
         startupDiagnosticsPath
       )
     );
@@ -581,7 +578,7 @@ export const startGooseServe = async ({
       });
       throw new Error(
         withStartupDiagnosticsPath(
-          `goose serve did not emit TLS certificate fingerprint on ${statusUrl}.${exitDetails}${stderrDetails}`,
+          `Obelus backend did not emit a TLS certificate fingerprint on ${statusUrl}.${exitDetails}${stderrDetails}`,
           startupDiagnosticsPath
         )
       );

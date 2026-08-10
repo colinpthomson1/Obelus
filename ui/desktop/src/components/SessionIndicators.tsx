@@ -1,6 +1,7 @@
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import React from 'react';
 import { defineMessages, useIntl } from '../i18n';
+import { ObelusLoader } from './brand/ObelusLoader';
 
 const i18n = defineMessages({
   error: {
@@ -32,11 +33,9 @@ export const SessionIndicators = React.memo<SessionIndicatorsProps>(
 
     if (hasError) {
       return (
-        <div className="flex items-center gap-1">
-          <AlertCircle
-            className="w-3.5 h-3.5 text-red-500"
-            aria-label={intl.formatMessage(i18n.error)}
-          />
+        <div className="flex items-center gap-1" role="status">
+          <AlertCircle className="h-3.5 w-3.5 text-status-disputed" aria-hidden="true" />
+          <span className="sr-only">{intl.formatMessage(i18n.error)}</span>
         </div>
       );
     }
@@ -44,15 +43,20 @@ export const SessionIndicators = React.memo<SessionIndicatorsProps>(
     if (isStreaming) {
       return (
         <div className="flex items-center gap-1">
-          <Loader2 className="w-3 h-3 text-blue-500 animate-spin" aria-label={intl.formatMessage(i18n.streaming)} />
+          <ObelusLoader
+            variant="proof-pulse"
+            label={intl.formatMessage(i18n.streaming)}
+            className="!h-3.5 !w-3.5 text-brand-aqua"
+          />
         </div>
       );
     }
 
     if (hasUnread) {
       return (
-        <div className="flex items-center gap-1">
-          <div className="w-2 h-2 bg-green-500 rounded-full" aria-label={intl.formatMessage(i18n.newActivity)} />
+        <div className="flex items-center gap-1" role="status">
+          <div className="h-2 w-2 rounded-full bg-brand-aqua" aria-hidden="true" />
+          <span className="sr-only">{intl.formatMessage(i18n.newActivity)}</span>
         </div>
       );
     }

@@ -10,7 +10,7 @@
  * class generation — it does NOT define values.
  *
  * These tokens serve two purposes:
- *  1. Goose desktop — applied to :root per resolved theme.
+ *  1. Obelus desktop — applied to :root per resolved theme.
  *  2. MCP apps — encoded as light-dark() in hostContext.styles.variables.
  */
 import type {
@@ -34,8 +34,8 @@ type ColorTokenKey = Exclude<McpUiStyleVariableKey, BaseTokenKey>;
 // ---------------------------------------------------------------------------
 const baseTokens: Pick<ThemeTokens, BaseTokenKey> = {
   // Typography — families
-  '--font-sans': "'Cash Sans', sans-serif",
-  '--font-mono': 'monospace',
+  '--font-sans': "'Instrument Sans', ui-sans-serif, system-ui, sans-serif",
+  '--font-mono': "'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace",
 
   // Typography — weights
   '--font-weight-normal': '400',
@@ -74,11 +74,11 @@ const baseTokens: Pick<ThemeTokens, BaseTokenKey> = {
   '--font-heading-3xl-line-height': '3.5rem',
 
   // Border radius
-  '--border-radius-xs': '2px',
-  '--border-radius-sm': '4px',
-  '--border-radius-md': '8px',
+  '--border-radius-xs': '4px',
+  '--border-radius-sm': '6px',
+  '--border-radius-md': '12px',
   '--border-radius-lg': '12px',
-  '--border-radius-xl': '16px',
+  '--border-radius-xl': '20px',
   '--border-radius-full': '9999px',
 
   // Border width
@@ -93,55 +93,55 @@ type ColorTokens = Pick<ThemeTokens, ColorTokenKey>;
 // ---------------------------------------------------------------------------
 const lightColorTokens: ColorTokens = {
   // Backgrounds
-  '--color-background-primary': '#ffffff',
-  '--color-background-secondary': '#f4f6f7',
-  '--color-background-tertiary': '#e3e6ea',
-  '--color-background-inverse': '#000000',
+  '--color-background-primary': '#FCFCF8',
+  '--color-background-secondary': '#F7F8FC',
+  '--color-background-tertiary': '#EAECFE',
+  '--color-background-inverse': '#111528',
   '--color-background-ghost': 'transparent',
-  '--color-background-info': '#5c98f9',
-  '--color-background-danger': '#f94b4b',
-  '--color-background-success': '#91cb80',
-  '--color-background-warning': '#fbcd44',
-  '--color-background-disabled': '#e3e6ea',
+  '--color-background-info': '#3B50E0',
+  '--color-background-danger': '#B12D47',
+  '--color-background-success': '#08705B',
+  '--color-background-warning': '#8A4B00',
+  '--color-background-disabled': '#ECEFF5',
 
   // Text
-  '--color-text-primary': '#3f434b',
-  '--color-text-secondary': '#878787',
-  '--color-text-tertiary': '#a7b0b9',
-  '--color-text-inverse': '#ffffff',
-  '--color-text-ghost': '#878787',
-  '--color-text-info': '#5c98f9',
-  '--color-text-danger': '#f94b4b',
-  '--color-text-success': '#91cb80',
-  '--color-text-warning': '#fbcd44',
-  '--color-text-disabled': '#cbd1d6',
+  '--color-text-primary': '#111528',
+  '--color-text-secondary': '#515B78',
+  '--color-text-tertiary': '#69708C',
+  '--color-text-inverse': '#FCFCF8',
+  '--color-text-ghost': '#515B78',
+  '--color-text-info': '#2F3FB5',
+  '--color-text-danger': '#B12D47',
+  '--color-text-success': '#08705B',
+  '--color-text-warning': '#8A4B00',
+  '--color-text-disabled': '#8D95AD',
 
   // Borders
-  '--color-border-primary': '#e3e6ea',
-  '--color-border-secondary': '#e3e6ea',
-  '--color-border-tertiary': '#cbd1d6',
-  '--color-border-inverse': '#000000',
+  '--color-border-primary': '#D9DEEA',
+  '--color-border-secondary': '#ECEFF5',
+  '--color-border-tertiary': '#B5BBCD',
+  '--color-border-inverse': '#111528',
   '--color-border-ghost': 'transparent',
-  '--color-border-info': '#5c98f9',
-  '--color-border-danger': '#f94b4b',
-  '--color-border-success': '#91cb80',
-  '--color-border-warning': '#fbcd44',
-  '--color-border-disabled': '#e3e6ea',
+  '--color-border-info': '#3B50E0',
+  '--color-border-danger': '#B12D47',
+  '--color-border-success': '#08705B',
+  '--color-border-warning': '#8A4B00',
+  '--color-border-disabled': '#D9DEEA',
 
   // Rings
-  '--color-ring-primary': '#e3e6ea',
-  '--color-ring-secondary': '#cbd1d6',
-  '--color-ring-inverse': '#ffffff',
-  '--color-ring-info': '#5c98f9',
-  '--color-ring-danger': '#f94b4b',
-  '--color-ring-success': '#91cb80',
-  '--color-ring-warning': '#fbcd44',
+  '--color-ring-primary': '#3B50E0',
+  '--color-ring-secondary': '#2BC7B9',
+  '--color-ring-inverse': '#FCFCF8',
+  '--color-ring-info': '#3B50E0',
+  '--color-ring-danger': '#B12D47',
+  '--color-ring-success': '#08705B',
+  '--color-ring-warning': '#8A4B00',
 
   // Shadows
-  '--shadow-hairline': '0 0 0 1px rgba(0, 0, 0, 0.05)',
-  '--shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-  '--shadow-md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
-  '--shadow-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+  '--shadow-hairline': '0 0 0 1px rgba(17, 21, 40, 0.06)',
+  '--shadow-sm': '0 1px 3px rgba(17, 21, 40, 0.08)',
+  '--shadow-md': '0 8px 24px rgba(17, 21, 40, 0.10)',
+  '--shadow-lg': '0 20px 48px rgba(17, 21, 40, 0.14)',
 };
 
 // ---------------------------------------------------------------------------
@@ -149,55 +149,55 @@ const lightColorTokens: ColorTokens = {
 // ---------------------------------------------------------------------------
 const darkColorTokens: ColorTokens = {
   // Backgrounds
-  '--color-background-primary': '#22252a',
-  '--color-background-secondary': '#3f434b',
-  '--color-background-tertiary': '#474e57',
-  '--color-background-inverse': '#cbd1d6',
+  '--color-background-primary': '#111528',
+  '--color-background-secondary': '#181D34',
+  '--color-background-tertiary': '#252C49',
+  '--color-background-inverse': '#FCFCF8',
   '--color-background-ghost': 'transparent',
-  '--color-background-info': '#7cacff',
-  '--color-background-danger': '#ff6b6b',
-  '--color-background-success': '#a3d795',
-  '--color-background-warning': '#ffd966',
-  '--color-background-disabled': '#474e57',
+  '--color-background-info': '#3B50E0',
+  '--color-background-danger': '#B12D47',
+  '--color-background-success': '#08705B',
+  '--color-background-warning': '#8A4B00',
+  '--color-background-disabled': '#252C49',
 
   // Text
-  '--color-text-primary': '#ffffff',
-  '--color-text-secondary': '#878787',
-  '--color-text-tertiary': '#606c7a',
-  '--color-text-inverse': '#000000',
-  '--color-text-ghost': '#878787',
-  '--color-text-info': '#7cacff',
-  '--color-text-danger': '#ff6b6b',
-  '--color-text-success': '#a3d795',
-  '--color-text-warning': '#ffd966',
-  '--color-text-disabled': '#525b68',
+  '--color-text-primary': '#FCFCF8',
+  '--color-text-secondary': '#B5BBCD',
+  '--color-text-tertiary': '#8D95AD',
+  '--color-text-inverse': '#111528',
+  '--color-text-ghost': '#B5BBCD',
+  '--color-text-info': '#8794F2',
+  '--color-text-danger': '#FFB2AA',
+  '--color-text-success': '#8BE2D9',
+  '--color-text-warning': '#FFC76F',
+  '--color-text-disabled': '#69708C',
 
   // Borders
-  '--color-border-primary': '#3f434b',
-  '--color-border-secondary': '#525b68',
-  '--color-border-tertiary': '#474e57',
-  '--color-border-inverse': '#ffffff',
+  '--color-border-primary': '#38415F',
+  '--color-border-secondary': '#252C49',
+  '--color-border-tertiary': '#515B78',
+  '--color-border-inverse': '#FCFCF8',
   '--color-border-ghost': 'transparent',
-  '--color-border-info': '#7cacff',
-  '--color-border-danger': '#ff6b6b',
-  '--color-border-success': '#a3d795',
-  '--color-border-warning': '#ffd966',
-  '--color-border-disabled': '#3f434b',
+  '--color-border-info': '#8794F2',
+  '--color-border-danger': '#FFB2AA',
+  '--color-border-success': '#8BE2D9',
+  '--color-border-warning': '#FFC76F',
+  '--color-border-disabled': '#38415F',
 
   // Rings
-  '--color-ring-primary': '#525b68',
-  '--color-ring-secondary': '#474e57',
-  '--color-ring-inverse': '#000000',
-  '--color-ring-info': '#7cacff',
-  '--color-ring-danger': '#ff6b6b',
-  '--color-ring-success': '#a3d795',
-  '--color-ring-warning': '#ffd966',
+  '--color-ring-primary': '#8BE2D9',
+  '--color-ring-secondary': '#8794F2',
+  '--color-ring-inverse': '#111528',
+  '--color-ring-info': '#8794F2',
+  '--color-ring-danger': '#FFB2AA',
+  '--color-ring-success': '#8BE2D9',
+  '--color-ring-warning': '#FFC76F',
 
   // Shadows (darker for dark mode)
-  '--shadow-hairline': '0 0 0 1px rgba(0, 0, 0, 0.2)',
-  '--shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.2)',
-  '--shadow-md': '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2)',
-  '--shadow-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2)',
+  '--shadow-hairline': '0 0 0 1px rgba(0, 0, 0, 0.24)',
+  '--shadow-sm': '0 2px 6px rgba(0, 0, 0, 0.22)',
+  '--shadow-md': '0 10px 28px rgba(0, 0, 0, 0.30)',
+  '--shadow-lg': '0 24px 56px rgba(0, 0, 0, 0.38)',
 };
 
 // ---------------------------------------------------------------------------
@@ -211,34 +211,27 @@ export const darkTokens: ThemeTokens = { ...baseTokens, ...darkColorTokens };
 // ---------------------------------------------------------------------------
 
 // @font-face rules passed to MCP apps so sandboxed iframes can load host fonts.
+const instrumentSansUrl = new URL(
+  '../assets/brand/fonts/InstrumentSans-Variable.woff2',
+  import.meta.url
+).href;
+const ibmPlexMonoUrl = new URL('../assets/brand/fonts/IBMPlexMono-Regular.woff2', import.meta.url)
+  .href;
+
 const HOST_FONT_CSS = `
 @font-face {
-  font-family: 'Cash Sans';
-  src: url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Light.woff2) format('woff2'),
-       url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Light.woff) format('woff');
-  font-weight: 300;
+  font-family: 'Instrument Sans';
+  src: url('${instrumentSansUrl}') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
-  font-family: 'Cash Sans';
-  src: url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Regular.woff2) format('woff2'),
-       url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Regular.woff) format('woff');
+  font-family: 'IBM Plex Mono';
+  src: url('${ibmPlexMonoUrl}') format('woff2');
   font-weight: 400;
   font-style: normal;
-}
-@font-face {
-  font-family: 'Cash Sans';
-  src: url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Medium.woff2) format('woff2'),
-       url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Medium.woff) format('woff');
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Cash Sans';
-  src: url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Bold.woff2) format('woff2'),
-       url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Bold.woff) format('woff');
-  font-weight: 700;
-  font-style: normal;
+  font-display: swap;
 }
 `.trim();
 

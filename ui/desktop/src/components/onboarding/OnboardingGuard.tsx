@@ -1,41 +1,40 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useConfig } from '../ConfigContext';
 import { useModelAndProvider } from '../ModelAndProviderContext';
 import { acpListProviderDetails, acpReadDefaults, acpSaveDefaults } from '../../acp/providers';
-import { Goose } from '../icons';
 import { Button } from '../ui/button';
+import { ObelusLockup, ObelusMark } from '../brand/ObelusBrand';
+import { ObelusLoader } from '../brand/ObelusLoader';
 import ProviderSelector from './ProviderSelector';
 import OnboardingSuccess from './OnboardingSuccess';
-import {
-  trackOnboardingStarted,
-  trackOnboardingCompleted,
-  trackOnboardingProviderSelected,
-  trackTelemetryPreference,
-  setTelemetryEnabled as setAnalyticsTelemetryEnabled,
-} from '../../utils/analytics';
 import { defineMessages, useIntl } from '../../i18n';
 
 const i18n = defineMessages({
   welcomeTitle: {
     id: 'onboardingGuard.welcomeTitle',
-    defaultMessage: 'Welcome to goose',
+    defaultMessage: 'Welcome to Obelus',
   },
   welcomeDescription: {
     id: 'onboardingGuard.welcomeDescription',
-    defaultMessage: 'Your local AI agent. Connect an AI model provider to get started.',
+    defaultMessage:
+      'A local AI workspace for careful research and clear answers. Connect a model provider to begin.',
   },
   checkProviderErrorTitle: {
     id: 'onboardingGuard.checkProviderErrorTitle',
-    defaultMessage: 'Unable to connect to Goose server',
+    defaultMessage: 'Unable to connect to Obelus',
   },
   checkProviderErrorDescription: {
     id: 'onboardingGuard.checkProviderErrorDescription',
-    defaultMessage: 'The server may be starting up or temporarily unavailable.',
+    defaultMessage: 'The local service may still be starting. Wait a moment, then try again.',
   },
   retry: {
     id: 'onboardingGuard.retry',
     defaultMessage: 'Retry',
+  },
+  checkingProvider: {
+    id: 'onboardingGuard.checkingProvider',
+    defaultMessage: 'Preparing Obelus…',
   },
 });
 
@@ -55,12 +54,10 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
   const [hasProvider, setHasProvider] = useState(false);
   const [checkProviderError, setCheckProviderError] = useState(false);
   const [hasSelection, setHasSelection] = useState(false);
-  const [configuredProvider, setConfiguredProvider] = useState<string | null>(null);
-  const [configuredProviderDisplayName, setConfiguredProviderDisplayName] = useState<string | null>(
-    null
-  );
-  const [configuredModel, setConfiguredModel] = useState<string | null>(null);
-  const hasTrackedOnboardingStart = useRef(false);
+  const [configuredProvider, setConfiguredProvider] = useState<{
+    id: string;
+    displayName: string;
+  } | null>(null);
 
   const checkProvider = async (retries = 3, delay = 1000) => {
     setIsCheckingProvider(true);
@@ -105,56 +102,55 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (!isCheckingProvider && !hasProvider && !checkProviderError && !hasTrackedOnboardingStart.current) {
-      trackOnboardingStarted();
-      hasTrackedOnboardingStart.current = true;
-    }
-  }, [isCheckingProvider, hasProvider, checkProviderError]);
-
   const handleConfigured = async (providerName: string, modelId?: string) => {
-    trackOnboardingProviderSelected({ provider: providerName });
     const providers = await acpListProviderDetails();
     const matchedProvider = providers.find((p) => p.name === providerName);
     const resolvedModel = modelId ?? matchedProvider?.metadata.default_model ?? null;
     await acpSaveDefaults(providerName, resolvedModel);
-    setConfiguredModel(resolvedModel);
     await refreshCurrentModelAndProvider();
-    setConfiguredProvider(providerName);
-    setConfiguredProviderDisplayName(matchedProvider?.metadata.display_name || providerName);
+    setConfiguredProvider({
+      id: providerName,
+      displayName: matchedProvider?.metadata.display_name || providerName,
+    });
   };
 
-  const finishOnboarding = async (telemetryEnabled: boolean) => {
+  const finishOnboarding = async () => {
     try {
-      await upsert(TELEMETRY_CONFIG_KEY, telemetryEnabled, false);
+      await upsert(TELEMETRY_CONFIG_KEY, false, false);
     } catch (error) {
-      console.error('Failed to save telemetry preference:', error);
-    }
-    trackTelemetryPreference(telemetryEnabled, 'onboarding');
-    if (configuredProvider) {
-      trackOnboardingCompleted(configuredProvider, configuredModel ?? undefined);
-    }
-    if (!telemetryEnabled) {
-      setAnalyticsTelemetryEnabled(false);
+      console.error('Failed to disable telemetry:', error);
     }
     navigate('/', { replace: true });
     setHasProvider(true);
   };
 
   if (isCheckingProvider) {
-    return null;
+    return (
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-background-primary text-text-secondary">
+        <ObelusLoader
+          variant="obelus-resolve"
+          className="!h-12 !w-12 text-brand-blue dark:text-brand-aqua"
+          label={intl.formatMessage(i18n.checkingProvider)}
+        />
+        <p className="text-sm">{intl.formatMessage(i18n.checkingProvider)}</p>
+      </div>
+    );
   }
 
   if (checkProviderError) {
     return (
-      <div className="h-screen w-full bg-background-default flex flex-col items-center justify-center">
+      <div className="flex h-screen w-full flex-col items-center justify-center bg-background-primary">
         <div className="text-center max-w-md">
           <div className="mb-4">
-            <Goose className="size-8 mx-auto" />
+            <ObelusMark className="mx-auto size-8" />
           </div>
-          <h1 className="text-xl font-light mb-3">{intl.formatMessage(i18n.checkProviderErrorTitle)}</h1>
-          <p className="text-text-muted mb-6">{intl.formatMessage(i18n.checkProviderErrorDescription)}</p>
-          <Button onClick={() => checkProvider()}>
+          <h1 className="mb-3 text-xl font-semibold">
+            {intl.formatMessage(i18n.checkProviderErrorTitle)}
+          </h1>
+          <p className="mb-6 text-text-secondary">
+            {intl.formatMessage(i18n.checkProviderErrorDescription)}
+          </p>
+          <Button onClick={() => checkProvider()} size="lg">
             {intl.formatMessage(i18n.retry)}
           </Button>
         </div>
@@ -166,27 +162,31 @@ export default function OnboardingGuard({ children }: OnboardingGuardProps) {
     return <>{children}</>;
   }
 
-  if (configuredProviderDisplayName) {
+  if (configuredProvider) {
     return (
-      <OnboardingSuccess providerName={configuredProviderDisplayName} onFinish={finishOnboarding} />
+      <OnboardingSuccess
+        providerName={configuredProvider.displayName}
+        isLocalProvider={configuredProvider.id === 'local'}
+        onFinish={finishOnboarding}
+      />
     );
   }
 
   return (
-    <div className="h-screen w-full bg-background-default overflow-hidden">
+    <div className="h-screen w-full overflow-hidden bg-background-primary">
       <div className="h-full overflow-y-auto">
         <div
-          className={`flex flex-col items-center p-4 pb-8 transition-all duration-500 ease-in-out ${hasSelection ? 'pt-8' : 'pt-[15vh]'}`}
+          className={`flex flex-col items-center p-4 pb-8 transition-all duration-[var(--ob-motion-emphasis)] ease-ob-shift ${hasSelection ? 'pt-8' : 'pt-[15vh]'}`}
         >
           <div className="max-w-2xl w-full mx-auto">
             <div
-              className={`text-left transition-all duration-500 ease-in-out overflow-hidden ${hasSelection ? 'max-h-0 opacity-0 mb-0' : 'max-h-60 opacity-100 mb-8'}`}
+              className={`overflow-hidden text-left transition-all duration-[var(--ob-motion-emphasis)] ease-ob-shift ${hasSelection ? 'max-h-0 opacity-0 mb-0' : 'max-h-60 opacity-100 mb-8'}`}
             >
-              <div className="mb-4">
-                <Goose className="size-8" />
-              </div>
-              <h1 className="text-2xl sm:text-4xl font-light mb-3">{intl.formatMessage(i18n.welcomeTitle)}</h1>
-              <p className="text-text-muted text-base sm:text-lg">
+              <ObelusLockup className="mb-7 h-9" />
+              <h1 className="mb-3 text-2xl font-semibold tracking-[-0.025em] sm:text-4xl">
+                {intl.formatMessage(i18n.welcomeTitle)}
+              </h1>
+              <p className="text-base text-text-secondary sm:text-lg">
                 {intl.formatMessage(i18n.welcomeDescription)}
               </p>
             </div>

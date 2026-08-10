@@ -15,7 +15,7 @@ const i18n = defineMessages({
   description: {
     id: 'externalBackendSection.description',
     defaultMessage:
-      'By default Goose starts a local backend. Use this to connect to an external ACP-compatible backend.',
+      'Obelus starts a local backend by default. Use this setting to connect to an external ACP-compatible backend.',
   },
   useExternalServer: {
     id: 'externalBackendSection.useExternalServer',
@@ -32,7 +32,7 @@ const i18n = defineMessages({
   serverUrlHelp: {
     id: 'externalBackendSection.serverUrlHelp',
     defaultMessage:
-      'Enter the HTTP(S) base URL. Goose checks /status and connects to /acp under this base.',
+      'Enter the HTTP(S) base URL. Obelus checks /status and connects to /acp under this base.',
   },
   secretKey: {
     id: 'externalBackendSection.secretKey',
@@ -61,7 +61,7 @@ const i18n = defineMessages({
   },
   restartNote: {
     id: 'externalBackendSection.restartNote',
-    defaultMessage: 'Changes apply to new chat windows. Restart Goose to update existing windows.',
+    defaultMessage: 'Changes apply to new windows. Restart Obelus to update windows already open.',
   },
   urlProtocolError: {
     id: 'externalBackendSection.urlProtocolError',

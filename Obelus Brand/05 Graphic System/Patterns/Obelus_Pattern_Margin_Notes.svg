@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 512" role="img" aria-labelledby="title desc" >
+  <title id="title">Obelus Margin Notes Pattern</title>
+  <desc id="desc">Editorial pattern derived from obelus marks beside transcript lines.</desc>
+  <rect width="768" height="512" fill="#F7F8FC"/>
+  <rect x="76" width="1" height="512" fill="#FFB2AA"/>
+  <g transform="translate(24 28) scale(.34)" opacity="0.12">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g><line x1="88" y1="39" x2="720" y2="39" stroke="#D9DEEA"/><g transform="translate(24 76) scale(.34)" opacity="0.17">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g><line x1="88" y1="87" x2="720" y2="87" stroke="#D9DEEA"/><g transform="translate(24 124) scale(.34)" opacity="0.22">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g><line x1="88" y1="135" x2="720" y2="135" stroke="#D9DEEA"/><g transform="translate(24 172) scale(.34)" opacity="0.12">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g><line x1="88" y1="183" x2="720" y2="183" stroke="#D9DEEA"/><g transform="translate(24 220) scale(.34)" opacity="0.17">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g><line x1="88" y1="231" x2="720" y2="231" stroke="#D9DEEA"/><g transform="translate(24 268) scale(.34)" opacity="0.22">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g><line x1="88" y1="279" x2="720" y2="279" stroke="#D9DEEA"/><g transform="translate(24 316) scale(.34)" opacity="0.12">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g><line x1="88" y1="327" x2="720" y2="327" stroke="#D9DEEA"/><g transform="translate(24 364) scale(.34)" opacity="0.17">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g><line x1="88" y1="375" x2="720" y2="375" stroke="#D9DEEA"/><g transform="translate(24 412) scale(.34)" opacity="0.22">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g><line x1="88" y1="423" x2="720" y2="423" stroke="#D9DEEA"/><g transform="translate(24 460) scale(.34)" opacity="0.12">  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="5.6"/>
+    <path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle cx="38" cy="50" r="5.6"/>
+  </g></g><line x1="88" y1="471" x2="720" y2="471" stroke="#D9DEEA"/>
+</svg>

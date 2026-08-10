@@ -1,0 +1,15 @@
+Combination,Foreground,Background,Contrast,WCAG AA body,WCAG AA large/UI
+Ink text on Paper,#111528,#F7F8FC,17.03:1,Pass,Pass
+Ink 700 text on Paper,#38415F,#F7F8FC,9.47:1,Pass,Pass
+Ink 600 text on Paper,#515B78,#F7F8FC,6.35:1,Pass,Pass
+Cloud text on Evidence Blue,#FCFCF8,#3B50E0,5.99:1,Pass,Pass
+Ink text on Live Aqua,#111528,#2BC7B9,8.58:1,Pass,Pass
+Ink text on Voice Coral,#111528,#FF7568,6.88:1,Pass,Pass
+Supported on supported background,#08705B,#E0F5EF,5.31:1,Pass,Pass
+Disputed on disputed background,#B12D47,#FCE8ED,5.37:1,Pass,Pass
+Context on context background,#8A4B00,#FFF0CF,6.03:1,Pass,Pass
+Unverified on unverified background,#2F3FB5,#EAECFE,7.17:1,Pass,Pass
+Cloud text on Ink,#FCFCF8,#111528,17.58:1,Pass,Pass
+Ink 300 text on Ink,#B5BBCD,#111528,9.43:1,Pass,Pass
+Blue 400 UI on Ink,#8794F2,#111528,6.50:1,Pass,Pass
+Aqua 300 UI on Ink,#8BE2D9,#111528,12.03:1,Pass,Pass

@@ -664,7 +664,7 @@ export default function ChatInput({
       });
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalTokens, tokenLimit, isTokenLimitLoaded, isLoading, addAlert, clearAlerts]);
 
   // Cleanup effect for component unmount - prevent memory leaks
@@ -1519,7 +1519,7 @@ export default function ChatInput({
               maxHeight: `${maxHeight}px`,
               overflowY: 'auto',
             }}
-            className="w-full outline-none border-none focus:ring-0 bg-transparent px-3 pt-3 pb-1.5 text-sm resize-none text-text-primary placeholder:text-text-secondary"
+            className="w-full resize-none border-none bg-transparent px-3 pb-1.5 pt-3 text-base leading-6 text-text-primary outline-none placeholder:text-text-secondary focus:ring-0"
           />
 
           {/* Recording/transcribing status indicator (floats above the bottom bar) */}
@@ -1528,14 +1528,14 @@ export default function ChatInput({
               <span className="flex items-center gap-2">
                 {isRecording && (
                   <span className="flex items-center gap-1 text-text-secondary">
-                    <span className="inline-block w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                    <span className="inline-block h-2 w-2 rounded-full bg-brand-aqua animate-pulse" />
                     Listening
                   </span>
                 )}
                 {isRecording && isTranscribing && <span className="text-text-secondary">•</span>}
                 {isTranscribing && (
-                  <span className="flex items-center gap-1 text-blue-500">
-                    <span className="inline-block w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                  <span className="flex items-center gap-1 text-brand-blue dark:text-brand-aqua">
+                    <span className="inline-block h-2 w-2 rounded-full bg-brand-blue animate-pulse dark:bg-brand-aqua" />
                     Transcribing
                   </span>
                 )}
@@ -1724,7 +1724,7 @@ export default function ChatInput({
                     variant="ghost"
                     size="sm"
                     shape="round"
-                    className="text-text-primary/70 hover:text-text-primary cursor-pointer transition-colors"
+                    className="!h-11 !w-11 cursor-pointer text-text-primary/70 transition-colors hover:text-text-primary"
                   >
                     <Bug className="w-4 h-4" />
                   </Button>
@@ -1744,7 +1744,7 @@ export default function ChatInput({
                   size="sm"
                   shape="round"
                   className={cn(
-                    'text-text-primary/70 hover:text-text-primary transition-colors',
+                    '!h-11 !w-11 text-text-primary/70 transition-colors hover:text-text-primary',
                     isFilePickerOpen ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
                   )}
                 >
@@ -1781,9 +1781,9 @@ export default function ChatInput({
                 disabled={isTranscribing}
                 aria-disabled={!isEnabled}
                 className={cn(
-                  'transition-colors',
+                  '!h-11 !w-11 transition-colors',
                   isRecording
-                    ? 'text-red-500 hover:text-red-600'
+                    ? 'text-brand-coral hover:text-[#D65348]'
                     : 'text-text-primary/70 hover:text-text-primary',
                   isTranscribing && 'animate-pulse',
                   !isEnabled && 'opacity-50 cursor-not-allowed'
@@ -1811,7 +1811,7 @@ export default function ChatInput({
             shape="round"
             variant="ghost"
             aria-label="Stop"
-            className="bg-background-tertiary text-text-primary hover:bg-background-tertiary/70"
+            className="!h-11 !w-11 bg-brand-ink text-brand-cloud hover:bg-brand-ink/90 dark:bg-brand-cloud dark:text-brand-ink"
           >
             <Stop />
           </Button>
@@ -1828,10 +1828,10 @@ export default function ChatInput({
                   aria-label={intl.formatMessage(i18n.send)}
                   onClick={onFormSubmit}
                   className={cn(
-                    'bg-background-tertiary',
+                    '!h-11 !w-11',
                     isSubmitButtonDisabled
-                      ? 'text-text-secondary cursor-not-allowed opacity-60'
-                      : 'text-text-primary hover:bg-background-tertiary/70 hover:cursor-pointer'
+                      ? 'cursor-not-allowed bg-background-tertiary text-text-secondary opacity-60'
+                      : 'bg-brand-blue text-brand-cloud hover:cursor-pointer hover:bg-brand-blue-dark dark:bg-[#8794F2] dark:text-brand-ink dark:hover:bg-[#AEB6F7]'
                   )}
                 >
                   <ArrowUp className="w-4 h-4" strokeWidth={2.25} />

@@ -1,105 +1,86 @@
-# goose Desktop App
+# Obelus desktop
 
-Native desktop app for goose built with [Electron](https://www.electronjs.org/) and [ReactJS](https://react.dev/). 
+Obelus is a native Electron and React application backed by the Rust `goose` ACP server. The backend name is retained as an internal compatibility boundary; the packaged application, data storage, deep links, and user-facing identity are Obelus.
 
-# Building and running
-goose uses [Hermit](https://github.com/cashapp/hermit) to manage dependencies, so you will need to have it installed and activated.
+## Build and run
 
-```
-git clone git@github.com:aaif-goose/goose.git
-cd goose
+From the repository root:
+
+```bash
 source ./bin/activate-hermit
+cargo build --release -p goose-cli --bin goose
+just run-ui
+```
+
+For renderer-only checks:
+
+```bash
 cd ui/desktop
 pnpm install
-pnpm run start
+pnpm run typecheck
+pnpm run test:run
+pnpm run format:check
 ```
 
-## Platform-specific build requirements
+## Package macOS
+
+```bash
+source ./bin/activate-hermit
+just package-ui
+```
+
+The Apple Silicon bundle is created at `ui/desktop/out/Obelus-darwin-arm64/Obelus.app`. Signing and notarization require the Apple credentials configured in `forge.config.ts`; local ad-hoc development builds do not.
+
+## Platform requirements
 
 ### Linux
-For building on Linux distributions, you'll need additional system dependencies:
 
-**Debian/Ubuntu:**
+Install the packaging tools for your distribution before using Electron Forge makers.
+
 ```bash
+# Debian or Ubuntu
 sudo apt install dpkg fakeroot
-```
 
-**Arch/Manjaro:**
-```bash
-sudo pacman -S dpkg fakeroot
-```
+# Arch or Manjaro
+sudo pacman -S dpkg
 
-**Fedora/RHEL:**
-```bash
+# Fedora or RHEL
 sudo dnf install dpkg-dev fakeroot
 ```
 
-# Building notes
+Build the backend and then run the desired Forge target:
 
-This is an Electron Forge app using Vite and React. The desktop app launches the bundled `goose` CLI binary and talks to its ACP server.
-
-## Building for different platforms
-
-### macOS
-`pnpm run bundle:default` will give you a goose.app/zip which is signed/notarized but only if you set up the env vars as per `forge.config.ts` (you can empty out the section on osxSign if you don't want to sign it) - this will have all defaults.
-
-`pnpm run bundle:preconfigured` will make a goose.app/zip signed and notarized, but use the following:
-
-```python
-            f"        process.env.GOOSE_PROVIDER__TYPE = '{os.getenv("GOOSE_BUNDLE_TYPE")}';",
-            f"        process.env.GOOSE_PROVIDER__HOST = '{os.getenv("GOOSE_BUNDLE_HOST")}';",
-            f"        process.env.GOOSE_PROVIDER__MODEL = '{os.getenv("GOOSE_BUNDLE_MODEL")}';"
-```
-
-This allows you to set for example GOOSE_PROVIDER__TYPE to be "databricks" by default if you want (so when people start goose.app - they will get that out of the box). There is no way to set an api key in that bundling as that would be a terrible idea, so only use providers that can do oauth (like databricks can), otherwise stick to default goose.
-
-### Linux
-For Linux builds, first ensure you have the required system dependencies installed (see above), then:
-
-1. Build the Rust binary:
 ```bash
-cd ../..  # Go to project root
 cargo build --release -p goose-cli --bin goose
-```
-
-2. Copy the binary to the expected location:
-```bash
-mkdir -p src/bin
-cp ../../target/release/goose src/bin/
-```
-
-3. Build the application:
-```bash
-# For ZIP distribution (works on all Linux distributions)
+cd ui/desktop
 pnpm run make --targets=@electron-forge/maker-zip
-
-# For DEB package (Debian/Ubuntu)
-pnpm run make --targets=@electron-forge/maker-deb
-
-# For Flatpak (requires flatpak and flatpak-builder)
-pnpm run make --targets=@electron-forge/maker-flatpak
 ```
-
-The built application will be available in:
-- ZIP: `out/make/zip/linux/x64/goose-linux-x64-{version}.zip`
-- DEB: `out/make/deb/x64/goose_{version}_amd64.deb`
-- Flatpak: `out/make/flatpak/x86_64/*.flatpak`
-- Executable: `out/goose-linux-x64/goose`
 
 ### Windows
-Use the existing Windows build process as documented.
 
+Use the existing Electron Forge Windows build process. The bundled Rust backend remains `goose.exe` internally.
 
-# Running with an external ACP backend
+## External ACP backend
 
-From the project root, start the ACP backend:
-
-```bash
-GOOSE_SERVER__SECRET_KEY=test cargo run -p goose-cli --bin goose -- serve --platform desktop --enable-scheduler --host 127.0.0.1 --port 3000
-```
-
-Then start the desktop app from `ui/desktop`:
+Start a compatible backend from the repository root:
 
 ```bash
-GOOSE_EXTERNAL_BACKEND=true GOOSE_EXTERNAL_BACKEND_URL=http://127.0.0.1:3000 GOOSE_SERVER__SECRET_KEY=test pnpm run start-gui
+GOOSE_SERVER__SECRET_KEY=test cargo run -p goose-cli --bin goose -- serve \
+  --platform desktop --enable-scheduler --host 127.0.0.1 --port 3000
 ```
+
+Then start the renderer:
+
+```bash
+cd ui/desktop
+GOOSE_EXTERNAL_BACKEND=true \
+GOOSE_EXTERNAL_BACKEND_URL=http://127.0.0.1:3000 \
+GOOSE_SERVER__SECRET_KEY=test \
+pnpm run start-gui
+```
+
+`GOOSE_*` configuration names are intentionally supported for backend compatibility. Obelus desktop supplies its own isolated storage root when it launches the bundled backend.
+
+## Upstream
+
+Obelus is derived from [Goose](https://github.com/aaif-goose/goose). Retain upstream attribution when redistributing the application, and label links to [Goose documentation](https://goose-docs.ai/) as upstream documentation until Obelus-specific documentation exists.

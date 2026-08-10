@@ -1,0 +1,14 @@
+:root {
+  --ob-motion-instant: 120ms;
+  --ob-motion-fast: 200ms;
+  --ob-motion-standard: 280ms;
+  --ob-motion-emphasis: 480ms;
+  --ob-loop-compact: 1200ms;
+  --ob-loop-scan: 1350ms;
+  --ob-loop-research: 1600ms;
+  --ob-loop-signature: 1840ms;
+  --ob-ease-enter: cubic-bezier(.16,1,.3,1);
+  --ob-ease-exit: cubic-bezier(.7,0,.84,0);
+  --ob-ease-shift: cubic-bezier(.65,0,.35,1);
+  --ob-ease-refine: cubic-bezier(.25,1,.5,1);
+}

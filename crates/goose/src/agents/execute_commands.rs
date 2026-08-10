@@ -40,7 +40,7 @@ static COMMANDS: &[CommandDef] = &[
     },
     CommandDef {
         name: "doctor",
-        description: "Check that your Goose setup is working",
+        description: "Check that your Obelus setup is working",
     },
     CommandDef {
         name: "goal",

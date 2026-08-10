@@ -1,0 +1,256 @@
+.obelus-loader[data-variant] {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  color: currentColor;
+  overflow: visible;
+}
+
+.obelus-loader-host[data-paused='true'] .obelus-loader * {
+  animation-play-state: paused !important;
+}
+
+.obelus-loader-host[data-paused='true'] .ob-progress-divide .ob-bar,
+.obelus-loader-host[data-paused='true'] .ob-progress-divide .ob-bottom {
+  transition: none;
+}
+
+.ob-base {
+  opacity: 0.24;
+}
+
+.ob-proof-pulse .ob-top {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ob-proof-top var(--ob-loop-compact) infinite;
+}
+
+.ob-proof-pulse .ob-bar {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ob-proof-bar var(--ob-loop-compact) infinite;
+}
+
+.ob-proof-pulse .ob-bottom {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ob-proof-bottom var(--ob-loop-compact) infinite;
+}
+
+.ob-scan-window {
+  animation: ob-scan var(--ob-loop-scan) linear infinite;
+}
+
+.ob-source-pair {
+  transform-box: view-box;
+  transform-origin: 32px 32px;
+  animation: ob-source var(--ob-loop-research) var(--ob-ease-shift) infinite;
+}
+
+.ob-obelus-resolve .ob-bar {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ob-resolve-bar var(--ob-loop-signature) infinite;
+}
+
+.ob-obelus-resolve .ob-top,
+.ob-obelus-resolve .ob-bottom {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.ob-obelus-resolve .ob-top {
+  animation: ob-resolve-top var(--ob-loop-signature) infinite;
+}
+
+.ob-obelus-resolve .ob-bottom {
+  animation: ob-resolve-bottom var(--ob-loop-signature) infinite;
+}
+
+.ob-progress-divide .ob-bar {
+  transform-box: fill-box;
+  transform-origin: left center;
+  transform: scaleX(var(--ob-progress));
+  transition: transform 160ms linear;
+}
+
+.ob-progress-divide .ob-bottom {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.78);
+  transition:
+    opacity 220ms var(--ob-ease-refine),
+    transform 220ms var(--ob-ease-refine);
+}
+
+.obelus-loader[data-complete='true'] .ob-progress-divide .ob-bottom {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes ob-proof-top {
+  0% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  20%,
+  74% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+}
+
+@keyframes ob-proof-bar {
+  0%,
+  12% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  38%,
+  74% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes ob-proof-bottom {
+  0%,
+  30% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  55%,
+  74% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+}
+
+@keyframes ob-scan {
+  0%,
+  10% {
+    transform: translateX(0);
+  }
+  76%,
+  100% {
+    transform: translateX(88px);
+  }
+}
+
+@keyframes ob-source {
+  0%,
+  12% {
+    transform: rotate(0);
+  }
+  88%,
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes ob-resolve-bar {
+  0%,
+  8% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  32%,
+  68% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+}
+
+@keyframes ob-resolve-top {
+  0%,
+  14% {
+    opacity: 0;
+    transform: translateY(-7px) scale(0.72);
+  }
+  40%,
+  68% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateY(-7px) scale(0.72);
+  }
+}
+
+@keyframes ob-resolve-bottom {
+  0%,
+  14% {
+    opacity: 0;
+    transform: translateY(7px) scale(0.72);
+  }
+  40%,
+  68% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateY(7px) scale(0.72);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-loader-pieces,
+  .ob-source-pair,
+  .ob-scan-window {
+    animation: none !important;
+    display: none;
+  }
+
+  .ob-base {
+    opacity: 1;
+  }
+
+  .ob-progress-divide {
+    display: block;
+  }
+
+  .ob-progress-divide .ob-bar,
+  .ob-progress-divide .ob-bottom {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .obelus-loader[data-variant] {
+    color: CanvasText;
+  }
+
+  .ob-base {
+    opacity: 1;
+  }
+
+  .ob-loader-pieces,
+  .ob-source-pair,
+  .ob-scan-window {
+    display: none;
+  }
+}

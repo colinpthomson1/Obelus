@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc" >
+  <title id="title">Echo Obelus</title>
+  <desc id="desc">Obelus logo exploration: Echo Obelus.</desc>
+  <g fill="#3B50E0">
+    <circle cx="26" cy="14" r="4.5"/>
+    <rect x="12" y="27" width="40" height="10" rx="5"/>
+    <circle cx="38" cy="50" r="4.5"/>
+  </g>
+  <g fill="none" stroke="#3B50E0" stroke-width="2.2" stroke-linecap="round">
+    <path d="M15 9A13 13 0 0 1 31 1"/>
+    <path d="M49 55A13 13 0 0 1 33 63"/>
+  </g>
+</svg>

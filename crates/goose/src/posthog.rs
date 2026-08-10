@@ -13,8 +13,8 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex;
 use uuid::Uuid;
 
-const POSTHOG_API_KEY: &str = "phc_RyX5CaY01VtZJCQyhSR5KFh6qimUy81YwxsEpotAftT";
-const POSTHOG_CAPTURE_URL: &str = "https://us.i.posthog.com/capture/";
+const TELEMETRY_API_KEY_ENV: &str = "OBELUS_TELEMETRY_API_KEY";
+const TELEMETRY_CAPTURE_URL_ENV: &str = "OBELUS_TELEMETRY_CAPTURE_URL";
 
 /// Config key for telemetry opt-out preference
 pub const TELEMETRY_ENABLED_KEY: &str = "GOOSE_TELEMETRY_ENABLED";
@@ -48,7 +48,7 @@ pub fn get_telemetry_choice() -> Option<bool> {
 ///
 /// Returns true only if the user has explicitly opted in.
 pub fn is_telemetry_enabled() -> bool {
-    get_telemetry_choice().unwrap_or(false)
+    get_telemetry_choice().unwrap_or(false) && telemetry_destination().is_some()
 }
 
 // ============================================================================
@@ -57,7 +57,7 @@ pub fn is_telemetry_enabled() -> bool {
 
 #[derive(Serialize)]
 struct CaptureEvent {
-    api_key: &'static str,
+    api_key: String,
     event: String,
     distinct_id: String,
     properties: HashMap<String, serde_json::Value>,
@@ -69,8 +69,11 @@ async fn posthog_capture(
     distinct_id: &str,
     properties: HashMap<String, serde_json::Value>,
 ) -> Result<(), String> {
+    let Some((api_key, capture_url)) = telemetry_destination() else {
+        return Ok(());
+    };
     let payload = CaptureEvent {
-        api_key: POSTHOG_API_KEY,
+        api_key,
         event: event_name.to_string(),
         distinct_id: distinct_id.to_string(),
         properties,
@@ -79,7 +82,7 @@ async fn posthog_capture(
 
     let client = reqwest::Client::new();
     client
-        .post(POSTHOG_CAPTURE_URL)
+        .post(capture_url)
         .header("Content-Type", "application/json")
         .json(&payload)
         .send()
@@ -87,6 +90,17 @@ async fn posthog_capture(
         .map_err(|e| format!("{e}"))?;
 
     Ok(())
+}
+
+fn telemetry_destination() -> Option<(String, String)> {
+    let api_key = std::env::var(TELEMETRY_API_KEY_ENV).ok()?;
+    let capture_url = std::env::var(TELEMETRY_CAPTURE_URL_ENV).ok()?;
+    let api_key = api_key.trim();
+    let capture_url = capture_url.trim();
+    if api_key.is_empty() || !capture_url.starts_with("https://") {
+        return None;
+    }
+    Some((api_key.to_string(), capture_url.to_string()))
 }
 
 // ============================================================================
@@ -557,8 +571,10 @@ pub async fn emit_event(
     event_name: &str,
     mut properties: HashMap<String, serde_json::Value>,
 ) -> Result<(), String> {
-    // Only onboarding events are enabled for now. These bypass the telemetry
-    // check so we can track the funnel before the user makes their choice.
+    if !is_telemetry_enabled() {
+        return Ok(());
+    }
+
     let is_onboarding_event =
         event_name.starts_with("onboarding_") || event_name == "telemetry_preference_set";
     if !is_onboarding_event {

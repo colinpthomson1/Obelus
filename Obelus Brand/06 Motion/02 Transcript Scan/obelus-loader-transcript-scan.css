@@ -1,0 +1,17 @@
+/* Transcript Scan implementation wrapper */
+.ob-loader-transcript-scan {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  color: var(--ob-action, #3B50E0);
+  flex: 0 0 auto;
+}
+
+.ob-loader-transcript-scan[aria-hidden="true"] { pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-loader-transcript-scan { animation: none; }
+}
+
+@media (forced-colors: active) {
+  .ob-loader-transcript-scan { color: CanvasText; }
+}

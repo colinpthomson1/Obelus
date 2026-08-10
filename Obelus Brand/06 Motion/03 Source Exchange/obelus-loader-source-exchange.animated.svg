@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="ob-title ob-desc" data-complete="false">
+  <title id="ob-title">Source Exchange</title>
+  <desc id="ob-desc">Accessible decorative preview of the Source Exchange loading animation. Pair with a textual status in production.</desc>
+  <style>
+    :root { color: #3B50E0; }
+    .ob-base { opacity: .24; }
+    .ob-art { fill: currentColor; }
+    @media (forced-colors: active) {
+      :root { color: CanvasText; }
+      .ob-base { opacity: 1; }
+      .ob-animated { display: none; }
+    }
+  </style>
+
+  <style>
+    .ob-source-pair { transform-box:view-box; transform-origin:32px 32px; animation:ob-source 1.6s cubic-bezier(.65,0,.35,1) infinite; }
+    @keyframes ob-source { 0%,12% { transform:rotate(0deg) } 88%,100% { transform:rotate(180deg) } }
+    @media (prefers-reduced-motion: reduce) { .ob-source-pair { animation:none } }
+  </style>
+  <g class="ob-art"><path d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <g class="ob-source-pair"><circle cx="26" cy="14" r="5.6"/><circle cx="38" cy="50" r="5.6"/></g>
+  </g>
+</svg>

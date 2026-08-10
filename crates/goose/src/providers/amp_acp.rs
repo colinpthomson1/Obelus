@@ -23,7 +23,7 @@ impl goose_providers::base::ProviderDescriptor for AmpAcpProvider {
         ProviderMetadata::new(
             AMP_ACP_PROVIDER_NAME,
             "Amp",
-            "Use goose with your Amp subscription via the amp-acp adapter.",
+            "Use Obelus with your Amp subscription via the amp-acp adapter.",
             ACP_CURRENT_MODEL,
             vec![],
             AMP_ACP_DOC_URL,
@@ -33,8 +33,8 @@ impl goose_providers::base::ProviderDescriptor for AmpAcpProvider {
             "Install the Amp CLI: `curl -fsSL https://ampcode.com/install.sh | bash`",
             "Install the ACP adapter: `npm install -g amp-acp`",
             "Ensure your Amp CLI is authenticated (run `amp` to verify)",
-            "Add to your goose config file (`~/.config/goose/config.yaml` on macOS/Linux):\n  GOOSE_PROVIDER: amp-acp\n  GOOSE_MODEL: current\n  amp-acp_configured: true",
-            "Restart goose for changes to take effect",
+            "Add these compatibility settings to `~/.config/goose/config.yaml` on macOS/Linux:\n  GOOSE_PROVIDER: amp-acp\n  GOOSE_MODEL: current\n  amp-acp_configured: true",
+            "Restart Obelus for changes to take effect",
         ])
         .with_model_selection_hint("Use the Amp CLI to configure models")
     }

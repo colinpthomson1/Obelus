@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="ob-title ob-desc" data-complete="false">
+  <title id="ob-title">Proof Pulse</title>
+  <desc id="ob-desc">Accessible decorative preview of the Proof Pulse loading animation. Pair with a textual status in production.</desc>
+  <style>
+    :root { color: #3B50E0; }
+    .ob-base { opacity: .24; }
+    .ob-art { fill: currentColor; }
+    @media (forced-colors: active) {
+      :root { color: CanvasText; }
+      .ob-base { opacity: 1; }
+      .ob-animated { display: none; }
+    }
+  </style>
+
+  <style>
+    .ob-proof-top { transform-box: fill-box; transform-origin: center; animation: ob-proof-top 1.2s infinite; }
+    .ob-proof-bar { transform-box: fill-box; transform-origin: center; animation: ob-proof-bar 1.2s infinite; }
+    .ob-proof-bottom { transform-box: fill-box; transform-origin: center; animation: ob-proof-bottom 1.2s infinite; }
+    @keyframes ob-proof-top {
+      0% { opacity:0; transform:scale(.82) } 20%,74% { opacity:1; transform:scale(1) } 92%,100% { opacity:0; transform:scale(.88) }
+    }
+    @keyframes ob-proof-bar {
+      0%,12% { opacity:0; transform:scaleX(0) } 38%,74% { opacity:1; transform:scaleX(1) } 92%,100% { opacity:0; transform:scaleX(1) }
+    }
+    @keyframes ob-proof-bottom {
+      0%,30% { opacity:0; transform:scale(.82) } 55%,74% { opacity:1; transform:scale(1) } 92%,100% { opacity:0; transform:scale(.88) }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ob-base { opacity:1 }
+      .ob-animated { display:none }
+    }
+  </style>
+  <g class="ob-art ob-base">    <circle class="top " cx="26" cy="14" r="5.6"/>
+    <path class="bar " d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle class="bottom " cx="38" cy="50" r="5.6"/></g>
+  <g class="ob-art ob-animated">
+    <circle class="ob-proof-top" cx="26" cy="14" r="5.6"/>
+    <path class="ob-proof-bar" d="M17 27H45C47.4 27 49.2 28.2 51.4 30.4C52.3 31.3 52.3 32.7 51.4 33.6C49.2 35.8 47.4 37 45 37H17C14.2 37 12 34.8 12 32C12 29.2 14.2 27 17 27Z"/>
+    <circle class="ob-proof-bottom" cx="38" cy="50" r="5.6"/>
+  </g>
+</svg>

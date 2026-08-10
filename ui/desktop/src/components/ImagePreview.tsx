@@ -8,7 +8,7 @@ const i18n = defineMessages({
   },
   altText: {
     id: 'imagePreview.altText',
-    defaultMessage: 'goose image',
+    defaultMessage: 'Image shared with Obelus',
   },
   clickToCollapse: {
     id: 'imagePreview.clickToCollapse',

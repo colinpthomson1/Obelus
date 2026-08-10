@@ -158,7 +158,7 @@ impl<T, E: std::fmt::Display> ResultExt<T> for Result<T, E> {
 }
 
 pub(super) const DEFAULT_PROVIDER_ID: &str = "goose";
-pub(super) const DEFAULT_PROVIDER_LABEL: &str = "Goose (Default)";
+pub(super) const DEFAULT_PROVIDER_LABEL: &str = "Obelus (default)";
 const PROVIDER_CONFIG_STATUS_CHECK_CONCURRENCY: usize = 16;
 
 /// In-memory state for an active ACP session.
@@ -1500,11 +1500,11 @@ impl GooseAcpAgent {
             .mcp_capabilities(McpCapabilities::new().http(true))
             .meta(agent_capabilities_meta());
         Ok(InitializeResponse::new(args.protocol_version)
-            .agent_info(Implementation::new("goose", env!("CARGO_PKG_VERSION")))
+            .agent_info(Implementation::new("obelus", env!("CARGO_PKG_VERSION")))
             .agent_capabilities(capabilities)
             .auth_methods(vec![AuthMethod::Agent(
-                AuthMethodAgent::new("goose-provider", "Configure Provider")
-                    .description("Run `goose configure` to set up your AI provider and API key"),
+                AuthMethodAgent::new("goose-provider", "Configure provider")
+                    .description("Run the compatibility command `goose configure` to set up your model provider and API key"),
             )]))
     }
 
