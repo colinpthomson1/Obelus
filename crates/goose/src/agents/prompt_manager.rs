@@ -533,6 +533,7 @@ mod tests {
         let _guard = env_lock::lock_env([
             ("HOME", Some(temp_root.as_str())),
             ("GOOSE_PATH_ROOT", Some(temp_root.as_str())),
+            ("GOOSE_DOCS_ROOT", None),
         ]);
         let session_manager = Arc::new(SessionManager::new(tmp_dir.path().to_path_buf()));
         let session = session_manager
