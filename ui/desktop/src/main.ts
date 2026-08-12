@@ -2631,12 +2631,15 @@ async function appMain() {
   const obelusSession = session.fromPartition(OBELUS_SESSION_PARTITION);
   const appEntryUrl = getAppUrl();
   const isTrustedRendererUrl = createTrustedRendererUrlPredicate(appEntryUrl);
-  const hostedResearchConfig = resolveHostedResearchDeploymentConfig({
-    OBELUS_GATEWAY_URL: process.env.OBELUS_GATEWAY_URL,
-    OBELUS_AUTH0_ISSUER: process.env.OBELUS_AUTH0_ISSUER,
-    OBELUS_AUTH0_CLIENT_ID: process.env.OBELUS_AUTH0_CLIENT_ID,
-    OBELUS_AUTH0_AUDIENCE: process.env.OBELUS_AUTH0_AUDIENCE,
-  });
+  const hostedResearchConfig = resolveHostedResearchDeploymentConfig(
+    {
+      OBELUS_GATEWAY_URL: process.env.OBELUS_GATEWAY_URL,
+      OBELUS_AUTH0_ISSUER: process.env.OBELUS_AUTH0_ISSUER,
+      OBELUS_AUTH0_CLIENT_ID: process.env.OBELUS_AUTH0_CLIENT_ID,
+      OBELUS_AUTH0_AUDIENCE: process.env.OBELUS_AUTH0_AUDIENCE,
+    },
+    { isPackaged: app.isPackaged }
+  );
 
   const registeredIdentityAdapter = resolveGatewayIdentityAdapter();
   let identityAdapter = registeredIdentityAdapter;

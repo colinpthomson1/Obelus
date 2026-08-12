@@ -21,6 +21,10 @@ export interface HostedResearchDeploymentConfig {
   identityEnvironment: Auth0GatewayIdentityEnvironment;
 }
 
+export interface HostedResearchDeploymentRuntime {
+  isPackaged: boolean;
+}
+
 const bundledPublicConfig = Object.freeze({
   gatewayUrl:
     typeof __OBELUS_PUBLIC_GATEWAY_URL__ === 'string'
@@ -41,21 +45,27 @@ const bundledPublicConfig = Object.freeze({
 });
 
 export function resolveHostedResearchDeploymentConfig(
-  environment: HostedResearchDeploymentEnvironment
+  environment: HostedResearchDeploymentEnvironment,
+  runtime: HostedResearchDeploymentRuntime
 ): HostedResearchDeploymentConfig {
+  const runtimeEnvironment = runtime.isPackaged ? {} : environment;
+
   return {
-    gatewayUrl: configuredValue(environment.OBELUS_GATEWAY_URL, bundledPublicConfig.gatewayUrl),
+    gatewayUrl: configuredValue(
+      runtimeEnvironment.OBELUS_GATEWAY_URL,
+      bundledPublicConfig.gatewayUrl
+    ),
     identityEnvironment: {
       OBELUS_AUTH0_ISSUER: configuredValue(
-        environment.OBELUS_AUTH0_ISSUER,
+        runtimeEnvironment.OBELUS_AUTH0_ISSUER,
         bundledPublicConfig.auth0Issuer
       ),
       OBELUS_AUTH0_CLIENT_ID: configuredValue(
-        environment.OBELUS_AUTH0_CLIENT_ID,
+        runtimeEnvironment.OBELUS_AUTH0_CLIENT_ID,
         bundledPublicConfig.auth0ClientId
       ),
       OBELUS_AUTH0_AUDIENCE: configuredValue(
-        environment.OBELUS_AUTH0_AUDIENCE,
+        runtimeEnvironment.OBELUS_AUTH0_AUDIENCE,
         bundledPublicConfig.auth0Audience
       ),
     },

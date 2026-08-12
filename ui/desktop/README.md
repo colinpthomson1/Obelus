@@ -85,7 +85,7 @@ pnpm run start-gui
 
 The desktop main process supports an Auth0 Native application using Authorization Code with S256 PKCE. Release builds bundle Obelus's public staging gateway, issuer, Native client ID, and audience, so a packaged app launched from Finder or the Start menu does not depend on shell environment variables. None of these public identifiers is a credential.
 
-For local development or tests, runtime environment variables take precedence over the bundled values:
+For unpackaged local development or tests, runtime environment variables take precedence over the bundled values:
 
 ```bash
 OBELUS_GATEWAY_URL=https://your-staging-gateway.example.com
@@ -94,7 +94,7 @@ OBELUS_AUTH0_CLIENT_ID=your-public-native-client-id
 OBELUS_AUTH0_AUDIENCE=urn:obelus:staging:gateway
 ```
 
-Release variants can replace the bundled public values at build time with `OBELUS_BUILD_GATEWAY_URL`, `OBELUS_BUILD_AUTH0_ISSUER`, `OBELUS_BUILD_AUTH0_CLIENT_ID`, and `OBELUS_BUILD_AUTH0_AUDIENCE`. Runtime `OBELUS_*` values remain available as overrides; never use these public configuration fields for client secrets or provider credentials.
+Release variants can replace the bundled public values at build time with `OBELUS_BUILD_GATEWAY_URL`, `OBELUS_BUILD_AUTH0_ISSUER`, `OBELUS_BUILD_AUTH0_CLIENT_ID`, and `OBELUS_BUILD_AUTH0_AUDIENCE`. Packaged applications ignore runtime `OBELUS_GATEWAY_URL` and `OBELUS_AUTH0_*` values so the gateway and token-verification profile cannot be redirected after release. Never use these public configuration fields for client secrets or provider credentials.
 
 Register the exact callback `obelus://auth/callback` and logout callback `obelus://auth/logout`. The Native application must use token-endpoint authentication method `none`, allow only the Authorization Code grant, and issue RS256 gateway access tokens for no more than 600 seconds. Do not configure a client secret or refresh-token grant.
 
