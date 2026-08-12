@@ -265,7 +265,7 @@ mod tests {
                 .description
                 .clone()
                 .unwrap_or_default()
-                .contains("Manage goose's internal scheduled recipe execution"));
+                .contains("Manage Obelus's scheduled recipe execution"));
         }
 
         #[tokio::test]
@@ -315,7 +315,7 @@ mod tests {
                 .description
                 .clone()
                 .unwrap_or_default()
-                .contains("Manage goose's internal scheduled recipe execution"));
+                .contains("Manage Obelus's scheduled recipe execution"));
 
             // Verify the tool has the expected actions in its schema
             if let Some(properties) = tool.input_schema.get("properties") {
