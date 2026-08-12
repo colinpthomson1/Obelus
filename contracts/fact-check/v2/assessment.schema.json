@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://obelus.local/contracts/fact-check/v2/assessment.schema.json",
+  "title": "Obelus canonical fact-check assessment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "policyVersion",
+    "stage",
+    "resolution",
+    "evidenceRelation",
+    "finding",
+    "confidence",
+    "conclusion",
+    "conclusionCitationIds",
+    "statements",
+    "supports",
+    "contradictions",
+    "caveats",
+    "limitations",
+    "sources",
+    "changeExplanation",
+    "originalQuote",
+    "normalizedClaim",
+    "inventory",
+    "completedAt",
+    "aiGenerated"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "2.0.0" },
+    "policyVersion": { "const": "obelus-assessment-policy/2.0.0" },
+    "stage": { "enum": ["preliminary", "deep"] },
+    "resolution": { "enum": ["resolved", "unresolved"] },
+    "evidenceRelation": {
+      "enum": ["supports", "contradicts", "qualified", "conflicts", "none"]
+    },
+    "finding": {
+      "enum": ["supported", "disputed", "needs_context", "unverified"]
+    },
+    "confidence": { "enum": ["low", "medium", "high"] },
+    "conclusion": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "conclusionCitationIds": {
+      "type": "array",
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/citationId" }
+    },
+    "statements": {
+      "type": "array",
+      "maxItems": 16,
+      "items": { "$ref": "#/$defs/citedStatement" }
+    },
+    "supports": {
+      "type": "array",
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/citedStatement" }
+    },
+    "contradictions": {
+      "type": "array",
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/citedStatement" }
+    },
+    "caveats": {
+      "type": "array",
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/citedStatement" }
+    },
+    "limitations": {
+      "type": "array",
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/citedStatement" }
+    },
+    "sources": {
+      "type": "array",
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/sourceAssessment" }
+    },
+    "changeExplanation": {
+      "oneOf": [{ "$ref": "#/$defs/citedStatement" }, { "type": "null" }]
+    },
+    "originalQuote": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "normalizedClaim": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "inventory": {
+      "type": "array",
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/evidenceItem" }
+    },
+    "completedAt": { "type": "string", "format": "date-time" },
+    "aiGenerated": { "const": true }
+  },
+  "$defs": {
+    "citationId": { "type": "string", "pattern": "^src_[1-9][0-9]*$" },
+    "citedStatement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "citationIds"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1, "maxLength": 1500 },
+        "citationIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/citationId" }
+        }
+      }
+    },
+    "sourceAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "citationId",
+        "stance",
+        "qualityScore",
+        "qualityRationale",
+        "authority",
+        "directness",
+        "addressesClaim",
+        "timeScopeMatch"
+      ],
+      "properties": {
+        "citationId": { "$ref": "#/$defs/citationId" },
+        "stance": {
+          "enum": [
+            "supports",
+            "contradicts",
+            "qualifies",
+            "conflicts",
+            "neutral"
+          ]
+        },
+        "qualityScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "qualityRationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        },
+        "authority": {
+          "enum": ["authoritative", "credible", "limited", "unknown"]
+        },
+        "directness": { "enum": ["direct", "indirect"] },
+        "addressesClaim": { "type": "boolean" },
+        "timeScopeMatch": { "type": "boolean" }
+      }
+    },
+    "evidenceItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "citationId",
+        "url",
+        "canonicalUrl",
+        "publisher",
+        "title",
+        "publicationDate",
+        "accessedAt",
+        "excerpt",
+        "excerptType",
+        "sourceType",
+        "retrievalStage"
+      ],
+      "properties": {
+        "citationId": { "$ref": "#/$defs/citationId" },
+        "url": { "type": "string", "format": "uri" },
+        "canonicalUrl": { "type": "string", "format": "uri" },
+        "publisher": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "publicationDate": {
+          "oneOf": [{ "type": "string", "maxLength": 64 }, { "type": "null" }]
+        },
+        "accessedAt": { "type": "string", "format": "date-time" },
+        "excerpt": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "excerptType": { "enum": ["search_snippet", "page_extract"] },
+        "sourceType": {
+          "enum": [
+            "government",
+            "academic",
+            "official",
+            "primary",
+            "secondary",
+            "unknown"
+          ]
+        },
+        "retrievalStage": { "enum": ["preliminary", "deep"] }
+      }
+    }
+  }
+}

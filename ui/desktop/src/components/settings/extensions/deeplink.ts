@@ -1,6 +1,7 @@
 import type { ExtensionConfig } from '../../../types/extensions';
 import { toastService } from '../../../toasts';
 import { DEFAULT_EXTENSION_TIMEOUT } from './utils';
+import { isSupportedProductDeepLink } from '../../../utils/deepLinks';
 
 /**
  * Build an extension config for stdio from the deeplink URL
@@ -13,15 +14,7 @@ function getStdioConfig(
   timeout: number
 ) {
   // Validate that the command is one of the allowed commands
-  const allowedCommands = [
-    'cu',
-    'docker',
-    'jbang',
-    'npx',
-    'uvx',
-    'goose',
-    'npx.cmd',
-  ];
+  const allowedCommands = ['cu', 'docker', 'jbang', 'npx', 'uvx', 'goose', 'npx.cmd'];
   if (!allowedCommands.includes(cmd)) {
     toastService.handleError(
       'Invalid Command',
@@ -104,10 +97,10 @@ export async function addExtensionFromDeepLink(
 ) {
   const parsedUrl = new URL(url);
 
-  if (parsedUrl.protocol !== 'goose:') {
+  if (!isSupportedProductDeepLink(url, 'extension')) {
     toastService.handleError(
       'Invalid Protocol',
-      'Failed to install extension: Invalid protocol: URL must use the goose:// scheme',
+      'Failed to install extension: Invalid protocol: URL must use the obelus:// scheme',
       { shouldThrow: true }
     );
   }

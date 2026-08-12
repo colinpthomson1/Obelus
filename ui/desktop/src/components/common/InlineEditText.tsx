@@ -32,6 +32,8 @@ interface InlineEditTextProps {
   editClassName?: string;
   onEditStart?: () => void;
   onEditEnd?: () => void;
+  onActivate?: () => void;
+  ariaCurrent?: React.AriaAttributes['aria-current'];
   allowEmpty?: boolean;
   singleClickEdit?: boolean;
 }
@@ -46,6 +48,8 @@ export const InlineEditText: React.FC<InlineEditTextProps> = ({
   editClassName = '',
   onEditStart,
   onEditEnd,
+  onActivate,
+  ariaCurrent,
   allowEmpty = false,
   singleClickEdit = true,
 }) => {
@@ -55,6 +59,8 @@ export const InlineEditText: React.FC<InlineEditTextProps> = ({
   const [editValue, setEditValue] = useState(value);
   const [isSaving, setIsSaving] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const viewRef = useRef<globalThis.HTMLButtonElement>(null);
+  const restoreFocusAfterEdit = useRef(false);
   const originalValue = useRef(value);
 
   useEffect(() => {
@@ -71,8 +77,16 @@ export const InlineEditText: React.FC<InlineEditTextProps> = ({
     }
   }, [isEditing]);
 
+  useEffect(() => {
+    if (!isEditing && restoreFocusAfterEdit.current) {
+      restoreFocusAfterEdit.current = false;
+      viewRef.current?.focus();
+    }
+  }, [isEditing]);
+
   const handleStartEdit = useCallback(() => {
     if (disabled || isSaving) return;
+    restoreFocusAfterEdit.current = true;
     setIsEditing(true);
     setEditValue(value);
     onEditStart?.();
@@ -142,8 +156,20 @@ export const InlineEditText: React.FC<InlineEditTextProps> = ({
   }, []);
 
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.MouseEvent<HTMLButtonElement>) => {
       if (singleClickEdit) {
+        e.stopPropagation();
+        handleStartEdit();
+      } else {
+        onActivate?.();
+      }
+    },
+    [singleClickEdit, handleStartEdit, onActivate]
+  );
+
+  const handleDoubleClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (!singleClickEdit) {
         e.stopPropagation();
         handleStartEdit();
       }
@@ -151,14 +177,15 @@ export const InlineEditText: React.FC<InlineEditTextProps> = ({
     [singleClickEdit, handleStartEdit]
   );
 
-  const handleDoubleClick = useCallback(
-    (e: React.MouseEvent) => {
-      if (!singleClickEdit) {
+  const handleViewKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (e.key === 'F2' && !disabled) {
+        e.preventDefault();
         e.stopPropagation();
         handleStartEdit();
       }
     },
-    [singleClickEdit, handleStartEdit]
+    [disabled, handleStartEdit]
   );
 
   if (isEditing) {
@@ -175,9 +202,9 @@ export const InlineEditText: React.FC<InlineEditTextProps> = ({
         disabled={isSaving}
         className={`
           w-full px-2 py-1 border rounded
-          bg-background-primary text-text-standard
-          border-blue-500 ring-2 ring-blue-500/20
-          focus:outline-none focus:ring-2 focus:ring-blue-500/40
+          bg-background-primary text-text-primary
+          border-border-info ring-2 ring-ring-primary/20
+          focus:outline-none focus:ring-2 focus:ring-ring-primary
           disabled:opacity-50 disabled:cursor-not-allowed
           ${editClassName}
         `}
@@ -187,19 +214,30 @@ export const InlineEditText: React.FC<InlineEditTextProps> = ({
   }
 
   return (
-    <div
+    <button
+      ref={viewRef}
+      type="button"
       className={`
-        cursor-pointer px-2 py-1 rounded
-        hover:bg-background-hover
+        w-full cursor-pointer rounded border-0 bg-transparent px-2 py-1 text-left text-text-primary
+        hover:bg-background-secondary
         transition-colors
-        ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+        ${disabled ? 'opacity-60' : ''}
         ${className}
       `}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
-      title={disabled ? '' : singleClickEdit ? intl.formatMessage(i18n.clickToEdit) : intl.formatMessage(i18n.doubleClickToEdit)}
+      onKeyDown={handleViewKeyDown}
+      aria-keyshortcuts={disabled ? undefined : 'F2'}
+      aria-current={ariaCurrent}
+      title={
+        disabled
+          ? ''
+          : singleClickEdit
+            ? intl.formatMessage(i18n.clickToEdit)
+            : intl.formatMessage(i18n.doubleClickToEdit)
+      }
     >
-      {value || <span className="text-text-subtle italic">{resolvedPlaceholder}</span>}
-    </div>
+      {value || <span className="italic text-text-tertiary">{resolvedPlaceholder}</span>}
+    </button>
   );
 };

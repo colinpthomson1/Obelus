@@ -1,8 +1,7 @@
 import GooseLogo from './GooseLogo';
-import AnimatedIcons from './AnimatedIcons';
-import FlyingBird from './FlyingBird';
 import { ChatState } from '../types/chatState';
 import { defineMessages, useIntl } from '../i18n';
+import { ObelusLoader } from './brand/ObelusLoader';
 
 interface LoadingGooseProps {
   message?: string;
@@ -12,44 +11,42 @@ interface LoadingGooseProps {
 const i18n = defineMessages({
   loadingConversation: {
     id: 'loadingGoose.loadingConversation',
-    defaultMessage: 'loading conversation...',
+    defaultMessage: 'Opening the research thread…',
   },
   thinking: {
     id: 'loadingGoose.thinking',
-    defaultMessage: 'goose is thinking…',
+    defaultMessage: 'Obelus is examining the request…',
   },
   streaming: {
     id: 'loadingGoose.streaming',
-    defaultMessage: 'goose is working on it…',
+    defaultMessage: 'Obelus is building the response…',
   },
   waiting: {
     id: 'loadingGoose.waiting',
-    defaultMessage: 'goose is waiting…',
+    defaultMessage: 'Waiting for your direction…',
   },
   compacting: {
     id: 'loadingGoose.compacting',
-    defaultMessage: 'goose is compacting the conversation...',
+    defaultMessage: 'Refining the conversation…',
   },
   idle: {
     id: 'loadingGoose.idle',
-    defaultMessage: 'goose is working on it…',
+    defaultMessage: 'Ready',
   },
   restartingAgent: {
     id: 'loadingGoose.restartingAgent',
-    defaultMessage: 'restarting session...',
+    defaultMessage: 'Restarting the session…',
   },
 });
 
 const STATE_ICONS: Record<ChatState, React.ReactNode> = {
-  [ChatState.LoadingConversation]: <AnimatedIcons className="flex-shrink-0" cycleInterval={600} />,
-  [ChatState.Thinking]: <AnimatedIcons className="flex-shrink-0" cycleInterval={600} />,
-  [ChatState.Streaming]: <FlyingBird className="flex-shrink-0" cycleInterval={150} />,
-  [ChatState.WaitingForUserInput]: (
-    <AnimatedIcons className="flex-shrink-0" cycleInterval={600} variant="waiting" />
-  ),
-  [ChatState.Compacting]: <AnimatedIcons className="flex-shrink-0" cycleInterval={600} />,
+  [ChatState.LoadingConversation]: <ObelusLoader variant="obelus-resolve" announce={false} />,
+  [ChatState.Thinking]: <ObelusLoader variant="proof-pulse" announce={false} />,
+  [ChatState.Streaming]: <ObelusLoader variant="proof-pulse" announce={false} />,
+  [ChatState.WaitingForUserInput]: <GooseLogo size="small" hover={false} />,
+  [ChatState.Compacting]: <ObelusLoader variant="obelus-resolve" announce={false} />,
   [ChatState.Idle]: <GooseLogo size="small" hover={false} />,
-  [ChatState.RestartingAgent]: <AnimatedIcons className="flex-shrink-0" cycleInterval={600} />,
+  [ChatState.RestartingAgent]: <ObelusLoader variant="proof-pulse" announce={false} />,
 };
 
 const STATE_MESSAGE_KEYS: Record<ChatState, keyof typeof i18n> = {
@@ -68,10 +65,10 @@ const LoadingGoose = ({ message, chatState = ChatState.Idle }: LoadingGooseProps
   const icon = STATE_ICONS[chatState];
 
   return (
-    <div className="w-full animate-fade-slide-up">
+    <div className="w-full animate-fade-slide-up" aria-live="polite">
       <div
         data-testid="loading-indicator"
-        className="flex items-center gap-2 text-xs text-text-primary py-2"
+        className="flex items-center gap-2 py-2 font-mono text-xs text-text-secondary"
       >
         {icon}
         {displayMessage}

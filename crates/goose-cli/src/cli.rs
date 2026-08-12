@@ -586,7 +586,7 @@ enum SessionCommand {
     )]
     Import {
         #[arg(
-            help = "Path to a goose session export, a Claude Code, Codex, or Pi .jsonl transcript, or a goose://sessions/nostr share link"
+            help = "Path to a goose session export, a Claude Code, Codex, or Pi .jsonl transcript, or an obelus://sessions/nostr share link"
         )]
         input: String,
 
@@ -759,8 +759,8 @@ enum RecipeCommand {
         params: Vec<String>,
     },
 
-    /// Open a recipe in Goose Desktop
-    #[command(about = "Open a recipe in Goose Desktop")]
+    /// Open a recipe in Obelus Desktop
+    #[command(about = "Open a recipe in Obelus Desktop")]
     Open {
         /// Recipe name to get recipe file to open
         #[arg(help = "recipe name or full path to the recipe file")]
@@ -799,6 +799,9 @@ enum RecipeCommand {
 
 #[derive(Subcommand)]
 enum Command {
+    #[command(name = "live-fact-check-model", hide = true)]
+    LiveFactCheckModel {},
+
     /// Configure goose settings
     #[command(about = "Configure goose settings")]
     Configure {},
@@ -1331,6 +1334,7 @@ pub struct InputConfig {
 
 fn get_command_name(command: &Option<Command>) -> &'static str {
     match command {
+        Some(Command::LiveFactCheckModel {}) => "live-fact-check-model",
         Some(Command::Configure {}) => "configure",
         Some(Command::Doctor {}) => "doctor",
         Some(Command::Info { .. }) => "info",
@@ -2223,6 +2227,9 @@ pub async fn cli() -> anyhow::Result<()> {
     );
 
     match cli.command {
+        Some(Command::LiveFactCheckModel {}) => {
+            crate::commands::live_fact_check_model::handle_live_fact_check_model().await
+        }
         Some(Command::Completion { shell, bin_name }) => {
             let mut cmd = Cli::command();
             shell.generate(&mut cmd, &bin_name, &mut std::io::stdout());
@@ -2395,6 +2402,18 @@ mod tests {
             }) => {}
             _ => panic!("expected nu completion shell"),
         }
+    }
+
+    #[test]
+    fn hidden_live_fact_check_model_worker_command_parses() {
+        let cli = Cli::try_parse_from(["goose", "live-fact-check-model"]).expect("parse failed");
+        assert!(matches!(cli.command, Some(Command::LiveFactCheckModel {})));
+
+        let mut command = Cli::command();
+        let worker = command
+            .find_subcommand_mut("live-fact-check-model")
+            .expect("worker command");
+        assert!(worker.is_hide_set());
     }
 
     #[test]

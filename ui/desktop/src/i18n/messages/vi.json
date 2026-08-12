@@ -17,6 +17,9 @@
   "appLayout.openNavigation": {
     "defaultMessage": "Mở điều hướng"
   },
+  "appLayout.resizeNavigation": {
+    "defaultMessage": "Resize navigation"
+  },
   "appsView.customApp": {
     "defaultMessage": "Ứng dụng tùy chỉnh"
   },
@@ -27,7 +30,7 @@
     "defaultMessage": "Delete \"{name}\"? This cannot be undone."
   },
   "appsView.description": {
-    "defaultMessage": "Các ứng dụng từ máy chủ MCP của bạn và các ứng dụng do goose tự tạo. Bạn có thể yêu cầu nó tạo ứng dụng mới thông qua giao diện trò chuyện và chúng sẽ xuất hiện ở đây."
+    "defaultMessage": "Applications from your MCP servers and apps built through Obelus. Ask Obelus to create an app and it will appear here."
   },
   "appsView.errorLoading": {
     "defaultMessage": "Lỗi khi tải ứng dụng: {error}"
@@ -45,7 +48,7 @@
     "defaultMessage": "Đang tải ứng dụng..."
   },
   "appsView.noAppsDescription": {
-    "defaultMessage": "Mở một cuộc trò chuyện và yêu cầu goose tạo ứng dụng bạn muốn. Nó có thể tạo cho bạn và ứng dụng sẽ xuất hiện ở đây. Hoặc nếu ai đó đã chia sẻ một ứng dụng, bạn có thể nhập nó bằng nút phía trên."
+    "defaultMessage": "Open a thread and ask Obelus to build the app you need. You can also import an app that someone shared with you."
   },
   "appsView.noAppsTitle": {
     "defaultMessage": "Không có ứng dụng nào"
@@ -84,7 +87,7 @@
     "defaultMessage": "Đã xóa thông tin xác thực"
   },
   "authSettings.description": {
-    "defaultMessage": "Quản lý thông tin xác thực nhà cung cấp được goose lưu trữ cục bộ."
+    "defaultMessage": "Manage provider credentials stored locally by Obelus."
   },
   "authSettings.empty": {
     "defaultMessage": "Không tìm thấy thông tin xác thực nhà cung cấp nào được lưu trữ cục bộ."
@@ -168,10 +171,10 @@
     "defaultMessage": "Khởi chạy"
   },
   "chat.notification.taskComplete.body": {
-    "defaultMessage": "Nhấp vào đây để đưa Goose trở lại tiêu điểm."
+    "defaultMessage": "Click to bring Obelus back into focus."
   },
   "chat.notification.taskComplete.title": {
-    "defaultMessage": "Goose đã hoàn thành tác vụ."
+    "defaultMessage": "Obelus finished the task."
   },
   "chatInput.contextWindow": {
     "defaultMessage": "Cửa sổ ngữ cảnh"
@@ -183,7 +186,7 @@
     "defaultMessage": "Không thể đọc tệp hình ảnh"
   },
   "chatInput.navigationShortcut": {
-    "defaultMessage": "{prefix}↑/{prefix}↓ để điều hướng tin nhắn"
+    "defaultMessage": "Ask Obelus anything · {prefix}↑/{prefix}↓ for history"
   },
   "chatInput.processingDroppedFiles": {
     "defaultMessage": "Đang xử lý các tệp đã thả..."
@@ -222,13 +225,13 @@
     "defaultMessage": "Đang chờ lưu hình ảnh..."
   },
   "chatSettings.modeDescription": {
-    "defaultMessage": "Chọn chế độ mặc định mà Goose sử dụng cho các phiên mới. Các phiên hiện có vẫn giữ chế độ hiện tại của chúng."
+    "defaultMessage": "Choose the default mode Obelus uses for new sessions. Existing sessions keep their current mode."
   },
   "chatSettings.modeTitle": {
     "defaultMessage": "Chế độ mặc định"
   },
   "chatSettings.responseStylesDescription": {
-    "defaultMessage": "Chọn cách Goose định dạng và tạo phong cách cho các phản hồi của mình"
+    "defaultMessage": "Choose how Obelus formats and styles its responses"
   },
   "chatSettings.responseStylesTitle": {
     "defaultMessage": "Phong cách phản hồi"
@@ -249,10 +252,10 @@
     "defaultMessage": "Trình chỉnh sửa cấu hình"
   },
   "configSettings.description": {
-    "defaultMessage": "Chỉnh sửa cài đặt cấu hình goose của bạn"
+    "defaultMessage": "Edit your Obelus configuration settings"
   },
   "configSettings.descriptionWithProvider": {
-    "defaultMessage": "Chỉnh sửa cài đặt cấu hình goose của bạn (cài đặt hiện tại cho {provider})"
+    "defaultMessage": "Edit your Obelus configuration settings (current provider: {provider})"
   },
   "configSettings.done": {
     "defaultMessage": "Xong"
@@ -324,7 +327,7 @@
     "defaultMessage": "Số lượt tối đa"
   },
   "conversationLimitsDropdown.maxTurnsDescription": {
-    "defaultMessage": "Số lượt tác nhân tối đa trước khi Goose yêu cầu người dùng nhập liệu"
+    "defaultMessage": "Maximum agent turns before Obelus asks for your input"
   },
   "costTracker.costUnavailable": {
     "defaultMessage": "Không có dữ liệu chi phí cho {model} ({inputTokens} token đầu vào, {outputTokens} token đầu ra)"
@@ -366,7 +369,7 @@
     "defaultMessage": "Đang tạo deeplink..."
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Tìm hiểu thêm"
+    "defaultMessage": "Upstream recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Đã lưu và khởi chạy công thức thành công"
@@ -777,7 +780,7 @@
     "defaultMessage": "Chỉnh sửa thiết lập {name}"
   },
   "defaultCardButtons.getStarted": {
-    "defaultMessage": "Bắt đầu với goose!"
+    "defaultMessage": "Use with Obelus"
   },
   "defaultProviderSetupForm.apiHostLabel": {
     "defaultMessage": "Máy chủ API"
@@ -936,7 +939,7 @@
     "defaultMessage": "Yêu cầu thông tin đã bị hủy."
   },
   "elicitationRequest.defaultMessage": {
-    "defaultMessage": "Goose cần một số thông tin từ bạn."
+    "defaultMessage": "Obelus needs a little more information."
   },
   "elicitationRequest.expired": {
     "defaultMessage": "Yêu cầu này đã hết hạn. Tiện ích mở rộng sẽ cần hỏi lại."
@@ -981,10 +984,10 @@
     "defaultMessage": "Đã xảy ra lỗi."
   },
   "errorBoundary.errorWithVersion": {
-    "defaultMessage": "Đã xảy ra lỗi trong Goose v{version}."
+    "defaultMessage": "An error occurred in Obelus v{version}."
   },
   "errorBoundary.heading": {
-    "defaultMessage": "Honk!"
+    "defaultMessage": "Something interrupted the thread"
   },
   "errorBoundary.reload": {
     "defaultMessage": "Tải lại"
@@ -1146,7 +1149,7 @@
     "defaultMessage": "Thêm tiện ích mở rộng"
   },
   "extensionsSection.browseExtensions": {
-    "defaultMessage": "Duyệt tiện ích mở rộng"
+    "defaultMessage": "Upstream extension guide"
   },
   "extensionsSection.saveChanges": {
     "defaultMessage": "Lưu thay đổi"
@@ -1161,13 +1164,13 @@
     "defaultMessage": "Thêm tiện ích mở rộng"
   },
   "extensionsView.browseExtensions": {
-    "defaultMessage": "Duyệt tiện ích mở rộng"
+    "defaultMessage": "Upstream extension guide"
   },
   "extensionsView.defaultNote": {
     "defaultMessage": "Các tiện ích mở rộng được bật ở đây sẽ được dùng làm mặc định cho các cuộc trò chuyện mới. Bạn cũng có thể bật/tắt các tiện ích mở rộng đang hoạt động trong khi trò chuyện."
   },
   "extensionsView.description": {
-    "defaultMessage": "Các tiện ích mở rộng này sử dụng Model Context Protocol (MCP). Chúng có thể mở rộng khả năng của Goose bằng ba thành phần chính: Lời nhắc, Tài nguyên và Công cụ. {searchShortcut} để tìm kiếm."
+    "defaultMessage": "Extensions use the Model Context Protocol (MCP) to add prompts, resources, and tools to Obelus. {searchShortcut} to search."
   },
   "extensionsView.heading": {
     "defaultMessage": "Tiện ích mở rộng"
@@ -1185,19 +1188,19 @@
     "defaultMessage": "AA:BB:CC:... hoặc sha256/base64"
   },
   "externalBackendSection.description": {
-    "defaultMessage": "Theo mặc định goose khởi chạy một máy chủ cho bạn, hãy dùng tùy chọn này để kết nối tới một máy chủ goose bên ngoài"
+    "defaultMessage": "Obelus starts a local backend by default. Use this setting to connect to an external ACP-compatible backend."
   },
   "externalBackendSection.fingerprintRequiresHttps": {
     "defaultMessage": "Certificate fingerprint requires an https URL"
   },
   "externalBackendSection.restartNote": {
-    "defaultMessage": "Các thay đổi cần khởi động lại Goose để có hiệu lực. Các cửa sổ trò chuyện mới sẽ kết nối tới máy chủ bên ngoài."
+    "defaultMessage": "Changes apply to new windows. Restart Obelus to update windows already open."
   },
   "externalBackendSection.secretKey": {
     "defaultMessage": "Khóa bí mật"
   },
   "externalBackendSection.secretKeyHelp": {
-    "defaultMessage": "Khóa bí mật được cấu hình trên máy chủ Goose (GOOSE_SERVER__SECRET_KEY)"
+    "defaultMessage": "Khóa bí mật được cấu hình trên máy chủ Obelus (GOOSE_SERVER__SECRET_KEY)"
   },
   "externalBackendSection.secretKeyPlaceholder": {
     "defaultMessage": "Nhập khóa bí mật của máy chủ"
@@ -1206,10 +1209,10 @@
     "defaultMessage": "URL máy chủ"
   },
   "externalBackendSection.serverUrlHelp": {
-    "defaultMessage": "Enter the HTTP(S) base URL. Goose checks /status and connects to /acp under this base."
+    "defaultMessage": "Enter the HTTP(S) base URL. Obelus checks /status and connects to /acp under this base."
   },
   "externalBackendSection.title": {
-    "defaultMessage": "Máy chủ Goose"
+    "defaultMessage": "Máy chủ Obelus"
   },
   "externalBackendSection.urlBaseError": {
     "defaultMessage": "URL must be the backend base URL before /acp, without query parameters or fragments"
@@ -1224,7 +1227,7 @@
     "defaultMessage": "Sử dụng máy chủ bên ngoài"
   },
   "externalBackendSection.useExternalServerDescription": {
-    "defaultMessage": "Kết nối tới một máy chủ goose đang chạy ở nơi khác (cần khởi động lại ứng dụng)"
+    "defaultMessage": "Kết nối tới một máy chủ Obelus đang chạy ở nơi khác (cần khởi động lại ứng dụng)"
   },
   "goosehintsModal.close": {
     "defaultMessage": "Đóng"
@@ -1233,7 +1236,7 @@
     "defaultMessage": "Nhà phát triển"
   },
   "goosehintsModal.dialogDescription": {
-    "defaultMessage": "Cung cấp thêm ngữ cảnh về dự án của bạn để cải thiện giao tiếp với Goose"
+    "defaultMessage": "Provide project context to help Obelus respond more precisely"
   },
   "goosehintsModal.dialogTitle": {
     "defaultMessage": "Cấu hình gợi ý dự án (.goosehints)"
@@ -1254,7 +1257,7 @@
     "defaultMessage": "Đã tìm thấy tệp .goosehints tại: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".goosehints là một tệp văn bản dùng để cung cấp thêm ngữ cảnh về dự án của bạn và cải thiện giao tiếp với Goose."
+    "defaultMessage": ".goosehints is a compatibility file that gives Obelus additional context about your project."
   },
   "goosehintsModal.helpText2": {
     "defaultMessage": "Hãy đảm bảo tiện ích mở rộng {bold} được bật trong trang tiện ích mở rộng. Tiện ích mở rộng này là bắt buộc để sử dụng .goosehints. Bạn cần khởi động lại phiên để các cập nhật .goosehints có hiệu lực."
@@ -1263,7 +1266,7 @@
     "defaultMessage": "Xem {link} để biết thêm thông tin."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "cách sử dụng .goosehints"
+    "defaultMessage": "the upstream .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Nhập gợi ý dự án ở đây..."
@@ -1281,13 +1284,13 @@
     "defaultMessage": "Cấu hình"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Cấu hình tệp .goosehints của dự án để cung cấp thêm ngữ cảnh cho Goose"
+    "defaultMessage": "Configure your project's compatible .goosehints file to give Obelus additional context"
   },
   "goosehintsSection.title": {
     "defaultMessage": "Gợi ý dự án (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
-    "defaultMessage": "Hỏi goose"
+    "defaultMessage": "Ask Obelus"
   },
   "groupedExtensionLoadingToast.collapseDetails": {
     "defaultMessage": "Thu gọn chi tiết"
@@ -1346,14 +1349,38 @@
   "headersSection.value": {
     "defaultMessage": "Giá trị"
   },
-  "hub.goodAfternoon": {
-    "defaultMessage": "Chào buổi chiều"
+  "hub.capabilityBuild": {
+    "defaultMessage": "Build"
   },
-  "hub.goodEvening": {
-    "defaultMessage": "Chào buổi tối"
+  "hub.capabilityBuildDescription": {
+    "defaultMessage": "Write code, automate tasks, and use tools"
   },
-  "hub.goodMorning": {
-    "defaultMessage": "Chào buổi sáng"
+  "hub.capabilityCreate": {
+    "defaultMessage": "Create"
+  },
+  "hub.capabilityCreateDescription": {
+    "defaultMessage": "Draft, revise, explain, and structure ideas"
+  },
+  "hub.capabilityResearch": {
+    "defaultMessage": "Research"
+  },
+  "hub.capabilityResearchDescription": {
+    "defaultMessage": "Find, compare, and synthesize information"
+  },
+  "hub.category": {
+    "defaultMessage": "Evidence-led AI workspace"
+  },
+  "hub.description": {
+    "defaultMessage": "Bring a question, document, or task. Obelus can research, reason, write, code, and work with the tools you connect—keeping the work visible in the conversation."
+  },
+  "hub.headline": {
+    "defaultMessage": "What should we examine?"
+  },
+  "hub.privacy": {
+    "defaultMessage": "Your files stay on this device unless you choose to share them with a model or connected tool."
+  },
+  "hub.startThread": {
+    "defaultMessage": "Start a new research thread"
   },
   "huggingFaceModelSearch.download": {
     "defaultMessage": "Tải xuống"
@@ -1407,7 +1434,7 @@
     "defaultMessage": "Hugging Face"
   },
   "imagePreview.altText": {
-    "defaultMessage": "hình ảnh goose"
+    "defaultMessage": "Image shared with Obelus"
   },
   "imagePreview.clickToCollapse": {
     "defaultMessage": "Nhấp để thu gọn"
@@ -1422,10 +1449,10 @@
     "defaultMessage": "Hủy"
   },
   "importRecipeForm.deeplinkHint": {
-    "defaultMessage": "Dán một deeplink công thức bắt đầu bằng \"goose://recipe?config=\""
+    "defaultMessage": "Paste a recipe deep link starting with \"obelus://recipe?config=\""
   },
   "importRecipeForm.deeplinkPlaceholder": {
-    "defaultMessage": "Dán deeplink goose://recipe?config=... của bạn vào đây"
+    "defaultMessage": "Paste your obelus://recipe?config=... deep link here"
   },
   "importRecipeForm.example": {
     "defaultMessage": "ví dụ"
@@ -1455,7 +1482,7 @@
     "defaultMessage": "Tệp công thức"
   },
   "importRecipeForm.reviewWarning": {
-    "defaultMessage": "Hãy đảm bảo bạn xem lại nội dung của các tệp công thức trước khi thêm chúng vào giao diện goose của bạn."
+    "defaultMessage": "Review every recipe before adding it to Obelus. Recipes can configure tools and external services."
   },
   "importRecipeForm.schemaDescription": {
     "defaultMessage": "Tệp YAML hoặc JSON của bạn phải tuân theo cấu trúc này. Các trường bắt buộc là: title, description, và instructions hoặc prompt."
@@ -1566,13 +1593,13 @@
     "defaultMessage": "Phím tắt ứng dụng"
   },
   "keyboardShortcuts.categoryApplicationDescription": {
-    "defaultMessage": "Các phím tắt này hoạt động khi Goose là ứng dụng đang hoạt động"
+    "defaultMessage": "These shortcuts work when Obelus is the active application"
   },
   "keyboardShortcuts.categoryGlobal": {
     "defaultMessage": "Phím tắt toàn cục"
   },
   "keyboardShortcuts.categoryGlobalDescription": {
-    "defaultMessage": "Các phím tắt này hoạt động trên toàn hệ thống, ngay cả khi Goose không được lấy nét"
+    "defaultMessage": "These shortcuts work system-wide, even when Obelus is not focused"
   },
   "keyboardShortcuts.categorySearch": {
     "defaultMessage": "Phím tắt tìm kiếm"
@@ -1614,10 +1641,10 @@
     "defaultMessage": "Tìm trước đó"
   },
   "keyboardShortcuts.focusWindowDescription": {
-    "defaultMessage": "Đưa cửa sổ Goose lên phía trước từ bất kỳ đâu"
+    "defaultMessage": "Bring the Obelus window to the front from anywhere"
   },
   "keyboardShortcuts.focusWindowLabel": {
-    "defaultMessage": "Lấy nét cửa sổ Goose"
+    "defaultMessage": "Focus Obelus window"
   },
   "keyboardShortcuts.loading": {
     "defaultMessage": "Đang tải..."
@@ -1629,7 +1656,7 @@
     "defaultMessage": "Trò chuyện mới"
   },
   "keyboardShortcuts.newChatWindowDescription": {
-    "defaultMessage": "Mở một cửa sổ Goose mới"
+    "defaultMessage": "Open a new Obelus window"
   },
   "keyboardShortcuts.newChatWindowLabel": {
     "defaultMessage": "Cửa sổ trò chuyện mới"
@@ -1668,7 +1695,7 @@
     "defaultMessage": "Đặt lại về mặc định"
   },
   "keyboardShortcuts.restartDescription": {
-    "defaultMessage": "Các thay đổi đối với phím tắt ứng dụng (như Trò chuyện mới, Cài đặt, v.v.) yêu cầu khởi động lại Goose để có hiệu lực. Phím tắt toàn cục (Lấy nét cửa sổ, Trình khởi chạy nhanh) hoạt động ngay lập tức."
+    "defaultMessage": "Restart Obelus to apply application shortcut changes. Global shortcuts such as Focus Window and Quick Launcher work immediately."
   },
   "keyboardShortcuts.restartRequired": {
     "defaultMessage": "Cần khởi động lại"
@@ -1697,29 +1724,35 @@
   "keyboardShortcuts.toggleNavigationLabel": {
     "defaultMessage": "Bật/tắt điều hướng"
   },
+  "launcher.inputLabel": {
+    "defaultMessage": "Start a new Obelus research thread"
+  },
   "launcher.placeholder": {
-    "defaultMessage": "Hỏi goose bất cứ điều gì..."
+    "defaultMessage": "Ask Obelus to research, write, build, or explain…"
+  },
+  "launcher.submit": {
+    "defaultMessage": "Open research thread"
   },
   "loadingGoose.compacting": {
-    "defaultMessage": "goose đang nén cuộc trò chuyện..."
+    "defaultMessage": "Refining the conversation…"
   },
   "loadingGoose.idle": {
-    "defaultMessage": "goose đang xử lý…"
+    "defaultMessage": "Ready"
   },
   "loadingGoose.loadingConversation": {
-    "defaultMessage": "đang tải cuộc trò chuyện..."
+    "defaultMessage": "Opening the research thread…"
   },
   "loadingGoose.restartingAgent": {
-    "defaultMessage": "đang khởi động lại phiên..."
+    "defaultMessage": "Restarting the session…"
   },
   "loadingGoose.streaming": {
-    "defaultMessage": "goose đang xử lý…"
+    "defaultMessage": "Obelus is building the response…"
   },
   "loadingGoose.thinking": {
-    "defaultMessage": "goose đang suy nghĩ…"
+    "defaultMessage": "Obelus is examining the request…"
   },
   "loadingGoose.waiting": {
-    "defaultMessage": "goose đang chờ…"
+    "defaultMessage": "Waiting for your direction…"
   },
   "localInferenceSettings.deleteConfirm": {
     "defaultMessage": "Xóa mô hình này? Bạn có thể tải lại sau."
@@ -1827,13 +1860,16 @@
     "defaultMessage": "Chỉ hiển thị được đề xuất"
   },
   "localModelPicker.bestForMachine": {
-    "defaultMessage": "Tốt nhất cho máy của bạn"
+    "defaultMessage": "Recommended for this device"
   },
   "localModelPicker.cancelDownload": {
     "defaultMessage": "Hủy tải xuống"
   },
   "localModelPicker.checkingModels": {
     "defaultMessage": "Đang kiểm tra các mô hình khả dụng..."
+  },
+  "localModelPicker.downloadFailed": {
+    "defaultMessage": "The model download failed."
   },
   "localModelPicker.downloadModel": {
     "defaultMessage": "Tải xuống {modelId} ({size})"
@@ -1851,16 +1887,25 @@
     "defaultMessage": "Ẩn các kích thước khác"
   },
   "localModelPicker.localModelsNote": {
-    "defaultMessage": "Mô hình cục bộ giữ mọi thứ trên máy của bạn để đảm bảo quyền riêng tư hoàn toàn. Hiệu suất và kích thước cửa sổ ngữ cảnh có thể khác nhau so với các nhà cung cấp đám mây tùy thuộc vào phần cứng và kích thước mô hình của bạn."
+    "defaultMessage": "Model inference stays on this device. Tools and extensions may still connect to external services, so review them before sharing sensitive material. Performance depends on your hardware and model size."
   },
   "localModelPicker.lostConnection": {
     "defaultMessage": "Mất kết nối tải xuống. Vui lòng thử lại."
   },
+  "localModelPicker.minutesRemaining": {
+    "defaultMessage": "About {minutes} minutes remaining"
+  },
   "localModelPicker.modelNotFound": {
     "defaultMessage": "Không tìm thấy mô hình"
   },
+  "localModelPicker.modelOptions": {
+    "defaultMessage": "Choose a local model"
+  },
   "localModelPicker.ready": {
     "defaultMessage": "Sẵn sàng"
+  },
+  "localModelPicker.secondsRemaining": {
+    "defaultMessage": "About {seconds} seconds remaining"
   },
   "localModelPicker.selectModel": {
     "defaultMessage": "Chọn một mô hình"
@@ -2342,6 +2387,9 @@
   "navigation.itemHome": {
     "defaultMessage": "Trò chuyện mới"
   },
+  "navigation.itemLiveFactCheck": {
+    "defaultMessage": "Kiểm chứng trực tiếp"
+  },
   "navigation.itemRecipes": {
     "defaultMessage": "Công thức"
   },
@@ -2394,43 +2442,40 @@
     "defaultMessage": "Phiên chưa đặt tên"
   },
   "onboardingGuard.checkProviderErrorDescription": {
-    "defaultMessage": "Máy chủ có thể đang khởi động hoặc tạm thời không khả dụng."
+    "defaultMessage": "The local service may still be starting. Wait a moment, then try again."
   },
   "onboardingGuard.checkProviderErrorTitle": {
-    "defaultMessage": "Không thể kết nối với máy chủ Goose"
+    "defaultMessage": "Unable to connect to Obelus"
+  },
+  "onboardingGuard.checkingProvider": {
+    "defaultMessage": "Preparing Obelus…"
   },
   "onboardingGuard.retry": {
     "defaultMessage": "Thử lại"
   },
   "onboardingGuard.welcomeDescription": {
-    "defaultMessage": "Tác nhân AI cục bộ của bạn. Kết nối một nhà cung cấp mô hình AI để bắt đầu."
+    "defaultMessage": "A local AI workspace for careful research and clear answers. Connect a model provider to begin."
   },
   "onboardingGuard.welcomeTitle": {
-    "defaultMessage": "Chào mừng đến với goose"
+    "defaultMessage": "Welcome to Obelus"
   },
   "onboardingSuccess.allSet": {
-    "defaultMessage": "Bạn đã sẵn sàng bắt đầu sử dụng goose."
+    "defaultMessage": "Obelus is ready. Start a research thread or open a project."
   },
   "onboardingSuccess.connectedTo": {
     "defaultMessage": "Đã kết nối với {providerName}"
   },
   "onboardingSuccess.getStarted": {
-    "defaultMessage": "Bắt đầu"
-  },
-  "onboardingSuccess.learnMore": {
-    "defaultMessage": "Tìm hiểu thêm"
+    "defaultMessage": "Open Obelus"
   },
   "onboardingSuccess.localModelReady": {
     "defaultMessage": "Mô hình cục bộ đã sẵn sàng"
   },
   "onboardingSuccess.privacyDescription": {
-    "defaultMessage": "Dữ liệu sử dụng ẩn danh giúp cải thiện goose. Chúng tôi không bao giờ thu thập cuộc trò chuyện, mã nguồn hoặc dữ liệu cá nhân của bạn."
+    "defaultMessage": "Product analytics and automatic updates are off in this build. Model providers, tools, and extensions follow their own data policies."
   },
   "onboardingSuccess.privacyTitle": {
-    "defaultMessage": "Quyền riêng tư"
-  },
-  "onboardingSuccess.shareUsageData": {
-    "defaultMessage": "Chia sẻ dữ liệu sử dụng ẩn danh"
+    "defaultMessage": "A private starting point"
   },
   "parameterInput.defaultValue": {
     "defaultMessage": "Giá trị mặc định"
@@ -2576,35 +2621,26 @@
   "permissionSetting.permissionRulesDescription": {
     "defaultMessage": "Các hướng dẫn ẩn sẽ được chuyển đến nhà cung cấp để giúp định hướng và bổ sung ngữ cảnh cho các phản hồi của bạn."
   },
-  "privacyInfoModal.collectErrors": {
-    "defaultMessage": "Loại lỗi (ví dụ: \"rate_limit\", \"auth\" - không có chi tiết)"
-  },
-  "privacyInfoModal.collectExtensions": {
-    "defaultMessage": "Số lần sử dụng phần mở rộng và công cụ (chỉ tên)"
-  },
   "privacyInfoModal.collectOs": {
-    "defaultMessage": "Hệ điều hành, phiên bản và kiến trúc"
+    "defaultMessage": "Prompts and files you choose to send to a cloud model provider"
   },
   "privacyInfoModal.collectProvider": {
-    "defaultMessage": "Nhà cung cấp và mô hình được sử dụng"
-  },
-  "privacyInfoModal.collectSession": {
-    "defaultMessage": "Số liệu phiên (thời lượng, số lần tương tác, lượng token sử dụng)"
+    "defaultMessage": "Information you explicitly share through session or recipe features"
   },
   "privacyInfoModal.collectVersion": {
-    "defaultMessage": "Phiên bản goose và phương thức cài đặt"
+    "defaultMessage": "Requests made by tools, extensions, and connected services"
   },
   "privacyInfoModal.description": {
-    "defaultMessage": "Dữ liệu sử dụng ẩn danh giúp chúng tôi hiểu cách goose được sử dụng và xác định các lĩnh vực cần cải thiện."
+    "defaultMessage": "Obelus product analytics are disabled. The application does not send usage events to a project-owned analytics service."
   },
   "privacyInfoModal.neverCollect": {
-    "defaultMessage": "Chúng tôi không bao giờ thu thập cuộc trò chuyện, mã nguồn, đối số công cụ, thông báo lỗi hoặc bất kỳ dữ liệu cá nhân nào của bạn. Bạn có thể thay đổi cài đặt này bất cứ lúc nào trong Cài đặt."
+    "defaultMessage": "Review each provider and extension policy before working with sensitive material. Local model inference keeps model requests on this device, but tools may still use the network."
   },
   "privacyInfoModal.title": {
-    "defaultMessage": "Chi tiết quyền riêng tư"
+    "defaultMessage": "Privacy in this build"
   },
   "privacyInfoModal.whatWeCollect": {
-    "defaultMessage": "Những gì chúng tôi thu thập:"
+    "defaultMessage": "What may still leave this device:"
   },
   "progressiveMessageList.loadingMessages": {
     "defaultMessage": "Đang tải tin nhắn... ({renderedCount}/{totalCount})"
@@ -2664,7 +2700,7 @@
     "defaultMessage": "Không lưu được lời nhắc"
   },
   "promptsSettings.promptEditingDescription": {
-    "defaultMessage": "Tùy chỉnh các lời nhắc xác định hành vi của goose trong các ngữ cảnh khác nhau. Các lời nhắc này sử dụng cú pháp mẫu Jinja2. Hãy cẩn thận khi sửa đổi các biến mẫu, vì thay đổi không đúng có thể làm hỏng chức năng. Vui lòng chia sẻ mọi cải tiến với cộng đồng."
+    "defaultMessage": "Customize the prompts that guide Obelus in different contexts. These prompts use Jinja2 templates; changing template variables incorrectly can break the corresponding workflow."
   },
   "promptsSettings.promptEditingTitle": {
     "defaultMessage": "Chỉnh sửa lời nhắc"
@@ -2739,7 +2775,7 @@
     "defaultMessage": "Chọn một định dạng API và nhà cung cấp. Chúng tôi sẽ tự động điền cấu hình cho bạn."
   },
   "providerConfigForm.browserWindowOpen": {
-    "defaultMessage": "Một cửa sổ trình duyệt sẽ mở ra để bạn hoàn tất đăng nhập."
+    "defaultMessage": "Your browser will open so you can finish signing in with the provider."
   },
   "providerConfigForm.configuring": {
     "defaultMessage": "Đang cấu hình..."
@@ -2748,10 +2784,19 @@
     "defaultMessage": "Tiếp tục"
   },
   "providerConfigForm.deviceCodeFlowHint": {
-    "defaultMessage": "Một cửa sổ trình duyệt sẽ mở ra và mã xác minh sẽ được sao chép vào bộ nhớ tạm của bạn. Dán mã vào trình duyệt để hoàn tất đăng nhập."
+    "defaultMessage": "Your browser will open and the verification code will be copied to your clipboard. Paste the code there to finish signing in."
+  },
+  "providerConfigForm.fieldRequired": {
+    "defaultMessage": "{field} is required"
   },
   "providerConfigForm.noApiKey": {
     "defaultMessage": "Bạn chưa có khóa API?"
+  },
+  "providerConfigForm.openExternalLink": {
+    "defaultMessage": "Open {url} in your browser"
+  },
+  "providerConfigForm.setupFailed": {
+    "defaultMessage": "Could not complete setup: {error}"
   },
   "providerConfigForm.signInWith": {
     "defaultMessage": "Đăng nhập bằng {providerName}"
@@ -2760,7 +2805,7 @@
     "defaultMessage": "Đang đăng nhập..."
   },
   "providerConfigurationModal.addApiKeyDescription": {
-    "defaultMessage": "Thêm khóa API của bạn cho nhà cung cấp này để tích hợp vào goose"
+    "defaultMessage": "Add provider credentials for use with Obelus"
   },
   "providerConfigurationModal.browserWindowHint": {
     "defaultMessage": "Một cửa sổ trình duyệt sẽ mở ra để bạn hoàn tất đăng nhập."
@@ -2796,7 +2841,7 @@
     "defaultMessage": "Lỗi"
   },
   "providerConfigurationModal.externalSetupIntro": {
-    "defaultMessage": "Nhà cung cấp này được cấu hình bên ngoài goose. Hãy làm theo các bước sau:"
+    "defaultMessage": "This provider is configured outside Obelus. Follow these steps:"
   },
   "providerConfigurationModal.goBack": {
     "defaultMessage": "Quay lại"
@@ -2856,22 +2901,25 @@
     "defaultMessage": "Thêm nhà cung cấp tùy chỉnh"
   },
   "providerSelector.addCustomProviderTitle": {
-    "defaultMessage": "Thêm nhà cung cấp tùy chỉnh"
+    "defaultMessage": "Add a custom provider"
   },
   "providerSelector.connectProvider": {
-    "defaultMessage": "Kết nối với nhà cung cấp"
+    "defaultMessage": "Connect a provider"
   },
   "providerSelector.connectProviderDescription": {
-    "defaultMessage": "Kết nối OpenAI, Anthropic, Google, v.v."
+    "defaultMessage": "Use OpenAI, Anthropic, Google, or another supported provider."
+  },
+  "providerSelector.connectionChoices": {
+    "defaultMessage": "Model connection"
   },
   "providerSelector.localModelDescription": {
-    "defaultMessage": "Tải xuống một mô hình và chạy hoàn toàn trên máy của bạn. Không cần khóa API, không cần tài khoản."
+    "defaultMessage": "Keep model requests on this device. No API key or account is required."
   },
   "providerSelector.selectProvider": {
     "defaultMessage": "Chọn một nhà cung cấp"
   },
   "providerSelector.useLocalModel": {
-    "defaultMessage": "Sử dụng mô hình cục bộ"
+    "defaultMessage": "Run a model locally"
   },
   "providerSettings.configurationSettings": {
     "defaultMessage": "Cài đặt cấu hình nhà cung cấp"
@@ -2880,7 +2928,7 @@
     "defaultMessage": "Đang tải nhà cung cấp..."
   },
   "providerSettings.onboardingDescription": {
-    "defaultMessage": "Chọn một nhà cung cấp mô hình AI để bắt đầu với goose. Bạn sẽ cần sử dụng khóa API do mỗi nhà cung cấp tạo ra, khóa này sẽ được mã hóa và lưu trữ cục bộ. Bạn có thể thay đổi nhà cung cấp bất cứ lúc nào trong cài đặt."
+    "defaultMessage": "Choose a model provider for Obelus. Provider credentials are encrypted and stored locally, and you can change providers at any time in settings."
   },
   "providerSettings.otherProviders": {
     "defaultMessage": "Nhà cung cấp khác"
@@ -3450,7 +3498,7 @@
     "defaultMessage": "Liên kết sâu"
   },
   "scheduleModal.deepLinkPlaceholder": {
-    "defaultMessage": "Dán liên kết goose://recipe vào đây..."
+    "defaultMessage": "Paste an obelus://recipe link here…"
   },
   "scheduleModal.editSchedule": {
     "defaultMessage": "Sửa lịch trình"
@@ -3462,7 +3510,7 @@
     "defaultMessage": "Không thể đọc tệp đã chọn."
   },
   "scheduleModal.invalidDeepLink": {
-    "defaultMessage": "Liên kết sâu không hợp lệ. Vui lòng dùng liên kết goose://recipe."
+    "defaultMessage": "Invalid deep link. Use an obelus://recipe link."
   },
   "scheduleModal.invalidFileType": {
     "defaultMessage": "Loại tệp không hợp lệ: Vui lòng chọn tệp YAML (.yaml hoặc .yml)"
@@ -3789,7 +3837,7 @@
     "defaultMessage": "Lịch sử trò chuyện"
   },
   "sessions.chatHistoryDesc": {
-    "defaultMessage": "Xem và tìm kiếm các cuộc trò chuyện trước đây của bạn với Goose. {shortcut} để tìm kiếm."
+    "defaultMessage": "View and search your past Obelus conversations. {shortcut} to search."
   },
   "sessions.close": {
     "defaultMessage": "Đóng"
@@ -3825,10 +3873,10 @@
     "defaultMessage": "Nhập liên kết"
   },
   "sessions.importNostr.description": {
-    "defaultMessage": "Dán một liên kết chia sẻ Nostr của Goose để tìm nạp, giải mã và nhập phiên."
+    "defaultMessage": "Paste an Obelus Nostr share link to fetch, decrypt, and import the session."
   },
   "sessions.importNostr.placeholder": {
-    "defaultMessage": "goose://sessions/nostr?nevent=...&key=..."
+    "defaultMessage": "obelus://sessions/nostr?nevent=...&key=..."
   },
   "sessions.importNostr.title": {
     "defaultMessage": "Nhập phiên Nostr"
@@ -3900,7 +3948,7 @@
     "defaultMessage": "Đã cập nhật mô tả phiên làm việc thành công"
   },
   "settings.appearance.description": {
-    "defaultMessage": "Định cấu hình cách goose hiển thị trên hệ thống của bạn"
+    "defaultMessage": "Choose how Obelus appears and behaves on this device"
   },
   "settings.appearance.title": {
     "defaultMessage": "Giao diện"
@@ -3912,28 +3960,28 @@
     "defaultMessage": "Hiển thị giá mô hình và chi phí sử dụng"
   },
   "settings.costTracking.title": {
-    "defaultMessage": "Theo dõi chi phí"
+    "defaultMessage": "Cost tracking"
   },
   "settings.dockIcon.description": {
-    "defaultMessage": "Hiển thị goose trên dock"
+    "defaultMessage": "Show Obelus in the Dock"
   },
   "settings.dockIcon.title": {
     "defaultMessage": "Biểu tượng dock"
   },
   "settings.help.description": {
-    "defaultMessage": "Giúp chúng tôi cải thiện goose bằng cách báo cáo sự cố hoặc yêu cầu tính năng mới"
+    "defaultMessage": "Report an issue or suggest a considered improvement to Obelus"
   },
   "settings.help.reportBug": {
-    "defaultMessage": "Báo cáo lỗi"
+    "defaultMessage": "Report an issue"
   },
   "settings.help.requestFeature": {
-    "defaultMessage": "Yêu cầu tính năng"
+    "defaultMessage": "Suggest a feature"
   },
   "settings.help.title": {
     "defaultMessage": "Trợ giúp & phản hồi"
   },
   "settings.language.description": {
-    "defaultMessage": "Chọn ngôn ngữ hiển thị cho goose"
+    "defaultMessage": "Choose the display language for Obelus"
   },
   "settings.language.english": {
     "defaultMessage": "English"
@@ -3972,7 +4020,7 @@
     "defaultMessage": "Tiếng Tây Ban Nha"
   },
   "settings.language.systemDefault": {
-    "defaultMessage": "Mặc định hệ thống"
+    "defaultMessage": "System default"
   },
   "settings.language.title": {
     "defaultMessage": "Ngôn ngữ"
@@ -3990,7 +4038,7 @@
     "defaultMessage": "Tiếng Trung (Phồn thể)"
   },
   "settings.menuBarIcon.description": {
-    "defaultMessage": "Hiển thị goose trên thanh menu"
+    "defaultMessage": "Show Obelus in the menu bar"
   },
   "settings.menuBarIcon.title": {
     "defaultMessage": "Biểu tượng thanh menu"
@@ -4005,19 +4053,19 @@
     "defaultMessage": "Để bật thông báo trên macOS:"
   },
   "settings.notifications.modal.macStep1": {
-    "defaultMessage": "Mở System Preferences"
+    "defaultMessage": "Open System Settings"
   },
   "settings.notifications.modal.macStep2": {
     "defaultMessage": "Nhấp vào Notifications"
   },
   "settings.notifications.modal.macStep3": {
-    "defaultMessage": "Tìm và chọn goose trong danh sách ứng dụng"
+    "defaultMessage": "Find and select Obelus in the application list"
   },
   "settings.notifications.modal.macStep4": {
     "defaultMessage": "Bật thông báo và điều chỉnh cài đặt theo ý muốn"
   },
   "settings.notifications.modal.title": {
-    "defaultMessage": "Cách bật thông báo"
+    "defaultMessage": "Enable notifications"
   },
   "settings.notifications.modal.winInstructions": {
     "defaultMessage": "Để bật thông báo trên Windows:"
@@ -4029,7 +4077,7 @@
     "defaultMessage": "Đi tới System > Notifications"
   },
   "settings.notifications.modal.winStep3": {
-    "defaultMessage": "Tìm và chọn goose trong danh sách ứng dụng"
+    "defaultMessage": "Find and select Obelus in the application list"
   },
   "settings.notifications.modal.winStep4": {
     "defaultMessage": "Bật thông báo và điều chỉnh cài đặt theo ý muốn"
@@ -4038,7 +4086,7 @@
     "defaultMessage": "Mở Settings"
   },
   "settings.notifications.task.description": {
-    "defaultMessage": "Thông báo khi Goose hoàn thành một tác vụ trong khi cửa sổ đang ở chế độ nền"
+    "defaultMessage": "Notify you when Obelus finishes a task in the background"
   },
   "settings.notifications.task.title": {
     "defaultMessage": "Thông báo hoàn thành tác vụ"
@@ -4047,25 +4095,31 @@
     "defaultMessage": "Thông báo"
   },
   "settings.preventSleep.description": {
-    "defaultMessage": "Giữ máy tính của bạn luôn hoạt động trong khi goose đang chạy một tác vụ (màn hình vẫn có thể khóa)"
+    "defaultMessage": "Keep your computer awake while Obelus is working; the screen can still lock"
   },
   "settings.preventSleep.title": {
-    "defaultMessage": "Ngăn chế độ ngủ"
+    "defaultMessage": "Prevent sleep"
   },
   "settings.theme.description": {
-    "defaultMessage": "Tùy chỉnh giao diện và cảm nhận của goose"
+    "defaultMessage": "Choose a light, dark, or system appearance for Obelus"
   },
   "settings.theme.title": {
     "defaultMessage": "Chủ đề"
   },
   "settings.updates.description": {
-    "defaultMessage": "Kiểm tra và cài đặt bản cập nhật để goose luôn hoạt động tốt nhất"
+    "defaultMessage": "Release channel status for this Obelus build"
   },
   "settings.updates.title": {
     "defaultMessage": "Cập nhật"
   },
+  "settings.version.description": {
+    "defaultMessage": "Evidence-led local AI, built on the open-source Goose core."
+  },
+  "settings.version.label": {
+    "defaultMessage": "Version {version}"
+  },
   "settings.version.title": {
-    "defaultMessage": "Phiên bản"
+    "defaultMessage": "About Obelus"
   },
   "settingsView.tabApp": {
     "defaultMessage": "Ứng dụng"
@@ -4134,7 +4188,7 @@
     "defaultMessage": "Tìm kiếm kỹ năng..."
   },
   "skillsView.skillsDescription": {
-    "defaultMessage": "Xem các kỹ năng đã cài đặt giúp mở rộng khả năng của Goose. {shortcut} để tìm kiếm."
+    "defaultMessage": "View installed skills that extend Obelus. {shortcut} to search."
   },
   "skillsView.skillsTitle": {
     "defaultMessage": "Kỹ năng"
@@ -4320,7 +4374,7 @@
     "defaultMessage": "Nhà cung cấp, nhập để tìm kiếm"
   },
   "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Hướng dẫn bắt đầu nhanh"
+    "defaultMessage": "Upstream Goose quick start guide"
   },
   "switchModelModal.recommended": {
     "defaultMessage": "Được đề xuất"
@@ -4376,44 +4430,17 @@
   "switchModelModal.useOtherProvider": {
     "defaultMessage": "Sử dụng nhà cung cấp khác"
   },
-  "telemetryConsentPrompt.description": {
-    "defaultMessage": "Bạn có muốn chia sẻ dữ liệu sử dụng ẩn danh để giúp cải thiện goose không? Chúng tôi không bao giờ thu thập các cuộc trò chuyện, mã hoặc dữ liệu cá nhân của bạn."
+  "telemetrySettings.analyticsOff": {
+    "defaultMessage": "Product analytics are off"
   },
-  "telemetryConsentPrompt.heading": {
-    "defaultMessage": "Giúp cải thiện goose"
-  },
-  "telemetryConsentPrompt.learnMore": {
-    "defaultMessage": "Tìm hiểu thêm"
-  },
-  "telemetryConsentPrompt.optIn": {
-    "defaultMessage": "Có, chia sẻ dữ liệu sử dụng ẩn danh"
-  },
-  "telemetryConsentPrompt.optOut": {
-    "defaultMessage": "Không, cảm ơn"
-  },
-  "telemetrySettings.configErrorTitle": {
-    "defaultMessage": "Lỗi cấu hình"
+  "telemetrySettings.analyticsOffDescription": {
+    "defaultMessage": "Obelus does not send usage events to an analytics service. Providers, tools, and extensions may still process data you choose to share with them."
   },
   "telemetrySettings.description": {
-    "defaultMessage": "Kiểm soát cách dữ liệu của bạn được sử dụng"
-  },
-  "telemetrySettings.learnMore": {
-    "defaultMessage": "Tìm hiểu thêm"
-  },
-  "telemetrySettings.loadError": {
-    "defaultMessage": "Không thể tải cài đặt đo từ xa."
+    "defaultMessage": "Clear boundaries for this Obelus build"
   },
   "telemetrySettings.title": {
     "defaultMessage": "Quyền riêng tư"
-  },
-  "telemetrySettings.toggleDescription": {
-    "defaultMessage": "Giúp cải thiện goose bằng cách chia sẻ số liệu thống kê sử dụng ẩn danh."
-  },
-  "telemetrySettings.toggleLabel": {
-    "defaultMessage": "Dữ liệu sử dụng ẩn danh"
-  },
-  "telemetrySettings.updateError": {
-    "defaultMessage": "Không thể cập nhật cài đặt đo từ xa."
   },
   "themeSelector.dark": {
     "defaultMessage": "Tối"
@@ -4485,82 +4512,19 @@
     "defaultMessage": "Cho phép {toolName}?"
   },
   "toolConfirmation.gooseWouldLikeToCallWithName": {
-    "defaultMessage": "Goose muốn gọi {toolName}. Cho phép?"
-  },
-  "updateSection.autoDownload": {
-    "defaultMessage": "Goose sẽ tải bản cập nhật ở chế độ nền và cài đặt vào lần tiếp theo khi bạn thoát hoặc khởi động lại."
-  },
-  "updateSection.autoDownloadDisabledByEnv": {
-    "defaultMessage": "Tải xuống tự động đã bị tắt thông qua biến môi trường GOOSE_DISABLE_AUTO_DOWNLOAD."
-  },
-  "updateSection.autoDownloadDisabledNote": {
-    "defaultMessage": "Tải xuống tự động đã bị tắt. Nhấp vào \"Tải ngay\" để tải xuống theo cách thủ công."
-  },
-  "updateSection.autoInstallNote": {
-    "defaultMessage": "Không cần cài đặt thủ công."
-  },
-  "updateSection.checkForUpdates": {
-    "defaultMessage": "Kiểm tra bản cập nhật"
-  },
-  "updateSection.checking": {
-    "defaultMessage": "Đang kiểm tra bản cập nhật..."
+    "defaultMessage": "Obelus would like to use {toolName}. Allow it?"
   },
   "updateSection.currentVersion": {
     "defaultMessage": "Phiên bản hiện tại"
   },
-  "updateSection.disableAutoDownload": {
-    "defaultMessage": "Tắt tải xuống cập nhật tự động"
+  "updateSection.updateChannelDescription": {
+    "defaultMessage": "This build is not connected to an Obelus release service. It will not check Goose or any other upstream channel for updates."
   },
-  "updateSection.disableAutoDownloadDesc": {
-    "defaultMessage": "Khi được bật, Goose sẽ thông báo cho bạn về các phiên bản mới nhưng sẽ không tự động tải xuống."
+  "updateSection.updateChannelOff": {
+    "defaultMessage": "Automatic updates are off"
   },
-  "updateSection.downloadNow": {
-    "defaultMessage": "Tải ngay"
-  },
-  "updateSection.downloadReady": {
-    "defaultMessage": "Bản cập nhật đã được tải về và sẵn sàng cài đặt!"
-  },
-  "updateSection.downloadingProgress": {
-    "defaultMessage": "Đang tải bản cập nhật... {percent}%"
-  },
-  "updateSection.downloadingUpdate": {
-    "defaultMessage": "Đang tải bản cập nhật..."
-  },
-  "updateSection.installAndRestart": {
-    "defaultMessage": "Cài đặt & khởi động lại"
-  },
-  "updateSection.installNowHint": {
-    "defaultMessage": "Nhấp vào \"Cài đặt & khởi động lại\" để cập nhật ngay."
-  },
-  "updateSection.latestVersion": {
-    "defaultMessage": "Bạn đang chạy phiên bản mới nhất!"
-  },
-  "updateSection.loading": {
-    "defaultMessage": "Đang tải..."
-  },
-  "updateSection.manualInstallNote": {
-    "defaultMessage": "Sau khi tải xuống, bạn sẽ cần cài đặt bản cập nhật theo cách thủ công."
-  },
-  "updateSection.manualInstallRequired": {
-    "defaultMessage": "Cần cài đặt thủ công cho phương thức cập nhật này."
-  },
-  "updateSection.readyInstallAuto": {
-    "defaultMessage": "✓ Bản cập nhật đã sẵn sàng. Khởi động lại Goose để hoàn tất cài đặt, hoặc thoát khi bạn đã xong."
-  },
-  "updateSection.readyInstallManual": {
-    "defaultMessage": "✓ Bản cập nhật đã sẵn sàng! Nhấp vào \"Cài đặt & khởi động lại\" để xem hướng dẫn cài đặt."
-  },
-  "updateSection.upToDate": {
-    "defaultMessage": "(đã cập nhật)"
-  },
-  "updateSection.updateAvailable": {
-    "defaultMessage": "Có bản cập nhật!"
-  },
-  "updateSection.versionAvailable": {
-    "defaultMessage": "→ {version} có sẵn"
-  },
-  "updateSection.versionIsAvailable": {
-    "defaultMessage": "Đã có phiên bản {version}"
+  "updateSection.viewRepository": {
+    "defaultMessage": "View Obelus repository"
   },
   "userMessage.cancel": {
     "defaultMessage": "Hủy"

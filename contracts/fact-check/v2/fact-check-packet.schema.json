@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://obelus.local/contracts/fact-check/v2/fact-check-packet.schema.json",
+  "title": "Obelus fact-check assessment packet",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "policyVersion",
+        "operationalState",
+        "assessment",
+        "error"
+      ],
+      "properties": {
+        "schemaVersion": { "const": "2.0.0" },
+        "policyVersion": { "const": "obelus-assessment-policy/2.0.0" },
+        "operationalState": { "const": "assessment_available" },
+        "assessment": { "$ref": "assessment.schema.json" },
+        "error": { "type": "null" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "policyVersion",
+        "operationalState",
+        "assessment",
+        "error"
+      ],
+      "properties": {
+        "schemaVersion": { "const": "2.0.0" },
+        "policyVersion": { "const": "obelus-assessment-policy/2.0.0" },
+        "operationalState": {
+          "enum": [
+            "research_unavailable",
+            "budget_denied",
+            "cancelled",
+            "failed"
+          ]
+        },
+        "assessment": { "type": "null" },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "message", "retryable"],
+          "properties": {
+            "code": { "type": "string", "minLength": 1, "maxLength": 128 },
+            "message": { "type": "string", "minLength": 1, "maxLength": 500 },
+            "retryable": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  ]
+}

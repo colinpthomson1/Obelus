@@ -2326,6 +2326,825 @@ export type DictationModelSelectRequest_unstable = {
     modelId: string;
 };
 
+export type MeetingCreateRequest_unstable = {
+    title?: string | null;
+    artifactType: MeetingArtifactType;
+    mode: MeetingMode;
+    startedAtMs: number;
+    captureConfig: MeetingCaptureConfigDto;
+    initialSpeakers?: Array<MeetingSpeakerInputDto>;
+};
+
+export type MeetingArtifactType = 'meeting' | 'text_check';
+
+export type MeetingMode = 'call' | 'in_person' | 'text';
+
+export type MeetingCaptureConfigDto = {
+    liveStrategy: MeetingLiveStrategy;
+    microphoneDeviceId?: string | null;
+    systemAudioEnabled: boolean;
+    exactSpeakerCount?: number | null;
+};
+
+export type MeetingLiveStrategy = 'mixed_diarized' | 'source_separated';
+
+export type MeetingSpeakerInputDto = {
+    id?: string | null;
+    defaultLabel: string;
+    displayName?: string | null;
+    displayNameSource?: string | null;
+    manualAssignmentLock: boolean;
+    sourceHint?: MeetingAudioSourceKind | null;
+};
+
+export type MeetingAudioSourceKind = 'mixed' | 'microphone' | 'system' | 'text';
+
+export type MeetingCreateResponse_unstable = {
+    meeting: MeetingDto;
+    liveTranscriptVersion: MeetingTranscriptVersionDto;
+    speakers: Array<MeetingSpeakerDto>;
+};
+
+export type MeetingDto = {
+    id: string;
+    title: string;
+    artifactType: MeetingArtifactType;
+    mode: MeetingMode;
+    status: MeetingLifecycleStatus;
+    startedAtMs: number;
+    endedAtMs?: number | null;
+    captureConfig: MeetingCaptureConfigDto;
+    canonicalTranscriptVersionId?: string | null;
+    captureStatus: MeetingCaptureStatus;
+    refinementStatus: MeetingRefinementStatus;
+    researchStatus: MeetingResearchStatus;
+    lastError?: MeetingTypedErrorDto | null;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingLifecycleStatus = 'setup' | 'starting' | 'recording' | 'paused' | 'stopping' | 'finalizing' | 'complete' | 'interrupted' | 'error';
+
+export type MeetingCaptureStatus = 'not_started' | 'active' | 'paused' | 'finalizing' | 'complete' | 'interrupted' | 'error';
+
+export type MeetingRefinementStatus = 'not_started' | 'queued' | 'uploading' | 'processing' | 'reconciling' | 'complete' | 'retry_wait' | 'failed' | 'cancelled';
+
+export type MeetingResearchStatus = 'not_started' | 'queued' | 'running' | 'partial' | 'complete' | 'retry_wait' | 'failed' | 'cancelled';
+
+export type MeetingTypedErrorDto = {
+    code: string;
+    message: string;
+    retryable: boolean;
+};
+
+export type MeetingTranscriptVersionDto = {
+    id: string;
+    meetingId: string;
+    kind: MeetingTranscriptVersionKind;
+    status: MeetingTranscriptVersionStatus;
+    revisionNumber: number;
+    provider?: string | null;
+    model?: string | null;
+    gatewayJobId?: string | null;
+    parentVersionId?: string | null;
+    inputAudioChecksum?: string | null;
+    detectedLanguage?: string | null;
+    reconciliationMetadata?: unknown;
+    startedAtMs?: number | null;
+    completedAtMs?: number | null;
+    error?: MeetingTypedErrorDto | null;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingTranscriptVersionKind = 'live' | 'refined';
+
+export type MeetingTranscriptVersionStatus = 'active' | 'processing' | 'complete' | 'failed' | 'superseded';
+
+export type MeetingSpeakerDto = {
+    id: string;
+    meetingId: string;
+    defaultLabel: string;
+    displayName?: string | null;
+    displayNameSource?: string | null;
+    manualAssignmentLock: boolean;
+    sourceHint?: MeetingAudioSourceKind | null;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingUpdateRequest_unstable = {
+    meetingId: string;
+    title?: string | null;
+    status?: MeetingLifecycleStatus | null;
+    endedAtMs?: number | null;
+    captureStatus?: MeetingCaptureStatus | null;
+    refinementStatus?: MeetingRefinementStatus | null;
+    researchStatus?: MeetingResearchStatus | null;
+    error?: MeetingTypedErrorDto | null;
+    clearError: boolean;
+};
+
+export type MeetingUpdateResponse_unstable = {
+    meeting: MeetingDto;
+};
+
+export type MeetingListRequest_unstable = {
+    artifactType?: MeetingArtifactType | null;
+    statuses?: Array<MeetingLifecycleStatus>;
+    query?: string | null;
+    cursor?: MeetingListCursorDto | null;
+    limit?: number | null;
+};
+
+export type MeetingListCursorDto = {
+    updatedAtMs: number;
+    meetingId: string;
+};
+
+export type MeetingListResponse_unstable = {
+    items: Array<MeetingListItemDto>;
+    nextCursor?: MeetingListCursorDto | null;
+};
+
+export type MeetingListItemDto = {
+    meeting: MeetingDto;
+    durationMs?: number | null;
+    speakerNames: Array<string>;
+    claimCount: number;
+    completedResearchCount: number;
+    totalResearchCount: number;
+};
+
+export type MeetingGetRequest_unstable = {
+    meetingId: string;
+};
+
+export type MeetingGetResponse_unstable = {
+    artifact: MeetingArtifactDto;
+};
+
+export type MeetingArtifactDto = {
+    meeting: MeetingDto;
+    speakers: Array<MeetingSpeakerDto>;
+    speakerObservations: Array<MeetingSpeakerObservationDto>;
+    transcriptVersions: Array<MeetingTranscriptVersionDto>;
+    transcriptSegments: Array<MeetingTranscriptSegmentDto>;
+    timelineEvents: Array<MeetingTimelineEventDto>;
+    audioAssets: Array<MeetingAudioAssetDto>;
+    refinementInputs: Array<MeetingRefinementInputDto>;
+    claims: Array<MeetingClaimDto>;
+    claimVersions: Array<MeetingClaimVersionDto>;
+    manualFactCheckRequests: Array<MeetingManualFactCheckRequestDto>;
+    pendingClaimGateSegmentIds: Array<string>;
+    pendingClaimGateBatches: Array<MeetingClaimGateBatchDto>;
+    assessments: Array<MeetingAssessmentDto>;
+    researchJobs: Array<MeetingResearchJobDto>;
+    refinementJobs: Array<MeetingRefinementJobDto>;
+};
+
+export type MeetingSpeakerObservationDto = {
+    id: string;
+    meetingId: string;
+    transcriptVersionId: string;
+    speakerId?: string | null;
+    provider: string;
+    providerNamespace: string;
+    providerSpeakerLabel: string;
+    confidence?: number | null;
+    ambiguous: boolean;
+    revisionNumber: number;
+    sourceHint?: MeetingAudioSourceKind | null;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingTranscriptSegmentDto = {
+    id: string;
+    meetingId: string;
+    transcriptVersionId: string;
+    provider: string;
+    providerNamespace: string;
+    providerSessionId?: string | null;
+    providerTurnId: string;
+    providerTurnOrder: number;
+    revisionNumber: number;
+    state: MeetingTranscriptSegmentState;
+    speakerId?: string | null;
+    sourceKind: MeetingAudioSourceKind;
+    startMs: number;
+    endMs: number;
+    text: string;
+    words: Array<MeetingTimedWordDto>;
+    replacedLiveSegmentIds: Array<string>;
+    contentHash: string;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingTranscriptSegmentState = 'partial' | 'final' | 'revised' | 'superseded';
+
+export type MeetingTimedWordDto = {
+    text: string;
+    startMs: number;
+    endMs: number;
+    confidence?: number | null;
+    providerSpeakerLabel?: string | null;
+};
+
+export type MeetingTimelineEventDto = {
+    id: string;
+    meetingId: string;
+    kind: MeetingTimelineEventKind;
+    startMs: number;
+    endMs?: number | null;
+    sourceKind?: MeetingAudioSourceKind | null;
+    providerNamespace?: string | null;
+    metadata?: unknown;
+    createdAtMs: number;
+};
+
+export type MeetingTimelineEventKind = 'pause' | 'resume' | 'sleep' | 'wake' | 'capture_gap' | 'device_change' | 'stt_reconnect_gap';
+
+export type MeetingAudioAssetDto = {
+    id: string;
+    meetingId: string;
+    sourceKind: MeetingAudioSourceKind;
+    timelinePart: number;
+    relativePath: string;
+    format: string;
+    sampleRate: number;
+    channels: number;
+    timelineStartMs: number;
+    timelineEndMs?: number | null;
+    durationMs?: number | null;
+    bytes?: number | null;
+    checksum?: string | null;
+    status: MeetingAudioAssetStatus;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingAudioAssetStatus = 'recording' | 'finalized' | 'interrupted' | 'missing' | 'deleted';
+
+export type MeetingRefinementInputDto = {
+    refinementJobId: string;
+    partIndex: number;
+    audioAssetId: string;
+    sourceKind: MeetingAudioSourceKind;
+    checksum: string;
+    meetingStartMs: number;
+    meetingEndMs: number;
+    providerStartMs: number;
+    providerEndMs: number;
+    manifestChecksum: string;
+    createdAtMs: number;
+};
+
+export type MeetingClaimDto = {
+    id: string;
+    meetingId: string;
+    manualRequestId?: string | null;
+    origin: MeetingClaimOrigin;
+    duplicateKey?: string | null;
+    status: MeetingClaimStatus;
+    currentClaimVersionId?: string | null;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingClaimOrigin = 'automatic' | 'manual';
+
+export type MeetingClaimStatus = 'detected' | 'queued' | 'quick_running' | 'preliminary' | 'deep_running' | 'complete' | 'stale' | 'rechecking' | 'failed' | 'cancelled' | 'superseded';
+
+export type MeetingClaimVersionDto = {
+    id: string;
+    claimId: string;
+    versionNumber: number;
+    predecessorId?: string | null;
+    supersededById?: string | null;
+    sourceTranscriptVersionId?: string | null;
+    exactQuote: string;
+    normalizedClaim: string;
+    speakerId?: string | null;
+    startMs?: number | null;
+    endMs?: number | null;
+    segmentIds: Array<string>;
+    selectionRationale?: string | null;
+    consequenceScore?: number | null;
+    disputeScore?: number | null;
+    specificityScore?: number | null;
+    timeSensitive: boolean;
+    lifecycle: MeetingClaimVersionLifecycle;
+    contentHash: string;
+    createdAtMs: number;
+};
+
+export type MeetingClaimVersionLifecycle = 'active' | 'stale' | 'rechecking' | 'superseded';
+
+export type MeetingManualFactCheckRequestDto = {
+    id: string;
+    meetingId: string;
+    exactSelection: string;
+    contextTurns: Array<MeetingClaimGateTurnDto>;
+    sourceSegmentIds: Array<string>;
+    speakerId?: string | null;
+    startMs?: number | null;
+    endMs?: number | null;
+    status: MeetingManualFactCheckRequestStatus;
+    error?: MeetingTypedErrorDto | null;
+    contentHash: string;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingClaimGateTurnDto = {
+    id: string;
+    speakerId?: string | null;
+    startMs: number;
+    endMs: number;
+    text: string;
+    revisionNumber: number;
+    sourceKind: MeetingAudioSourceKind;
+};
+
+export type MeetingManualFactCheckRequestStatus = 'queued' | 'processing' | 'retry_wait' | 'complete' | 'failed';
+
+export type MeetingClaimGateBatchDto = {
+    id: string;
+    meetingId: string;
+    idempotencyKey: string;
+    segmentIds: Array<string>;
+    turns: Array<MeetingClaimGateTurnDto>;
+    createdAtMs: number;
+};
+
+export type MeetingAssessmentDto = {
+    id: string;
+    claimVersionId: string;
+    stage: MeetingAssessmentStage;
+    attemptNumber: number;
+    status: MeetingAssessmentStatus;
+    current: boolean;
+    supersedesId?: string | null;
+    verdict: MeetingVerdict;
+    confidence: MeetingConfidence;
+    conclusion: Array<MeetingCitedStatementDto>;
+    support: Array<MeetingCitedStatementDto>;
+    contradiction: Array<MeetingCitedStatementDto>;
+    caveats: Array<MeetingCitedStatementDto>;
+    limitations: Array<MeetingCitedStatementDto>;
+    modelProvider: string;
+    model: string;
+    modelVersion?: string | null;
+    usage?: unknown;
+    latencyMs?: number | null;
+    startedAtMs: number;
+    completedAtMs: number;
+    error?: MeetingTypedErrorDto | null;
+    sources: Array<MeetingSourceDto>;
+    createdAtMs: number;
+};
+
+export type MeetingAssessmentStage = 'preliminary' | 'deep';
+
+export type MeetingAssessmentStatus = 'complete' | 'failed';
+
+export type MeetingVerdict = 'supported' | 'mostly_supported' | 'mixed' | 'unsupported' | 'unverifiable';
+
+export type MeetingConfidence = 'low' | 'medium' | 'high';
+
+export type MeetingCitedStatementDto = {
+    text: string;
+    citationKeys: Array<string>;
+};
+
+export type MeetingSourceDto = {
+    id: string;
+    assessmentId: string;
+    citationKey: string;
+    url: string;
+    canonicalUrl: string;
+    publisher: string;
+    title: string;
+    publicationDate?: string | null;
+    accessedAtMs: number;
+    evidenceExcerpt: string;
+    stance: MeetingEvidenceStance;
+    qualityScore?: number | null;
+    qualityRationale: string;
+};
+
+export type MeetingEvidenceStance = 'supports' | 'contradicts' | 'context';
+
+export type MeetingResearchJobDto = {
+    id: string;
+    claimVersionId: string;
+    stage: MeetingAssessmentStage;
+    gatewayJobId?: string | null;
+    idempotencyKey: string;
+    status: MeetingJobStatus;
+    attemptCount: number;
+    nextRetryAtMs?: number | null;
+    startedAtMs?: number | null;
+    completedAtMs?: number | null;
+    error?: MeetingTypedErrorDto | null;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingJobStatus = 'pending' | 'running' | 'retry_wait' | 'complete' | 'failed' | 'cancelled';
+
+export type MeetingRefinementJobDto = {
+    id: string;
+    meetingId: string;
+    sourceTranscriptVersionId: string;
+    inputManifestChecksum: string;
+    provider: string;
+    model: string;
+    gatewayJobId?: string | null;
+    idempotencyKey: string;
+    status: MeetingRefinementJobStatus;
+    attemptCount: number;
+    nextRetryAtMs?: number | null;
+    usage?: unknown;
+    latencyMs?: number | null;
+    startedAtMs?: number | null;
+    completedAtMs?: number | null;
+    error?: MeetingTypedErrorDto | null;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingRefinementJobStatus = 'queued' | 'uploading' | 'processing' | 'reconciling' | 'complete' | 'retry_wait' | 'failed' | 'cancelled';
+
+export type MeetingTranscriptApplyRequest_unstable = {
+    meetingId: string;
+    version: MeetingTranscriptVersionUpsertDto;
+    segments?: Array<MeetingTranscriptSegmentUpsertDto>;
+    speakerObservations?: Array<MeetingSpeakerObservationUpsertDto>;
+    promoteCanonical: boolean;
+};
+
+export type MeetingTranscriptVersionUpsertDto = {
+    id: string;
+    kind: MeetingTranscriptVersionKind;
+    status: MeetingTranscriptVersionStatus;
+    revisionNumber: number;
+    provider?: string | null;
+    model?: string | null;
+    gatewayJobId?: string | null;
+    parentVersionId?: string | null;
+    inputAudioChecksum?: string | null;
+    detectedLanguage?: string | null;
+    reconciliationMetadata?: unknown;
+    startedAtMs?: number | null;
+    completedAtMs?: number | null;
+    error?: MeetingTypedErrorDto | null;
+};
+
+export type MeetingTranscriptSegmentUpsertDto = {
+    id: string;
+    transcriptVersionId: string;
+    provider: string;
+    providerNamespace: string;
+    providerSessionId?: string | null;
+    providerTurnId: string;
+    providerTurnOrder: number;
+    revisionNumber: number;
+    state: MeetingTranscriptSegmentState;
+    speakerId?: string | null;
+    sourceKind: MeetingAudioSourceKind;
+    startMs: number;
+    endMs: number;
+    text: string;
+    words: Array<MeetingTimedWordDto>;
+    replacedLiveSegmentIds: Array<string>;
+};
+
+export type MeetingSpeakerObservationUpsertDto = {
+    id: string;
+    transcriptVersionId: string;
+    speakerId?: string | null;
+    provider: string;
+    providerNamespace: string;
+    providerSpeakerLabel: string;
+    confidence?: number | null;
+    ambiguous: boolean;
+    revisionNumber: number;
+    sourceHint?: MeetingAudioSourceKind | null;
+};
+
+export type MeetingTranscriptApplyResponse_unstable = {
+    version: MeetingTranscriptVersionDto;
+    segmentOutcomes: Array<MeetingUpsertOutcomeDto>;
+};
+
+export type MeetingUpsertOutcomeDto = {
+    id: string;
+    outcome: MeetingUpsertOutcomeKind;
+};
+
+export type MeetingUpsertOutcomeKind = 'inserted' | 'revised' | 'duplicate' | 'stale_ignored';
+
+export type MeetingSpeakersApplyRequest_unstable = {
+    meetingId: string;
+    speakers?: Array<MeetingSpeakerInputDto>;
+    swaps?: Array<MeetingSpeakerSwapDto>;
+    segmentUpdates?: Array<MeetingSegmentSpeakerUpdateDto>;
+};
+
+export type MeetingSpeakerSwapDto = {
+    firstSpeakerId: string;
+    secondSpeakerId: string;
+};
+
+export type MeetingSegmentSpeakerUpdateDto = {
+    segmentId: string;
+    speakerId: string;
+};
+
+export type MeetingSpeakersApplyResponse_unstable = {
+    speakers: Array<MeetingSpeakerDto>;
+};
+
+export type MeetingTimelineApplyRequest_unstable = {
+    meetingId: string;
+    events?: Array<MeetingTimelineEventUpsertDto>;
+};
+
+export type MeetingTimelineEventUpsertDto = {
+    id: string;
+    kind: MeetingTimelineEventKind;
+    startMs: number;
+    endMs?: number | null;
+    sourceKind?: MeetingAudioSourceKind | null;
+    providerNamespace?: string | null;
+    metadata?: unknown;
+};
+
+export type MeetingTimelineApplyResponse_unstable = {
+    events: Array<MeetingTimelineEventDto>;
+};
+
+export type MeetingAudioApplyRequest_unstable = {
+    meetingId: string;
+    assets?: Array<MeetingAudioAssetUpsertDto>;
+    replaceRefinementManifestForJobId?: string | null;
+    refinementInputs?: Array<MeetingRefinementInputUpsertDto>;
+};
+
+export type MeetingAudioAssetUpsertDto = {
+    id: string;
+    sourceKind: MeetingAudioSourceKind;
+    timelinePart: number;
+    fileName: string;
+    format: string;
+    sampleRate: number;
+    channels: number;
+    timelineStartMs: number;
+    timelineEndMs?: number | null;
+    durationMs?: number | null;
+    bytes?: number | null;
+    checksum?: string | null;
+    status: MeetingAudioAssetStatus;
+};
+
+export type MeetingRefinementInputUpsertDto = {
+    refinementJobId: string;
+    partIndex: number;
+    audioAssetId: string;
+    sourceKind: MeetingAudioSourceKind;
+    checksum: string;
+    meetingStartMs: number;
+    meetingEndMs: number;
+    providerStartMs: number;
+    providerEndMs: number;
+    manifestChecksum: string;
+};
+
+export type MeetingAudioApplyResponse_unstable = {
+    assets: Array<MeetingAudioAssetDto>;
+    refinementInputs: Array<MeetingRefinementInputDto>;
+};
+
+export type MeetingClaimsApplyRequest_unstable = {
+    meetingId: string;
+    manualFactCheckRequests?: Array<MeetingManualFactCheckRequestUpsertDto>;
+    claimVersions?: Array<MeetingClaimVersionUpsertDto>;
+    markStaleClaimVersionIds?: Array<string>;
+    beginClaimGateBatches?: Array<MeetingClaimGateBatchBeginDto>;
+    completeClaimGateBatchIds?: Array<string>;
+};
+
+export type MeetingManualFactCheckRequestUpsertDto = {
+    id: string;
+    exactSelection: string;
+    contextTurns: Array<MeetingClaimGateTurnDto>;
+    sourceSegmentIds: Array<string>;
+    speakerId?: string | null;
+    startMs?: number | null;
+    endMs?: number | null;
+    status: MeetingManualFactCheckRequestStatus;
+    error?: MeetingTypedErrorDto | null;
+};
+
+export type MeetingClaimVersionUpsertDto = {
+    claimId: string;
+    claimVersionId: string;
+    manualRequestId?: string | null;
+    origin: MeetingClaimOrigin;
+    duplicateKey?: string | null;
+    status: MeetingClaimStatus;
+    versionNumber: number;
+    predecessorId?: string | null;
+    supersededById?: string | null;
+    sourceTranscriptVersionId?: string | null;
+    exactQuote: string;
+    normalizedClaim: string;
+    speakerId?: string | null;
+    startMs?: number | null;
+    endMs?: number | null;
+    segmentIds: Array<string>;
+    selectionRationale?: string | null;
+    consequenceScore?: number | null;
+    disputeScore?: number | null;
+    specificityScore?: number | null;
+    timeSensitive: boolean;
+    lifecycle: MeetingClaimVersionLifecycle;
+    setCurrent: boolean;
+};
+
+export type MeetingClaimGateBatchBeginDto = {
+    id: string;
+    idempotencyKey: string;
+    turns: Array<MeetingClaimGateTurnDto>;
+};
+
+export type MeetingClaimsApplyResponse_unstable = {
+    claims: Array<MeetingClaimDto>;
+    claimVersions: Array<MeetingClaimVersionDto>;
+};
+
+export type MeetingResearchApplyRequest_unstable = {
+    meetingId: string;
+    job?: MeetingResearchJobUpsertDto | null;
+    assessment?: MeetingAssessmentApplyDto | null;
+};
+
+export type MeetingResearchJobUpsertDto = {
+    id: string;
+    claimVersionId: string;
+    stage: MeetingAssessmentStage;
+    gatewayJobId?: string | null;
+    idempotencyKey: string;
+    status: MeetingJobStatus;
+    attemptCount: number;
+    nextRetryAtMs?: number | null;
+    startedAtMs?: number | null;
+    completedAtMs?: number | null;
+    error?: MeetingTypedErrorDto | null;
+};
+
+export type MeetingAssessmentApplyDto = {
+    id: string;
+    claimVersionId: string;
+    stage: MeetingAssessmentStage;
+    attemptNumber: number;
+    status: MeetingAssessmentStatus;
+    supersedesId?: string | null;
+    verdict: MeetingVerdict;
+    confidence: MeetingConfidence;
+    conclusion: Array<MeetingCitedStatementDto>;
+    support: Array<MeetingCitedStatementDto>;
+    contradiction: Array<MeetingCitedStatementDto>;
+    caveats: Array<MeetingCitedStatementDto>;
+    limitations: Array<MeetingCitedStatementDto>;
+    modelProvider: string;
+    model: string;
+    modelVersion?: string | null;
+    usage?: unknown;
+    latencyMs?: number | null;
+    startedAtMs: number;
+    completedAtMs: number;
+    error?: MeetingTypedErrorDto | null;
+    sources: Array<MeetingSourceInputDto>;
+    setCurrent: boolean;
+};
+
+export type MeetingSourceInputDto = {
+    id: string;
+    citationKey: string;
+    url: string;
+    canonicalUrl: string;
+    publisher: string;
+    title: string;
+    publicationDate?: string | null;
+    accessedAtMs: number;
+    evidenceExcerpt: string;
+    stance: MeetingEvidenceStance;
+    qualityScore?: number | null;
+    qualityRationale: string;
+};
+
+export type MeetingResearchApplyResponse_unstable = {
+    job?: MeetingResearchJobDto | null;
+    assessment?: MeetingAssessmentDto | null;
+};
+
+export type MeetingRefinementJobApplyRequest_unstable = {
+    meetingId: string;
+    job: MeetingRefinementJobUpsertDto;
+};
+
+export type MeetingRefinementJobUpsertDto = {
+    id: string;
+    sourceTranscriptVersionId: string;
+    inputManifestChecksum: string;
+    provider: string;
+    model: string;
+    gatewayJobId?: string | null;
+    idempotencyKey: string;
+    status: MeetingRefinementJobStatus;
+    attemptCount: number;
+    nextRetryAtMs?: number | null;
+    usage?: unknown;
+    latencyMs?: number | null;
+    startedAtMs?: number | null;
+    completedAtMs?: number | null;
+    error?: MeetingTypedErrorDto | null;
+};
+
+export type MeetingRefinementJobApplyResponse_unstable = {
+    job: MeetingRefinementJobDto;
+};
+
+export type MeetingRefinementResultApplyRequest_unstable = {
+    meetingId: string;
+    refinementJobId: string;
+    version: MeetingTranscriptVersionUpsertDto;
+    segments?: Array<MeetingTranscriptSegmentUpsertDto>;
+    speakerObservations?: Array<MeetingSpeakerObservationUpsertDto>;
+    markStaleClaimVersionIds?: Array<string>;
+    replacementClaimVersions?: Array<MeetingClaimVersionUpsertDto>;
+};
+
+export type MeetingRefinementResultApplyResponse_unstable = {
+    canonicalVersion: MeetingTranscriptVersionDto;
+    segmentOutcomes: Array<MeetingUpsertOutcomeDto>;
+};
+
+export type MeetingDeleteRequest_unstable = {
+    meetingId: string;
+};
+
+export type MeetingDeleteResponse_unstable = {
+    cleanupJob: MeetingCleanupJobDto;
+};
+
+export type MeetingCleanupJobDto = {
+    id: string;
+    meetingId: string;
+    localStatus: MeetingCleanupStatus;
+    gatewayStatus: MeetingCleanupStatus;
+    providerStatus: MeetingCleanupStatus;
+    relativeAudioPaths: Array<string>;
+    attemptCount: number;
+    nextRetryAtMs?: number | null;
+    lastError?: MeetingTypedErrorDto | null;
+    createdAtMs: number;
+    updatedAtMs: number;
+};
+
+export type MeetingCleanupStatus = 'pending' | 'running' | 'complete' | 'retry_wait' | 'failed' | 'unavailable';
+
+export type MeetingCleanupConfirmRequest_unstable = {
+    cleanupJobId: string;
+    localStatus: MeetingCleanupStatus;
+    gatewayStatus: MeetingCleanupStatus;
+    providerStatus: MeetingCleanupStatus;
+    error?: MeetingTypedErrorDto | null;
+};
+
+export type MeetingCleanupConfirmResponse_unstable = {
+    cleanupJob?: MeetingCleanupJobDto | null;
+    recordsRemoved: boolean;
+};
+
+export type MeetingRecoverRequest_unstable = {
+    reconcileActiveWork?: boolean;
+};
+
+export type MeetingRecoverResponse_unstable = {
+    interruptedMeetingIds: Array<string>;
+    refinementJobIds: Array<string>;
+    researchJobIds: Array<string>;
+    cleanupJobIds: Array<string>;
+    refinementJobs: Array<MeetingRefinementJobDto>;
+    researchJobs: Array<MeetingResearchJobDto>;
+    cleanupJobs: Array<MeetingCleanupJobDto>;
+};
+
 export type LocalInferenceModelsListRequest_unstable = {
     [key: string]: unknown;
 };
@@ -2636,14 +3455,14 @@ export type RecipeParamsAction = 'submit' | 'cancel';
 export type ExtRequest = {
     id: string;
     method: string;
-    params?: AddSessionExtensionRequest_unstable | RemoveSessionExtensionRequest_unstable | GetToolsRequest_unstable | SetToolPermissionsRequest_unstable | GooseToolCallRequest_unstable | ReadResourceRequest_unstable | AppsListRequest_unstable | AppsExportRequest_unstable | AppsImportRequest_unstable | AppsDeleteRequest_unstable | UpdateWorkingDirRequest_unstable | SetSessionSystemPromptRequest_unstable | SteerSessionRequest_unstable | DiagnosticsGetRequest_unstable | ListPromptsRequest_unstable | GetPromptRequest_unstable | SavePromptRequest_unstable | ResetPromptRequest_unstable | DeleteSessionRequest | GetConfigExtensionsRequest_unstable | GetAvailableExtensionsRequest_unstable | AddConfigExtensionRequest_unstable | RemoveConfigExtensionRequest_unstable | SetConfigExtensionEnabledRequest_unstable | GetSessionExtensionsRequest_unstable | ListProvidersRequest_unstable | ProviderSupportedModelsListRequest_unstable | ProviderCatalogListRequest_unstable | ProviderSetupCatalogListRequest_unstable | ProviderCatalogTemplateRequest_unstable | CustomProviderCreateRequest_unstable | CustomProviderReadRequest_unstable | CustomProviderUpdateRequest_unstable | CustomProviderDeleteRequest_unstable | RefreshProviderInventoryRequest_unstable | ProviderConfigReadRequest_unstable | ProviderConfigStatusRequest_unstable | ProviderConfigSaveRequest_unstable | ProviderConfigDeleteRequest_unstable | ProviderConfigAuthenticateRequest_unstable | ProviderSecretsListRequest_unstable | ProviderSecretDeleteRequest_unstable | CanonicalModelInfoRequest_unstable | PreferencesReadRequest_unstable | PreferencesSaveRequest_unstable | PreferencesRemoveRequest_unstable | ConfigReadRequest_unstable | ConfigUpsertRequest_unstable | ConfigRemoveRequest_unstable | ConfigReadAllRequest_unstable | DefaultsReadRequest_unstable | DefaultsSaveRequest_unstable | DefaultsClearRequest_unstable | OnboardingImportScanRequest_unstable | OnboardingImportApplyRequest_unstable | ExportSessionRequest_unstable | ImportSessionRequest_unstable | ShareSessionNostrRequest_unstable | EncodeRecipeRequest_unstable | DecodeRecipeRequest_unstable | ScanRecipeRequest_unstable | ListRecipesRequest_unstable | DeleteRecipeRequest_unstable | ScheduleRecipeRequest_unstable | SetRecipeSlashCommandRequest_unstable | SaveRecipeRequest_unstable | ParseRecipeRequest_unstable | RecipeToYamlRequest_unstable | ListSchedulesRequest_unstable | ListScheduleSessionsRequest_unstable | CreateScheduleRequest_unstable | DeleteScheduleRequest_unstable | PauseScheduleRequest_unstable | UnpauseScheduleRequest_unstable | UpdateScheduleRequest_unstable | RunScheduleNowRequest_unstable | KillRunningJobRequest_unstable | InspectRunningJobRequest_unstable | GetSessionInfoRequest_unstable | TruncateSessionConversationRequest_unstable | UpdateSessionProjectRequest_unstable | RenameSessionRequest_unstable | ArchiveSessionRequest_unstable | UnarchiveSessionRequest_unstable | CreateSourceRequest_unstable | ListSourcesRequest_unstable | ListAgentMentionsRequest_unstable | ListSlashCommandsRequest_unstable | UpdateSourceRequest_unstable | DeleteSourceRequest_unstable | ExportSourceRequest_unstable | ImportSourcesRequest_unstable | DictationTranscribeRequest_unstable | DictationConfigRequest_unstable | DictationSecretSaveRequest_unstable | DictationSecretDeleteRequest_unstable | DictationModelsListRequest_unstable | DictationModelDownloadRequest_unstable | DictationModelDownloadProgressRequest_unstable | DictationModelCancelRequest_unstable | DictationModelDeleteRequest_unstable | DictationModelSelectRequest_unstable | LocalInferenceModelsListRequest_unstable | LocalInferenceModelDownloadRequest_unstable | LocalInferenceModelDownloadProgressRequest_unstable | LocalInferenceModelDownloadCancelRequest_unstable | LocalInferenceModelDeleteRequest_unstable | LocalInferenceModelEvictRequest_unstable | LocalInferenceModelSettingsReadRequest_unstable | LocalInferenceModelSettingsUpdateRequest_unstable | LocalInferenceHuggingFaceSearchRequest_unstable | LocalInferenceHuggingFaceRepoVariantsRequest_unstable | LocalInferenceBuiltinChatTemplatesListRequest_unstable | {
+    params?: AddSessionExtensionRequest_unstable | RemoveSessionExtensionRequest_unstable | GetToolsRequest_unstable | SetToolPermissionsRequest_unstable | GooseToolCallRequest_unstable | ReadResourceRequest_unstable | AppsListRequest_unstable | AppsExportRequest_unstable | AppsImportRequest_unstable | AppsDeleteRequest_unstable | UpdateWorkingDirRequest_unstable | SetSessionSystemPromptRequest_unstable | SteerSessionRequest_unstable | DiagnosticsGetRequest_unstable | ListPromptsRequest_unstable | GetPromptRequest_unstable | SavePromptRequest_unstable | ResetPromptRequest_unstable | DeleteSessionRequest | GetConfigExtensionsRequest_unstable | GetAvailableExtensionsRequest_unstable | AddConfigExtensionRequest_unstable | RemoveConfigExtensionRequest_unstable | SetConfigExtensionEnabledRequest_unstable | GetSessionExtensionsRequest_unstable | ListProvidersRequest_unstable | ProviderSupportedModelsListRequest_unstable | ProviderCatalogListRequest_unstable | ProviderSetupCatalogListRequest_unstable | ProviderCatalogTemplateRequest_unstable | CustomProviderCreateRequest_unstable | CustomProviderReadRequest_unstable | CustomProviderUpdateRequest_unstable | CustomProviderDeleteRequest_unstable | RefreshProviderInventoryRequest_unstable | ProviderConfigReadRequest_unstable | ProviderConfigStatusRequest_unstable | ProviderConfigSaveRequest_unstable | ProviderConfigDeleteRequest_unstable | ProviderConfigAuthenticateRequest_unstable | ProviderSecretsListRequest_unstable | ProviderSecretDeleteRequest_unstable | CanonicalModelInfoRequest_unstable | PreferencesReadRequest_unstable | PreferencesSaveRequest_unstable | PreferencesRemoveRequest_unstable | ConfigReadRequest_unstable | ConfigUpsertRequest_unstable | ConfigRemoveRequest_unstable | ConfigReadAllRequest_unstable | DefaultsReadRequest_unstable | DefaultsSaveRequest_unstable | DefaultsClearRequest_unstable | OnboardingImportScanRequest_unstable | OnboardingImportApplyRequest_unstable | ExportSessionRequest_unstable | ImportSessionRequest_unstable | ShareSessionNostrRequest_unstable | EncodeRecipeRequest_unstable | DecodeRecipeRequest_unstable | ScanRecipeRequest_unstable | ListRecipesRequest_unstable | DeleteRecipeRequest_unstable | ScheduleRecipeRequest_unstable | SetRecipeSlashCommandRequest_unstable | SaveRecipeRequest_unstable | ParseRecipeRequest_unstable | RecipeToYamlRequest_unstable | ListSchedulesRequest_unstable | ListScheduleSessionsRequest_unstable | CreateScheduleRequest_unstable | DeleteScheduleRequest_unstable | PauseScheduleRequest_unstable | UnpauseScheduleRequest_unstable | UpdateScheduleRequest_unstable | RunScheduleNowRequest_unstable | KillRunningJobRequest_unstable | InspectRunningJobRequest_unstable | GetSessionInfoRequest_unstable | TruncateSessionConversationRequest_unstable | UpdateSessionProjectRequest_unstable | RenameSessionRequest_unstable | ArchiveSessionRequest_unstable | UnarchiveSessionRequest_unstable | CreateSourceRequest_unstable | ListSourcesRequest_unstable | ListAgentMentionsRequest_unstable | ListSlashCommandsRequest_unstable | UpdateSourceRequest_unstable | DeleteSourceRequest_unstable | ExportSourceRequest_unstable | ImportSourcesRequest_unstable | DictationTranscribeRequest_unstable | DictationConfigRequest_unstable | DictationSecretSaveRequest_unstable | DictationSecretDeleteRequest_unstable | DictationModelsListRequest_unstable | DictationModelDownloadRequest_unstable | DictationModelDownloadProgressRequest_unstable | DictationModelCancelRequest_unstable | DictationModelDeleteRequest_unstable | DictationModelSelectRequest_unstable | MeetingCreateRequest_unstable | MeetingUpdateRequest_unstable | MeetingListRequest_unstable | MeetingGetRequest_unstable | MeetingTranscriptApplyRequest_unstable | MeetingSpeakersApplyRequest_unstable | MeetingTimelineApplyRequest_unstable | MeetingAudioApplyRequest_unstable | MeetingClaimsApplyRequest_unstable | MeetingResearchApplyRequest_unstable | MeetingRefinementJobApplyRequest_unstable | MeetingRefinementResultApplyRequest_unstable | MeetingDeleteRequest_unstable | MeetingCleanupConfirmRequest_unstable | MeetingRecoverRequest_unstable | LocalInferenceModelsListRequest_unstable | LocalInferenceModelDownloadRequest_unstable | LocalInferenceModelDownloadProgressRequest_unstable | LocalInferenceModelDownloadCancelRequest_unstable | LocalInferenceModelDeleteRequest_unstable | LocalInferenceModelEvictRequest_unstable | LocalInferenceModelSettingsReadRequest_unstable | LocalInferenceModelSettingsUpdateRequest_unstable | LocalInferenceHuggingFaceSearchRequest_unstable | LocalInferenceHuggingFaceRepoVariantsRequest_unstable | LocalInferenceBuiltinChatTemplatesListRequest_unstable | {
         [key: string]: unknown;
     } | null;
 };
 
 export type ExtResponse = {
     id: string;
-    result?: EmptyResponse | GetToolsResponse_unstable | SetToolPermissionsResponse_unstable | GooseToolCallResponse_unstable | ReadResourceResponse_unstable | AppsListResponse_unstable | AppsExportResponse_unstable | AppsImportResponse_unstable | AppsDeleteResponse_unstable | SteerSessionResponse_unstable | DiagnosticsGetResponse_unstable | ListPromptsResponse_unstable | GetPromptResponse_unstable | PromptOperationResponse_unstable | GetConfigExtensionsResponse_unstable | GetAvailableExtensionsResponse_unstable | GetSessionExtensionsResponse_unstable | ListProvidersResponse_unstable | ProviderSupportedModelsListResponse_unstable | ProviderCatalogListResponse_unstable | ProviderSetupCatalogListResponse_unstable | ProviderCatalogTemplateResponse_unstable | CustomProviderCreateResponse_unstable | CustomProviderReadResponse_unstable | CustomProviderUpdateResponse_unstable | CustomProviderDeleteResponse_unstable | RefreshProviderInventoryResponse_unstable | ProviderConfigReadResponse_unstable | ProviderConfigStatusResponse_unstable | ProviderConfigChangeResponse_unstable | ProviderSecretsListResponse_unstable | CanonicalModelInfoResponse_unstable | PreferencesReadResponse_unstable | ConfigReadResponse_unstable | ConfigReadAllResponse_unstable | DefaultsReadResponse_unstable | OnboardingImportScanResponse_unstable | OnboardingImportApplyResponse_unstable | ExportSessionResponse_unstable | ImportSessionResponse_unstable | ShareSessionNostrResponse_unstable | EncodeRecipeResponse_unstable | DecodeRecipeResponse_unstable | ScanRecipeResponse_unstable | ListRecipesResponse_unstable | SaveRecipeResponse_unstable | ParseRecipeResponse_unstable | RecipeToYamlResponse_unstable | ListSchedulesResponse_unstable | ListScheduleSessionsResponse_unstable | CreateScheduleResponse_unstable | UpdateScheduleResponse_unstable | RunScheduleNowResponse_unstable | KillRunningJobResponse_unstable | InspectRunningJobResponse_unstable | GetSessionInfoResponse_unstable | CreateSourceResponse_unstable | ListSourcesResponse_unstable | ListAgentMentionsResponse_unstable | ListSlashCommandsResponse_unstable | UpdateSourceResponse_unstable | ExportSourceResponse_unstable | ImportSourcesResponse_unstable | DictationTranscribeResponse_unstable | DictationConfigResponse_unstable | DictationModelsListResponse_unstable | DictationModelDownloadProgressResponse_unstable | LocalInferenceModelsListResponse_unstable | LocalInferenceModelDownloadResponse_unstable | LocalInferenceModelDownloadProgressResponse_unstable | LocalInferenceModelSettingsReadResponse_unstable | LocalInferenceModelSettingsUpdateResponse_unstable | LocalInferenceHuggingFaceSearchResponse_unstable | LocalInferenceHuggingFaceRepoVariantsResponse_unstable | LocalInferenceBuiltinChatTemplatesListResponse_unstable | unknown;
+    result?: EmptyResponse | GetToolsResponse_unstable | SetToolPermissionsResponse_unstable | GooseToolCallResponse_unstable | ReadResourceResponse_unstable | AppsListResponse_unstable | AppsExportResponse_unstable | AppsImportResponse_unstable | AppsDeleteResponse_unstable | SteerSessionResponse_unstable | DiagnosticsGetResponse_unstable | ListPromptsResponse_unstable | GetPromptResponse_unstable | PromptOperationResponse_unstable | GetConfigExtensionsResponse_unstable | GetAvailableExtensionsResponse_unstable | GetSessionExtensionsResponse_unstable | ListProvidersResponse_unstable | ProviderSupportedModelsListResponse_unstable | ProviderCatalogListResponse_unstable | ProviderSetupCatalogListResponse_unstable | ProviderCatalogTemplateResponse_unstable | CustomProviderCreateResponse_unstable | CustomProviderReadResponse_unstable | CustomProviderUpdateResponse_unstable | CustomProviderDeleteResponse_unstable | RefreshProviderInventoryResponse_unstable | ProviderConfigReadResponse_unstable | ProviderConfigStatusResponse_unstable | ProviderConfigChangeResponse_unstable | ProviderSecretsListResponse_unstable | CanonicalModelInfoResponse_unstable | PreferencesReadResponse_unstable | ConfigReadResponse_unstable | ConfigReadAllResponse_unstable | DefaultsReadResponse_unstable | OnboardingImportScanResponse_unstable | OnboardingImportApplyResponse_unstable | ExportSessionResponse_unstable | ImportSessionResponse_unstable | ShareSessionNostrResponse_unstable | EncodeRecipeResponse_unstable | DecodeRecipeResponse_unstable | ScanRecipeResponse_unstable | ListRecipesResponse_unstable | SaveRecipeResponse_unstable | ParseRecipeResponse_unstable | RecipeToYamlResponse_unstable | ListSchedulesResponse_unstable | ListScheduleSessionsResponse_unstable | CreateScheduleResponse_unstable | UpdateScheduleResponse_unstable | RunScheduleNowResponse_unstable | KillRunningJobResponse_unstable | InspectRunningJobResponse_unstable | GetSessionInfoResponse_unstable | CreateSourceResponse_unstable | ListSourcesResponse_unstable | ListAgentMentionsResponse_unstable | ListSlashCommandsResponse_unstable | UpdateSourceResponse_unstable | ExportSourceResponse_unstable | ImportSourcesResponse_unstable | DictationTranscribeResponse_unstable | DictationConfigResponse_unstable | DictationModelsListResponse_unstable | DictationModelDownloadProgressResponse_unstable | MeetingCreateResponse_unstable | MeetingUpdateResponse_unstable | MeetingListResponse_unstable | MeetingGetResponse_unstable | MeetingTranscriptApplyResponse_unstable | MeetingSpeakersApplyResponse_unstable | MeetingTimelineApplyResponse_unstable | MeetingAudioApplyResponse_unstable | MeetingClaimsApplyResponse_unstable | MeetingResearchApplyResponse_unstable | MeetingRefinementJobApplyResponse_unstable | MeetingRefinementResultApplyResponse_unstable | MeetingDeleteResponse_unstable | MeetingCleanupConfirmResponse_unstable | MeetingRecoverResponse_unstable | LocalInferenceModelsListResponse_unstable | LocalInferenceModelDownloadResponse_unstable | LocalInferenceModelDownloadProgressResponse_unstable | LocalInferenceModelSettingsReadResponse_unstable | LocalInferenceModelSettingsUpdateResponse_unstable | LocalInferenceHuggingFaceSearchResponse_unstable | LocalInferenceHuggingFaceRepoVariantsResponse_unstable | LocalInferenceBuiltinChatTemplatesListResponse_unstable | unknown;
 } | {
     error: {
         code: number;

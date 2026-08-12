@@ -5,6 +5,7 @@ import {
   History,
   MessageSquarePlus,
   Puzzle,
+  RadioTower,
   Settings,
   Zap,
 } from 'lucide-react';
@@ -23,6 +24,7 @@ export interface NavItem {
 /** Top-level nav items (excluding Settings which is pinned to the bottom). */
 export const NAV_ITEMS: NavItem[] = [
   { id: 'home', path: '/', label: 'New Chat', icon: MessageSquarePlus },
+  { id: 'live', path: '/live', label: 'Live Fact Check', icon: RadioTower },
   { id: 'recipes', path: '/recipes', label: 'Recipes', icon: FileText },
   { id: 'skills', path: '/skills', label: 'Skills', icon: Zap },
   { id: 'apps', path: '/apps', label: 'Apps', icon: AppWindow },
@@ -45,6 +47,10 @@ const navItemMessages = defineMessages({
   home: {
     id: 'navigation.itemHome',
     defaultMessage: 'New Chat',
+  },
+  live: {
+    id: 'navigation.itemLiveFactCheck',
+    defaultMessage: 'Live Fact Check',
   },
   recipes: {
     id: 'navigation.itemRecipes',

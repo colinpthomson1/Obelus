@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { Download } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { Recipe, parseDeeplink, parseRecipeFromFile } from '../../recipe';
+import { Recipe, isRecipeDeepLink, parseDeeplink, parseRecipeFromFile } from '../../recipe';
 import { toastSuccess, toastError } from '../../toasts';
 import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { getRecipeJsonSchema } from '../../recipe/validation';
@@ -23,11 +23,11 @@ const i18n = defineMessages({
   },
   deeplinkPlaceholder: {
     id: 'importRecipeForm.deeplinkPlaceholder',
-    defaultMessage: 'Paste your goose://recipe?config=... deeplink here',
+    defaultMessage: 'Paste your obelus://recipe?config=... deep link here',
   },
   deeplinkHint: {
     id: 'importRecipeForm.deeplinkHint',
-    defaultMessage: 'Paste a recipe deeplink starting with "goose://recipe?config="',
+    defaultMessage: 'Paste a recipe deep link starting with "obelus://recipe?config="',
   },
   or: {
     id: 'importRecipeForm.or',
@@ -47,7 +47,8 @@ const i18n = defineMessages({
   },
   reviewWarning: {
     id: 'importRecipeForm.reviewWarning',
-    defaultMessage: 'Ensure you review contents of recipe files before adding them to your goose interface.',
+    defaultMessage:
+      'Review every recipe before adding it to Obelus. Recipes can configure tools and external services.',
   },
   cancel: {
     id: 'importRecipeForm.cancel',
@@ -67,7 +68,8 @@ const i18n = defineMessages({
   },
   schemaDescription: {
     id: 'importRecipeForm.schemaDescription',
-    defaultMessage: 'Your YAML or JSON file should follow this structure. Required fields are: title, description, and either instructions or prompt.',
+    defaultMessage:
+      'Your YAML or JSON file should follow this structure. Required fields are: title, description, and either instructions or prompt.',
   },
 });
 
@@ -83,8 +85,8 @@ const importRecipeSchema = z
     deeplink: z
       .string()
       .refine(
-        (value) => !value || value.trim().startsWith('goose://recipe?config='),
-        'Invalid deeplink format. Expected: goose://recipe?config=...'
+        (value) => !value || isRecipeDeepLink(value),
+        'Invalid deep-link format. Expected: obelus://recipe?config=...'
       ),
     recipeUploadFile: z
       .instanceof(File)
@@ -208,7 +210,9 @@ export default function ImportRecipeForm({ isOpen, onClose, onSuccess }: ImportR
     <>
       <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/50">
         <div className="bg-background-primary border border-border-primary rounded-lg p-6 w-[500px] max-w-[90vw]">
-          <h3 className="text-lg font-medium text-text-primary mb-4">{intl.formatMessage(i18n.importRecipeTitle)}</h3>
+          <h3 className="text-lg font-medium text-text-primary mb-4">
+            {intl.formatMessage(i18n.importRecipeTitle)}
+          </h3>
 
           <form
             onSubmit={(e) => {
@@ -354,7 +358,9 @@ export default function ImportRecipeForm({ isOpen, onClose, onSuccess }: ImportR
                     disabled={!canSubmit || importing || isSubmitting}
                     variant="default"
                   >
-                    {importing || isSubmitting ? intl.formatMessage(i18n.importing) : intl.formatMessage(i18n.importRecipeButton)}
+                    {importing || isSubmitting
+                      ? intl.formatMessage(i18n.importing)
+                      : intl.formatMessage(i18n.importRecipeButton)}
                   </Button>
                 )}
               </importRecipeForm.Subscribe>
@@ -368,7 +374,9 @@ export default function ImportRecipeForm({ isOpen, onClose, onSuccess }: ImportR
         <div className="fixed inset-0 z-[400] flex items-center justify-center bg-black/50">
           <div className="bg-background-primary border border-border-primary rounded-lg p-6 w-[800px] max-w-[90vw] max-h-[80vh] flex flex-col">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-text-primary">{intl.formatMessage(i18n.expectedRecipeStructure)}</h3>
+              <h3 className="text-lg font-medium text-text-primary">
+                {intl.formatMessage(i18n.expectedRecipeStructure)}
+              </h3>
               <button
                 type="button"
                 onClick={() => setShowSchemaModal(false)}

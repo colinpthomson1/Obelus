@@ -11,6 +11,7 @@ import {
   parseRecipe as acpParseRecipe,
   scanRecipe as acpScanRecipe,
 } from '../acp/recipe';
+import { isSupportedProductDeepLink } from '../utils/deepLinks';
 
 export type Parameter = RecipeParameterDto;
 export type RecipeExtension = RecipeExtensionDto;
@@ -54,7 +55,11 @@ export async function scanRecipe(recipe: Recipe): Promise<{ has_security_warning
 
 export async function generateDeepLink(recipe: Recipe): Promise<string> {
   const encoded = await encodeRecipe(recipe);
-  return `goose://recipe?config=${encoded}`;
+  return `obelus://recipe?config=${encoded}`;
+}
+
+export function isRecipeDeepLink(value: string): boolean {
+  return isSupportedProductDeepLink(value.trim(), 'recipe') && value.includes('?config=');
 }
 
 /**
@@ -94,11 +99,12 @@ export async function parseDeeplink(deeplink: string): Promise<Recipe | null> {
   try {
     const cleanLink = deeplink.trim();
 
-    if (!cleanLink.startsWith('goose://recipe?config=')) {
-      throw new Error('Invalid deeplink format. Expected: goose://recipe?config=...');
+    if (!isRecipeDeepLink(cleanLink)) {
+      throw new Error('Invalid deeplink format. Expected: obelus://recipe?config=...');
     }
 
-    const recipeEncoded = cleanLink.replace('goose://recipe?config=', '');
+    const configMatch = new URL(cleanLink).search.match(/(?:^\?|&)config=([^&]*)/);
+    const recipeEncoded = configMatch?.[1];
 
     if (!recipeEncoded) {
       throw new Error('No recipe configuration found in deeplink');

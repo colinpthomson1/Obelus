@@ -17,6 +17,7 @@ export type View =
   | 'loading'
   | 'recipes'
   | 'skills'
+  | 'live'
   | 'permission';
 
 export type ViewOptions = {
@@ -65,6 +66,9 @@ export const createNavigationHandler = (navigate: NavigateFunction) => {
         break;
       case 'skills':
         navigate('/skills', { state: options });
+        break;
+      case 'live':
+        navigate('/live', { state: options });
         break;
       case 'permission':
         navigate('/permission', { state: options });

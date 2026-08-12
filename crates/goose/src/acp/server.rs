@@ -24,6 +24,7 @@ use crate::conversation::message::{
     ToolRequest, ToolResponse,
 };
 use crate::execution::manager::{AgentManager, AgentManagerGetResult, RuntimeContext};
+use crate::meetings::MeetingStore;
 use crate::permission::permission_confirmation::PrincipalType;
 use crate::permission::{Permission, PermissionConfirmation};
 use crate::providers::base::Provider;
@@ -101,6 +102,7 @@ mod list_sessions;
 mod load_session;
 mod local_inference;
 mod manage_sessions;
+mod meetings;
 mod message_meta;
 mod new_session;
 mod onboarding;
@@ -158,7 +160,7 @@ impl<T, E: std::fmt::Display> ResultExt<T> for Result<T, E> {
 }
 
 pub(super) const DEFAULT_PROVIDER_ID: &str = "goose";
-pub(super) const DEFAULT_PROVIDER_LABEL: &str = "Goose (Default)";
+pub(super) const DEFAULT_PROVIDER_LABEL: &str = "Obelus (default)";
 const PROVIDER_CONFIG_STATUS_CHECK_CONCURRENCY: usize = 16;
 
 /// In-memory state for an active ACP session.
@@ -215,6 +217,7 @@ pub struct GooseAcpAgent {
     use_login_shell_path: OnceCell<bool>,
     client_cx: OnceCell<ConnectionTo<Client>>,
     config_dir: std::path::PathBuf,
+    meeting_store: Arc<MeetingStore>,
     session_manager: Arc<SessionManager>,
     permission_manager: Arc<PermissionManager>,
     disable_session_naming: bool,
@@ -636,6 +639,8 @@ impl GooseAcpAgent {
 
     // TODO: goose reads Paths::in_state_dir globally (e.g. RequestLog), ignoring this data_dir.
     pub async fn new(options: GooseAcpAgentOptions) -> Result<Self> {
+        let meeting_store = Arc::new(MeetingStore::new(options.data_dir.clone())?);
+        meeting_store.initialize().await?;
         let session_manager = Arc::new(SessionManager::new(options.data_dir));
 
         // Eagerly initialize the SQLite pool so it's ready when providers/sessions need it.
@@ -673,6 +678,7 @@ impl GooseAcpAgent {
             use_login_shell_path: OnceCell::new(),
             client_cx: OnceCell::new(),
             config_dir: options.config_dir,
+            meeting_store,
             session_manager,
             permission_manager,
             disable_session_naming: options.disable_session_naming,
@@ -1500,11 +1506,11 @@ impl GooseAcpAgent {
             .mcp_capabilities(McpCapabilities::new().http(true))
             .meta(agent_capabilities_meta());
         Ok(InitializeResponse::new(args.protocol_version)
-            .agent_info(Implementation::new("goose", env!("CARGO_PKG_VERSION")))
+            .agent_info(Implementation::new("obelus", env!("CARGO_PKG_VERSION")))
             .agent_capabilities(capabilities)
             .auth_methods(vec![AuthMethod::Agent(
-                AuthMethodAgent::new("goose-provider", "Configure Provider")
-                    .description("Run `goose configure` to set up your AI provider and API key"),
+                AuthMethodAgent::new("goose-provider", "Configure provider")
+                    .description("Run the compatibility command `goose configure` to set up your model provider and API key"),
             )]))
     }
 

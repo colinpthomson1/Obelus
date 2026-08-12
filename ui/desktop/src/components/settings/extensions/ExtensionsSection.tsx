@@ -24,7 +24,7 @@ const i18n = defineMessages({
   },
   browseExtensions: {
     id: 'extensionsSection.browseExtensions',
-    defaultMessage: 'Browse extensions',
+    defaultMessage: 'Upstream extension guide',
   },
   updateExtension: {
     id: 'extensionsSection.updateExtension',

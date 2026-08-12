@@ -843,6 +843,126 @@ impl GooseAcpAgent {
         self.on_dictation_model_select(req).await
     }
 
+    #[custom_method(MeetingCreateRequest)]
+    async fn dispatch_meeting_create(
+        &self,
+        req: MeetingCreateRequest,
+    ) -> Result<MeetingCreateResponse, agent_client_protocol::Error> {
+        self.on_meeting_create(req).await
+    }
+
+    #[custom_method(MeetingUpdateRequest)]
+    async fn dispatch_meeting_update(
+        &self,
+        req: MeetingUpdateRequest,
+    ) -> Result<MeetingUpdateResponse, agent_client_protocol::Error> {
+        self.on_meeting_update(req).await
+    }
+
+    #[custom_method(MeetingListRequest)]
+    async fn dispatch_meeting_list(
+        &self,
+        req: MeetingListRequest,
+    ) -> Result<MeetingListResponse, agent_client_protocol::Error> {
+        self.on_meeting_list(req).await
+    }
+
+    #[custom_method(MeetingGetRequest)]
+    async fn dispatch_meeting_get(
+        &self,
+        req: MeetingGetRequest,
+    ) -> Result<MeetingGetResponse, agent_client_protocol::Error> {
+        self.on_meeting_get(req).await
+    }
+
+    #[custom_method(MeetingTranscriptApplyRequest)]
+    async fn dispatch_meeting_transcript_apply(
+        &self,
+        req: MeetingTranscriptApplyRequest,
+    ) -> Result<MeetingTranscriptApplyResponse, agent_client_protocol::Error> {
+        self.on_meeting_transcript_apply(req).await
+    }
+
+    #[custom_method(MeetingSpeakersApplyRequest)]
+    async fn dispatch_meeting_speakers_apply(
+        &self,
+        req: MeetingSpeakersApplyRequest,
+    ) -> Result<MeetingSpeakersApplyResponse, agent_client_protocol::Error> {
+        self.on_meeting_speakers_apply(req).await
+    }
+
+    #[custom_method(MeetingTimelineApplyRequest)]
+    async fn dispatch_meeting_timeline_apply(
+        &self,
+        req: MeetingTimelineApplyRequest,
+    ) -> Result<MeetingTimelineApplyResponse, agent_client_protocol::Error> {
+        self.on_meeting_timeline_apply(req).await
+    }
+
+    #[custom_method(MeetingAudioApplyRequest)]
+    async fn dispatch_meeting_audio_apply(
+        &self,
+        req: MeetingAudioApplyRequest,
+    ) -> Result<MeetingAudioApplyResponse, agent_client_protocol::Error> {
+        self.on_meeting_audio_apply(req).await
+    }
+
+    #[custom_method(MeetingClaimsApplyRequest)]
+    async fn dispatch_meeting_claims_apply(
+        &self,
+        req: MeetingClaimsApplyRequest,
+    ) -> Result<MeetingClaimsApplyResponse, agent_client_protocol::Error> {
+        self.on_meeting_claims_apply(req).await
+    }
+
+    #[custom_method(MeetingResearchApplyRequest)]
+    async fn dispatch_meeting_research_apply(
+        &self,
+        req: MeetingResearchApplyRequest,
+    ) -> Result<MeetingResearchApplyResponse, agent_client_protocol::Error> {
+        self.on_meeting_research_apply(req).await
+    }
+
+    #[custom_method(MeetingRefinementJobApplyRequest)]
+    async fn dispatch_meeting_refinement_job_apply(
+        &self,
+        req: MeetingRefinementJobApplyRequest,
+    ) -> Result<MeetingRefinementJobApplyResponse, agent_client_protocol::Error> {
+        self.on_meeting_refinement_job_apply(req).await
+    }
+
+    #[custom_method(MeetingRefinementResultApplyRequest)]
+    async fn dispatch_meeting_refinement_result_apply(
+        &self,
+        req: MeetingRefinementResultApplyRequest,
+    ) -> Result<MeetingRefinementResultApplyResponse, agent_client_protocol::Error> {
+        self.on_meeting_refinement_result_apply(req).await
+    }
+
+    #[custom_method(MeetingDeleteRequest)]
+    async fn dispatch_meeting_delete(
+        &self,
+        req: MeetingDeleteRequest,
+    ) -> Result<MeetingDeleteResponse, agent_client_protocol::Error> {
+        self.on_meeting_delete(req).await
+    }
+
+    #[custom_method(MeetingCleanupConfirmRequest)]
+    async fn dispatch_meeting_cleanup_confirm(
+        &self,
+        req: MeetingCleanupConfirmRequest,
+    ) -> Result<MeetingCleanupConfirmResponse, agent_client_protocol::Error> {
+        self.on_meeting_cleanup_confirm(req).await
+    }
+
+    #[custom_method(MeetingRecoverRequest)]
+    async fn dispatch_meeting_recover(
+        &self,
+        req: MeetingRecoverRequest,
+    ) -> Result<MeetingRecoverResponse, agent_client_protocol::Error> {
+        self.on_meeting_recover(req).await
+    }
+
     #[custom_method(LocalInferenceModelsListRequest)]
     async fn dispatch_local_inference_models_list(
         &self,

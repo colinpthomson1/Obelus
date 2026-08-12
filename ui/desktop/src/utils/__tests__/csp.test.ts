@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { buildConnectSrc, shouldUpgradeInsecureRequests, buildCSP } from '../csp';
 import type { ExternalBackendConfig } from '../settings';
 
@@ -8,6 +10,8 @@ describe('buildConnectSrc', () => {
     expect(result).toContain("'self'");
     expect(result).toContain('http://127.0.0.1:*');
     expect(result).toContain('wss://127.0.0.1:*');
+    expect(result).toContain('wss://streaming.assemblyai.com');
+    expect(result).not.toContain('wss: ');
   });
 
   it('includes external backend origin when enabled', () => {
@@ -51,6 +55,21 @@ describe('buildConnectSrc', () => {
     const result = buildConnectSrc(config);
     expect(result).toContain("'self'");
     expect(result).not.toContain('not-a-valid-url');
+  });
+
+  it('does not admit non-network schemes or credential-bearing origins', () => {
+    const javascript = buildConnectSrc({
+      enabled: true,
+      url: 'javascript:alert(1)',
+      secret: 'test',
+    });
+    const credentials = buildConnectSrc({
+      enabled: true,
+      url: 'https://user:password@example.com',
+      secret: 'test',
+    });
+    expect(javascript).not.toContain('javascript:');
+    expect(credentials).not.toContain('example.com');
   });
 });
 
@@ -144,5 +163,13 @@ describe('buildCSP', () => {
     expect(csp).toContain("script-src 'self' 'unsafe-inline'");
     expect(csp).toContain('connect-src');
     expect(csp).toContain("object-src 'none'");
+    expect(csp).toContain('wss://streaming.assemblyai.com');
+    expect(csp).toContain("media-src 'self' mediastream: obelus-audio:");
+  });
+
+  it('does not leave a second broad meta policy in the renderer document', () => {
+    const html = readFileSync(path.resolve(process.cwd(), 'index.html'), 'utf8');
+    expect(html).not.toContain('http-equiv="Content-Security-Policy"');
+    expect(html).not.toMatch(/connect-src[^;]*(?:https:|wss:)/);
   });
 });

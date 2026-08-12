@@ -19,7 +19,7 @@ check-everything:
 # Default release command
 release-binary:
     @echo "Building release version..."
-    cargo build --release -p goose-cli --bin goose
+    cargo build --release -p goose-cli --bin goose --features disable-update
     @just copy-binary
 
 # Build Windows executable on a Windows host
@@ -30,12 +30,12 @@ release-windows:
 
 [windows]
 release-windows:
-    @powershell.exe -NoProfile -ExecutionPolicy Bypass -Command 'rustup target add x86_64-pc-windows-msvc; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; cargo build --release --target x86_64-pc-windows-msvc -p goose-cli --bin goose; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; Write-Host "Windows executable created at ./target/x86_64-pc-windows-msvc/release/goose.exe"'
+    @powershell.exe -NoProfile -ExecutionPolicy Bypass -Command 'rustup target add x86_64-pc-windows-msvc; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; cargo build --release --target x86_64-pc-windows-msvc -p goose-cli --bin goose --features disable-update; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; Write-Host "Windows executable created at ./target/x86_64-pc-windows-msvc/release/goose.exe"'
 
 # Build for Intel Mac
 release-intel:
     @echo "Building release version for Intel Mac..."
-    cargo build --release --target x86_64-apple-darwin
+    cargo build --release --target x86_64-apple-darwin -p goose-cli --bin goose --features disable-update
     @just copy-binary-intel
 
 copy-binary BUILD_MODE="release":
@@ -114,7 +114,7 @@ debug-ui:
 # 4. If not auto-detected, click "Configure" and add: localhost:9229
 
 debug-ui-main-process:
-	@echo "🔍 Starting goose UI with main process debugging enabled"
+	@echo "🔍 Starting Obelus UI with main process debugging enabled"
 	@just release-binary
 	cd ui/desktop && \
 	pnpm install && \
@@ -127,8 +127,8 @@ package-ui:
     @echo "Packaging desktop app..."
     cd ui/desktop && pnpm install && pnpm run package
     @echo "Signing with entitlements..."
-    codesign --force --deep --sign - --entitlements ui/desktop/entitlements.plist ui/desktop/out/Goose-darwin-arm64/Goose.app
-    @echo "Done! Launch with: open ui/desktop/out/Goose-darwin-arm64/Goose.app"
+    codesign --force --deep --sign - --entitlements ui/desktop/entitlements.plist ui/desktop/out/Obelus-darwin-arm64/Obelus.app
+    @echo "Done! Launch with: open ui/desktop/out/Obelus-darwin-arm64/Obelus.app"
 
 # Run UI with latest (Windows version)
 run-ui-windows:

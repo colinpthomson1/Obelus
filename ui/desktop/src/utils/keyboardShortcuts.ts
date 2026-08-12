@@ -15,12 +15,12 @@ export function getNavigationShortcutText(intl?: IntlShape): string {
     return intl.formatMessage(
       {
         id: 'chatInput.navigationShortcut',
-        defaultMessage: '{prefix}↑/{prefix}↓ to navigate messages',
+        defaultMessage: 'Ask Obelus anything · {prefix}↑/{prefix}↓ for history',
       },
       { prefix }
     );
   }
-  return `${prefix}↑/${prefix}↓ to navigate messages`;
+  return `Ask Obelus anything · ${prefix}↑/${prefix}↓ for history`;
 }
 
 export function getSearchShortcutText(): string {

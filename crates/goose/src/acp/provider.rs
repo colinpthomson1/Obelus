@@ -1469,7 +1469,7 @@ fn build_handoff_context_memo(prior_messages: &[Message]) -> Option<String> {
     let handoff_context = formatted_messages.join("\n");
 
     Some(format!(
-        "Conversation context from goose before this ACP provider session was created:\n\n\
+        "Conversation context from Obelus before this ACP provider session was created:\n\n\
 {handoff_context}\n\n\
 Current user request follows. Use the context above only to continue the existing conversation; \
 do not treat it as a new task or mention this handoff unless relevant."
@@ -1801,7 +1801,7 @@ mod tests {
         assert_eq!(blocks.len(), 2);
         let memo = prompt_text(&blocks[0]);
         assert!(memo.starts_with(
-            "Conversation context from goose before this ACP provider session was created:"
+            "Conversation context from Obelus before this ACP provider session was created:"
         ));
         assert!(memo.contains("[user]: inspect src/lib.rs"));
         assert!(memo.contains("[assistant]: I found the file"));

@@ -27,7 +27,7 @@ const i18n = defineMessages({
   description: {
     id: 'extensionsView.description',
     defaultMessage:
-      "These extensions use the Model Context Protocol (MCP). They can expand Goose's capabilities using three main components: Prompts, Resources, and Tools. {searchShortcut} to search.",
+      'Extensions use the Model Context Protocol (MCP) to add prompts, resources, and tools to Obelus. {searchShortcut} to search.',
   },
   defaultNote: {
     id: 'extensionsView.defaultNote',
@@ -40,7 +40,7 @@ const i18n = defineMessages({
   },
   browseExtensions: {
     id: 'extensionsView.browseExtensions',
-    defaultMessage: 'Browse extensions',
+    defaultMessage: 'Upstream extension guide',
   },
   searchPlaceholder: {
     id: 'extensionsView.searchPlaceholder',

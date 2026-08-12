@@ -10,10 +10,10 @@ resolver = "2"
 edition = "2021"
 version = "1.45.0"
 rust-version = "1.94.1"
-authors = ["AAIF <ai-oss-tools@block.xyz>"]
+authors = ["Obelus contributors", "AAIF <ai-oss-tools@block.xyz>"]
 license = "Apache-2.0"
-repository = "https://github.com/aaif-goose/goose"
-description = "An AI agent"
+repository = "https://github.com/colinpthomson1/Obelus"
+description = "The Obelus desktop AI agent, built on Goose"
 
 [workspace.lints.clippy]
 uninlined_format_args = "allow"

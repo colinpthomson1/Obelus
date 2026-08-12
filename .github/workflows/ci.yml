@@ -223,6 +223,29 @@ jobs:
           pnpm test
           pnpm run typecheck:test
 
+  fact-check-contract:
+    name: Verify Fact-check Contract V2
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true' || github.event_name != 'pull_request'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+
+      - name: Install Rust test dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install -y libdbus-1-dev libxcb1-dev
+
+      - name: Verify publishable package boundary
+        run: npm pack --dry-run
+        working-directory: contracts/fact-check/v2
+
+      - name: Run Rust schema and fixture conformance
+        run: cargo test -p goose --lib live_fact_check_model::tests::canonical_policy_conforms_to_the_shared_v2_fixtures
+
   desktop-lint:
     name: Test and Lint Electron Desktop App
     runs-on: macos-latest

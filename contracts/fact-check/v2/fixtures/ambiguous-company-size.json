@@ -1,0 +1,119 @@
+{
+  "type": "assessment",
+  "id": "ambiguous-company-size",
+  "claim": {
+    "exactQuote": "Company A is bigger than Company B.",
+    "normalizedClaim": "Company A is bigger than Company B."
+  },
+  "stage": "preliminary",
+  "inventory": [
+    {
+      "citationId": "src_1",
+      "url": "https://investors.companya.example/annual-report",
+      "canonicalUrl": "https://investors.companya.example/annual-report",
+      "publisher": "investors.companya.example",
+      "title": "Company A annual report",
+      "publicationDate": "2026",
+      "accessedAt": "2026-08-11T12:00:00.000Z",
+      "excerpt": "Company A reports higher annual revenue than Company B.",
+      "excerptType": "page_extract",
+      "sourceType": "official",
+      "retrievalStage": "preliminary"
+    },
+    {
+      "citationId": "src_2",
+      "url": "https://investors.companyb.example/annual-report",
+      "canonicalUrl": "https://investors.companyb.example/annual-report",
+      "publisher": "investors.companyb.example",
+      "title": "Company B annual report",
+      "publicationDate": "2026",
+      "accessedAt": "2026-08-11T12:00:00.000Z",
+      "excerpt": "Company B reports more employees than Company A.",
+      "excerptType": "page_extract",
+      "sourceType": "official",
+      "retrievalStage": "preliminary"
+    },
+    {
+      "citationId": "src_3",
+      "url": "https://markets.example/company-valuations",
+      "canonicalUrl": "https://markets.example/company-valuations",
+      "publisher": "markets.example",
+      "title": "Company valuations",
+      "publicationDate": "2026-08-10",
+      "accessedAt": "2026-08-11T12:00:00.000Z",
+      "excerpt": "The companies' market valuations rank differently from revenue and headcount.",
+      "excerptType": "page_extract",
+      "sourceType": "secondary",
+      "retrievalStage": "preliminary"
+    }
+  ],
+  "draft": {
+    "confidence": "high",
+    "conclusion": "The comparison changes with the chosen measure of company size.",
+    "conclusionCitationIds": ["src_1", "src_2", "src_3"],
+    "statements": [
+      {
+        "text": "Revenue, headcount, and valuation do not rank the companies identically.",
+        "citationIds": ["src_1", "src_2", "src_3"]
+      }
+    ],
+    "supports": [
+      {
+        "text": "Company A is larger by reported revenue.",
+        "citationIds": ["src_1"]
+      }
+    ],
+    "contradictions": [
+      {
+        "text": "Company B is larger by reported headcount.",
+        "citationIds": ["src_2"]
+      }
+    ],
+    "caveats": [
+      {
+        "text": "Market valuation supplies a third, time-sensitive meaning of bigger.",
+        "citationIds": ["src_3"]
+      }
+    ],
+    "limitations": [],
+    "sources": [
+      {
+        "citationId": "src_1",
+        "stance": "supports",
+        "qualityScore": 0.92,
+        "qualityRationale": "An official filing directly reports revenue.",
+        "authority": "authoritative",
+        "directness": "direct",
+        "addressesClaim": true,
+        "timeScopeMatch": true
+      },
+      {
+        "citationId": "src_2",
+        "stance": "contradicts",
+        "qualityScore": 0.92,
+        "qualityRationale": "An official filing directly reports headcount.",
+        "authority": "authoritative",
+        "directness": "direct",
+        "addressesClaim": true,
+        "timeScopeMatch": true
+      },
+      {
+        "citationId": "src_3",
+        "stance": "qualifies",
+        "qualityScore": 0.78,
+        "qualityRationale": "A current market source reports a different size measure.",
+        "authority": "credible",
+        "directness": "direct",
+        "addressesClaim": true,
+        "timeScopeMatch": true
+      }
+    ],
+    "changeExplanation": null
+  },
+  "expected": {
+    "resolution": "unresolved",
+    "evidenceRelation": "conflicts",
+    "finding": "needs_context",
+    "confidence": "high"
+  }
+}

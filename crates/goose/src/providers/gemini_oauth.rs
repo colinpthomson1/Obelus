@@ -503,7 +503,7 @@ async fn setup_code_assist(access_token: &str) -> Result<String> {
 const HTML_SUCCESS_TEMPLATE: &str = r#"<!doctype html>
 <html>
   <head>
-    <title>goose - Google Authorization Successful</title>
+    <title>Obelus - Google authorization successful</title>
     <style>
       body {
         font-family: system-ui, -apple-system, sans-serif;
@@ -523,7 +523,7 @@ const HTML_SUCCESS_TEMPLATE: &str = r#"<!doctype html>
   <body>
     <div class="container">
       <h1>Authorization Successful</h1>
-      <p>You can close this window and return to goose.</p>
+      <p>You can close this window and return to Obelus.</p>
     </div>
     <script>const AUTO_CLOSE_TIMEOUT_MS = __AUTO_CLOSE_TIMEOUT_MS__; setTimeout(() => window.close(), AUTO_CLOSE_TIMEOUT_MS)</script>
   </body>
@@ -542,7 +542,7 @@ fn html_error(error: &str) -> String {
         r#"<!doctype html>
 <html>
   <head>
-    <title>goose - Google Authorization Failed</title>
+    <title>Obelus - Google authorization failed</title>
     <style>
       body {{
         font-family: system-ui, -apple-system, sans-serif;

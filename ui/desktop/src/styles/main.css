@@ -24,35 +24,56 @@
 @theme {
   --shadow-*: initial;
 
-  --color-white: #ffffff;
-  --color-black: #000000;
+  --color-white: #fcfcf8;
+  --color-black: #111528;
 
-  --color-block-teal: #13bbaf;
-  --color-block-orange: #ff4f00;
+  --color-block-teal: #2bc7b9;
+  --color-block-orange: #ff7568;
 
-  --color-neutral-50: #f4f6f7;
-  --color-neutral-100: #e3e6ea;
-  --color-neutral-200: #cbd1d6;
-  --color-neutral-300: #a7b0b9;
-  --color-neutral-400: #878787;
-  --color-neutral-500: #606c7a;
-  --color-neutral-600: #525b68;
-  --color-neutral-700: #474e57;
-  --color-neutral-800: #3f434b;
-  --color-neutral-900: #32353b;
-  --color-neutral-950: #22252a;
+  --color-neutral-50: #f5f6fa;
+  --color-neutral-100: #eceff5;
+  --color-neutral-200: #d9deea;
+  --color-neutral-300: #b5bbcd;
+  --color-neutral-400: #8d95ad;
+  --color-neutral-500: #69708c;
+  --color-neutral-600: #515b78;
+  --color-neutral-700: #38415f;
+  --color-neutral-800: #252c49;
+  --color-neutral-900: #181d34;
+  --color-neutral-950: #111528;
 
-  --color-red-100: #ff6b6b;
-  --color-red-200: #f94b4b;
+  --color-red-100: #ffb2aa;
+  --color-red-200: #b12d47;
 
-  --color-blue-100: #7cacff;
-  --color-blue-200: #5c98f9;
+  --color-blue-100: #8794f2;
+  --color-blue-200: #3b50e0;
 
-  --color-green-100: #a3d795;
-  --color-green-200: #91cb80;
+  --color-green-100: #8be2d9;
+  --color-green-200: #08705b;
 
-  --color-yellow-100: #ffd966;
-  --color-yellow-200: #fbcd44;
+  --color-yellow-100: #ffc76f;
+  --color-yellow-200: #8a4b00;
+
+  --color-brand-ink: #111528;
+  --color-brand-ink-elevated: #181d34;
+  --color-brand-ink-muted: #38415f;
+  --color-brand-paper: #f7f8fc;
+  --color-brand-cloud: #fcfcf8;
+  --color-brand-blue: #3b50e0;
+  --color-brand-blue-dark: #2f3fb5;
+  --color-brand-blue-soft: #eaecfe;
+  --color-brand-aqua: #2bc7b9;
+  --color-brand-aqua-soft: #dcf8f4;
+  --color-brand-coral: #ff7568;
+  --color-brand-coral-soft: #ffe7e4;
+  --color-status-supported: #08705b;
+  --color-status-supported-bg: #e0f5ef;
+  --color-status-disputed: #b12d47;
+  --color-status-disputed-bg: #fce8ed;
+  --color-status-context: #8a4b00;
+  --color-status-context-bg: #fff0cf;
+  --color-status-unverified: #2f3fb5;
+  --color-status-unverified-bg: #eaecfe;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -62,7 +83,11 @@
    Actual values are set at runtime by theme-tokens.ts (the single source of truth).
    ═══════════════════════════════════════════════════════════════════════════ */
 @theme inline {
-  --ease-g2: cubic-bezier(0.55, 0, 1, 0.45);
+  --ease-g2: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-ob-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-ob-exit: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-ob-shift: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-ob-refine: cubic-bezier(0.25, 1, 0.5, 1);
 
   /* Backgrounds */
   --color-background-primary: var(--color-background-primary);
@@ -158,12 +183,12 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   4. GOOSE DESKTOP UI ALIASES — @theme inline {}
+   4. OBELUS DESKTOP UI ALIASES — @theme inline {}
    App-specific tokens that map to MCP spec tokens.
-   Not part of the MCP spec — only used by Goose components.
+   Not part of the MCP spec — only used by Obelus desktop components.
    ═══════════════════════════════════════════════════════════════════════════ */
 @theme inline {
-  --font-serif: serif;
+  --font-serif: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
   --color-ring: var(--color-ring-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-accent: var(--sidebar-accent);
@@ -174,7 +199,7 @@
 
 /* ═══════════════════════════════════════════════════════════════════════════
    5. APP-SPECIFIC VARIABLES — :root / .dark
-   Goose-only variables that derive from MCP tokens. These are NOT duplicated
+   Obelus-only variables that derive from MCP tokens. These are NOT duplicated
    in theme-tokens.ts — they exist only here.
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -183,21 +208,34 @@
   --text-inverse: var(--color-white);
   --text-danger: var(--color-red-200);
 
-  --color-inline-code: #c2410c;
+  --color-inline-code: #2f3fb5;
+
+  --ob-motion-instant: 120ms;
+  --ob-motion-fast: 200ms;
+  --ob-motion-standard: 280ms;
+  --ob-motion-emphasis: 480ms;
+  --ob-loop-compact: 1200ms;
+  --ob-loop-scan: 1350ms;
+  --ob-loop-research: 1600ms;
+  --ob-loop-signature: 1840ms;
+  --ob-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ob-ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+  --ob-ease-shift: cubic-bezier(0.65, 0, 0.35, 1);
+  --ob-ease-refine: cubic-bezier(0.25, 1, 0.5, 1);
 
   /* Search highlighting */
   --highlight-color: rgba(255, 213, 0, 0.5);
   --highlight-current: rgba(252, 213, 3, 0.6);
 
   /* Sidebar aliases (shadcn sidebar component convention) */
-  --sidebar: var(--color-background-secondary);
+  --sidebar: #111528;
   --sidebar-foreground: var(--color-text-primary);
-  --sidebar-primary: var(--color-background-inverse);
+  --sidebar-primary: #3b50e0;
   --sidebar-primary-foreground: var(--color-text-inverse);
-  --sidebar-accent: var(--color-background-secondary);
-  --sidebar-accent-foreground: var(--color-text-primary);
-  --sidebar-border: var(--color-border-primary);
-  --sidebar-ring: var(--color-border-primary);
+  --sidebar-accent: #252c49;
+  --sidebar-accent-foreground: #fcfcf8;
+  --sidebar-border: #38415f;
+  --sidebar-ring: #8be2d9;
 
   /* Custom shadow */
   --shadow-default:
@@ -210,21 +248,21 @@
   --text-inverse: var(--color-black);
   --text-danger: var(--color-red-100);
 
-  --color-inline-code: #ff7235;
+  --color-inline-code: #8be2d9;
 
   /* Search highlighting */
   --highlight-color: rgba(255, 213, 0, 0.5);
   --highlight-current: rgba(252, 213, 3, 0.6);
 
   /* Sidebar aliases */
-  --sidebar: var(--color-background-secondary);
+  --sidebar: #111528;
   --sidebar-foreground: var(--color-text-primary);
-  --sidebar-primary: var(--color-background-inverse);
+  --sidebar-primary: #8794f2;
   --sidebar-primary-foreground: var(--color-text-inverse);
-  --sidebar-accent: var(--color-background-secondary);
-  --sidebar-accent-foreground: var(--color-text-primary);
-  --sidebar-border: var(--color-border-primary);
-  --sidebar-ring: var(--color-border-primary);
+  --sidebar-accent: #252c49;
+  --sidebar-accent-foreground: #fcfcf8;
+  --sidebar-border: #38415f;
+  --sidebar-ring: #8be2d9;
 
   /* Custom shadow */
   --shadow-default:
@@ -241,50 +279,60 @@
   * {
     @apply border-border-primary;
   }
+  html {
+    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  }
   body {
-    @apply text-text-primary;
+    @apply bg-background-primary text-text-primary;
+    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    font-variation-settings: 'wdth' 100;
+    font-weight: 420;
+    line-height: 1.55;
+  }
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ring-primary);
+    outline-offset: 2px;
   }
 }
 
 @font-face {
-  font-family: 'Cash Sans';
-  src:
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Light.woff2)
-      format('woff2'),
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Light.woff) format('woff');
-  font-weight: 300;
+  font-family: 'Instrument Sans';
+  src: url('../assets/brand/fonts/InstrumentSans-Variable.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
+  font-stretch: 75% 100%;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'Cash Sans';
-  src:
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Regular.woff2)
-      format('woff2'),
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Regular.woff)
-      format('woff');
+  font-family: 'Instrument Sans';
+  src: url('../assets/brand/fonts/InstrumentSans-Italic-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-stretch: 75% 100%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('../assets/brand/fonts/IBMPlexMono-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: 'Cash Sans';
-  src:
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Medium.woff2)
-      format('woff2'),
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Medium.woff) format('woff');
+  font-family: 'IBM Plex Mono';
+  src: url('../assets/brand/fonts/IBMPlexMono-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
-}
-
-@font-face {
-  font-family: 'Cash Sans';
-  src:
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff2/CashSans-Bold.woff2)
-      format('woff2'),
-    url(https://cash-f.squarecdn.com/static/fonts/cashsans/woff/CashSans-Bold.woff) format('woff');
-  font-weight: 700;
-  font-style: normal;
+  font-display: swap;
 }
 
 /* animations */
@@ -403,7 +451,7 @@
     opacity: 1 !important;
   }
 
-  /* Goose icon entrance animation */
+  /* Compatibility class for the legacy icon entrance hook. */
   .goose-icon-entrance {
     animation: none !important;
     opacity: 1 !important;
@@ -557,7 +605,7 @@ body {
   border-radius: 4px;
   color: var(--color-inline-code);
   background-color: var(--color-neutral-50);
-  font-family: monospace;
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -586,9 +634,9 @@ pre:has(> code.bg-inline-code) {
 }
 
 .dark .user-message-bubble {
-  --code-block-background: #0f1628;
-  background-color: #171d30;
-  color: #d2dae6;
+  --code-block-background: #111528;
+  background-color: #252c49;
+  color: #fcfcf8;
 }
 
 .dark .user-message pre {
@@ -596,40 +644,40 @@ pre:has(> code.bg-inline-code) {
 }
 
 .dark .user-message :is(h1, h2, h3, h4, h5, h6, strong) {
-  color: #e7ebf2 !important;
+  color: #fcfcf8 !important;
 }
 
 .dark .user-message li {
-  color: #c4cfde !important;
+  color: #d9deea !important;
 }
 
 .dark .user-message li::marker {
-  color: #8798b0;
+  color: #8d95ad;
 }
 
 .dark .user-message a {
-  color: #aecfe3 !important;
+  color: #aeb6f7 !important;
 }
 
 .dark .user-message em {
-  color: #c6d9df !important;
+  color: #b5bbcd !important;
 }
 
 .dark .agent-message-bubble {
-  background-color: #1f2126;
-  border-radius: 0.75rem;
+  background-color: #181d34;
+  border-radius: 12px;
   padding: 0.625rem 1rem;
 }
 
 .dark :is(.agent-message-bubble, .user-message-bubble) :not(pre) > code.bg-inline-code {
   background-color: transparent;
-  color: #8cd3d6;
+  color: #8be2d9;
   padding: 0;
 }
 
 .dark :is(.agent-message-bubble, .user-message-bubble) pre > code.bg-inline-code {
   background-color: transparent;
-  color: #b8c4d1;
+  color: #b5bbcd;
   padding: 0;
 }
 
@@ -721,21 +769,18 @@ pre:has(> code.bg-inline-code) {
   contain: layout style paint;
 }
 
-/* Goose icon animation to replace framer-motion */
+/* Calm mark entrance retained under the compatibility class name. */
 @keyframes goose-icon-entrance {
   from {
     opacity: 0;
-    transform: scale(0.25) translate(-5px, 5px) rotate(-20deg);
   }
   to {
     opacity: 1;
-    transform: scale(1) translate(0, 0) rotate(0deg);
   }
 }
 
 .goose-icon-animation {
-  animation: goose-icon-entrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  transform-origin: bottom left;
+  animation: goose-icon-entrance var(--ob-motion-standard) var(--ob-ease-enter) forwards;
 }
 
 /* Optimize session skeleton loading */

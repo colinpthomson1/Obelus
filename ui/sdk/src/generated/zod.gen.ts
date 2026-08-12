@@ -2383,6 +2383,1402 @@ export const zDictationModelSelectRequest_unstable = z.object({
     modelId: z.string()
 });
 
+export const zMeetingArtifactType = z.enum(['meeting', 'text_check']);
+
+export const zMeetingMode = z.enum([
+    'call',
+    'in_person',
+    'text'
+]);
+
+export const zMeetingLiveStrategy = z.enum(['mixed_diarized', 'source_separated']);
+
+export const zMeetingCaptureConfigDto = z.object({
+    liveStrategy: zMeetingLiveStrategy,
+    microphoneDeviceId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    systemAudioEnabled: z.boolean(),
+    exactSpeakerCount: z.union([
+        z.number().int().gte(0),
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingAudioSourceKind = z.enum([
+    'mixed',
+    'microphone',
+    'system',
+    'text'
+]);
+
+export const zMeetingSpeakerInputDto = z.object({
+    id: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    defaultLabel: z.string(),
+    displayName: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    displayNameSource: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    manualAssignmentLock: z.boolean(),
+    sourceHint: z.union([
+        zMeetingAudioSourceKind,
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingCreateRequest_unstable = z.object({
+    title: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    artifactType: zMeetingArtifactType,
+    mode: zMeetingMode,
+    startedAtMs: z.number().int(),
+    captureConfig: zMeetingCaptureConfigDto,
+    initialSpeakers: z.array(zMeetingSpeakerInputDto).optional().default([])
+});
+
+export const zMeetingLifecycleStatus = z.enum([
+    'setup',
+    'starting',
+    'recording',
+    'paused',
+    'stopping',
+    'finalizing',
+    'complete',
+    'interrupted',
+    'error'
+]);
+
+export const zMeetingCaptureStatus = z.enum([
+    'not_started',
+    'active',
+    'paused',
+    'finalizing',
+    'complete',
+    'interrupted',
+    'error'
+]);
+
+export const zMeetingRefinementStatus = z.enum([
+    'not_started',
+    'queued',
+    'uploading',
+    'processing',
+    'reconciling',
+    'complete',
+    'retry_wait',
+    'failed',
+    'cancelled'
+]);
+
+export const zMeetingResearchStatus = z.enum([
+    'not_started',
+    'queued',
+    'running',
+    'partial',
+    'complete',
+    'retry_wait',
+    'failed',
+    'cancelled'
+]);
+
+export const zMeetingTypedErrorDto = z.object({
+    code: z.string(),
+    message: z.string(),
+    retryable: z.boolean()
+});
+
+export const zMeetingDto = z.object({
+    id: z.string(),
+    title: z.string(),
+    artifactType: zMeetingArtifactType,
+    mode: zMeetingMode,
+    status: zMeetingLifecycleStatus,
+    startedAtMs: z.number().int(),
+    endedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    captureConfig: zMeetingCaptureConfigDto,
+    canonicalTranscriptVersionId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    captureStatus: zMeetingCaptureStatus,
+    refinementStatus: zMeetingRefinementStatus,
+    researchStatus: zMeetingResearchStatus,
+    lastError: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional(),
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingTranscriptVersionKind = z.enum(['live', 'refined']);
+
+export const zMeetingTranscriptVersionStatus = z.enum([
+    'active',
+    'processing',
+    'complete',
+    'failed',
+    'superseded'
+]);
+
+export const zMeetingTranscriptVersionDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    kind: zMeetingTranscriptVersionKind,
+    status: zMeetingTranscriptVersionStatus,
+    revisionNumber: z.number().int().gte(0),
+    provider: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    model: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    gatewayJobId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    parentVersionId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    inputAudioChecksum: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    detectedLanguage: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    reconciliationMetadata: z.unknown().optional(),
+    startedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    completedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional(),
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingSpeakerDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    defaultLabel: z.string(),
+    displayName: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    displayNameSource: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    manualAssignmentLock: z.boolean(),
+    sourceHint: z.union([
+        zMeetingAudioSourceKind,
+        z.null()
+    ]).optional(),
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingCreateResponse_unstable = z.object({
+    meeting: zMeetingDto,
+    liveTranscriptVersion: zMeetingTranscriptVersionDto,
+    speakers: z.array(zMeetingSpeakerDto)
+});
+
+export const zMeetingUpdateRequest_unstable = z.object({
+    meetingId: z.string(),
+    title: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    status: z.union([
+        zMeetingLifecycleStatus,
+        z.null()
+    ]).optional(),
+    endedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    captureStatus: z.union([
+        zMeetingCaptureStatus,
+        z.null()
+    ]).optional(),
+    refinementStatus: z.union([
+        zMeetingRefinementStatus,
+        z.null()
+    ]).optional(),
+    researchStatus: z.union([
+        zMeetingResearchStatus,
+        z.null()
+    ]).optional(),
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional(),
+    clearError: z.boolean()
+});
+
+export const zMeetingUpdateResponse_unstable = z.object({
+    meeting: zMeetingDto
+});
+
+export const zMeetingListCursorDto = z.object({
+    updatedAtMs: z.number().int(),
+    meetingId: z.string()
+});
+
+export const zMeetingListRequest_unstable = z.object({
+    artifactType: z.union([
+        zMeetingArtifactType,
+        z.null()
+    ]).optional(),
+    statuses: z.array(zMeetingLifecycleStatus).optional().default([]),
+    query: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    cursor: z.union([
+        zMeetingListCursorDto,
+        z.null()
+    ]).optional(),
+    limit: z.union([
+        z.number().int().gte(0),
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingListItemDto = z.object({
+    meeting: zMeetingDto,
+    durationMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    speakerNames: z.array(z.string()),
+    claimCount: z.number().int().gte(0),
+    completedResearchCount: z.number().int().gte(0),
+    totalResearchCount: z.number().int().gte(0)
+});
+
+export const zMeetingListResponse_unstable = z.object({
+    items: z.array(zMeetingListItemDto),
+    nextCursor: z.union([
+        zMeetingListCursorDto,
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingGetRequest_unstable = z.object({
+    meetingId: z.string()
+});
+
+export const zMeetingSpeakerObservationDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    transcriptVersionId: z.string(),
+    speakerId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    provider: z.string(),
+    providerNamespace: z.string(),
+    providerSpeakerLabel: z.string(),
+    confidence: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    ambiguous: z.boolean(),
+    revisionNumber: z.number().int().gte(0),
+    sourceHint: z.union([
+        zMeetingAudioSourceKind,
+        z.null()
+    ]).optional(),
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingTranscriptSegmentState = z.enum([
+    'partial',
+    'final',
+    'revised',
+    'superseded'
+]);
+
+export const zMeetingTimedWordDto = z.object({
+    text: z.string(),
+    startMs: z.number().int(),
+    endMs: z.number().int(),
+    confidence: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    providerSpeakerLabel: z.union([
+        z.string(),
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingTranscriptSegmentDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    transcriptVersionId: z.string(),
+    provider: z.string(),
+    providerNamespace: z.string(),
+    providerSessionId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    providerTurnId: z.string(),
+    providerTurnOrder: z.number().int(),
+    revisionNumber: z.number().int().gte(0),
+    state: zMeetingTranscriptSegmentState,
+    speakerId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    sourceKind: zMeetingAudioSourceKind,
+    startMs: z.number().int(),
+    endMs: z.number().int(),
+    text: z.string(),
+    words: z.array(zMeetingTimedWordDto),
+    replacedLiveSegmentIds: z.array(z.string()),
+    contentHash: z.string(),
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingTimelineEventKind = z.enum([
+    'pause',
+    'resume',
+    'sleep',
+    'wake',
+    'capture_gap',
+    'device_change',
+    'stt_reconnect_gap'
+]);
+
+export const zMeetingTimelineEventDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    kind: zMeetingTimelineEventKind,
+    startMs: z.number().int(),
+    endMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    sourceKind: z.union([
+        zMeetingAudioSourceKind,
+        z.null()
+    ]).optional(),
+    providerNamespace: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    metadata: z.unknown().optional(),
+    createdAtMs: z.number().int()
+});
+
+export const zMeetingAudioAssetStatus = z.enum([
+    'recording',
+    'finalized',
+    'interrupted',
+    'missing',
+    'deleted'
+]);
+
+export const zMeetingAudioAssetDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    sourceKind: zMeetingAudioSourceKind,
+    timelinePart: z.number().int().gte(0),
+    relativePath: z.string(),
+    format: z.string(),
+    sampleRate: z.number().int().gte(0),
+    channels: z.number().int().gte(0).lte(65535),
+    timelineStartMs: z.number().int(),
+    timelineEndMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    durationMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    bytes: z.union([
+        z.number().int().gte(0),
+        z.null()
+    ]).optional(),
+    checksum: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    status: zMeetingAudioAssetStatus,
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingRefinementInputDto = z.object({
+    refinementJobId: z.string(),
+    partIndex: z.number().int().gte(0),
+    audioAssetId: z.string(),
+    sourceKind: zMeetingAudioSourceKind,
+    checksum: z.string(),
+    meetingStartMs: z.number().int(),
+    meetingEndMs: z.number().int(),
+    providerStartMs: z.number().int(),
+    providerEndMs: z.number().int(),
+    manifestChecksum: z.string(),
+    createdAtMs: z.number().int()
+});
+
+export const zMeetingClaimOrigin = z.enum(['automatic', 'manual']);
+
+export const zMeetingClaimStatus = z.enum([
+    'detected',
+    'queued',
+    'quick_running',
+    'preliminary',
+    'deep_running',
+    'complete',
+    'stale',
+    'rechecking',
+    'failed',
+    'cancelled',
+    'superseded'
+]);
+
+export const zMeetingClaimDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    manualRequestId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    origin: zMeetingClaimOrigin,
+    duplicateKey: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    status: zMeetingClaimStatus,
+    currentClaimVersionId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingClaimVersionLifecycle = z.enum([
+    'active',
+    'stale',
+    'rechecking',
+    'superseded'
+]);
+
+export const zMeetingClaimVersionDto = z.object({
+    id: z.string(),
+    claimId: z.string(),
+    versionNumber: z.number().int().gte(0),
+    predecessorId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    supersededById: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    sourceTranscriptVersionId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    exactQuote: z.string(),
+    normalizedClaim: z.string(),
+    speakerId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    startMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    endMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    segmentIds: z.array(z.string()),
+    selectionRationale: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    consequenceScore: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    disputeScore: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    specificityScore: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    timeSensitive: z.boolean(),
+    lifecycle: zMeetingClaimVersionLifecycle,
+    contentHash: z.string(),
+    createdAtMs: z.number().int()
+});
+
+export const zMeetingClaimGateTurnDto = z.object({
+    id: z.string(),
+    speakerId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    startMs: z.number().int(),
+    endMs: z.number().int(),
+    text: z.string(),
+    revisionNumber: z.number().int().gte(0),
+    sourceKind: zMeetingAudioSourceKind
+});
+
+export const zMeetingManualFactCheckRequestStatus = z.enum([
+    'queued',
+    'processing',
+    'retry_wait',
+    'complete',
+    'failed'
+]);
+
+export const zMeetingManualFactCheckRequestDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    exactSelection: z.string(),
+    contextTurns: z.array(zMeetingClaimGateTurnDto),
+    sourceSegmentIds: z.array(z.string()),
+    speakerId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    startMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    endMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    status: zMeetingManualFactCheckRequestStatus,
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional(),
+    contentHash: z.string(),
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingClaimGateBatchDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    idempotencyKey: z.string(),
+    segmentIds: z.array(z.string()),
+    turns: z.array(zMeetingClaimGateTurnDto),
+    createdAtMs: z.number().int()
+});
+
+export const zMeetingAssessmentStage = z.enum(['preliminary', 'deep']);
+
+export const zMeetingAssessmentStatus = z.enum(['complete', 'failed']);
+
+export const zMeetingVerdict = z.enum([
+    'supported',
+    'mostly_supported',
+    'mixed',
+    'unsupported',
+    'unverifiable'
+]);
+
+export const zMeetingConfidence = z.enum([
+    'low',
+    'medium',
+    'high'
+]);
+
+export const zMeetingCitedStatementDto = z.object({
+    text: z.string(),
+    citationKeys: z.array(z.string())
+});
+
+export const zMeetingEvidenceStance = z.enum([
+    'supports',
+    'contradicts',
+    'context'
+]);
+
+export const zMeetingSourceDto = z.object({
+    id: z.string(),
+    assessmentId: z.string(),
+    citationKey: z.string(),
+    url: z.string(),
+    canonicalUrl: z.string(),
+    publisher: z.string(),
+    title: z.string(),
+    publicationDate: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    accessedAtMs: z.number().int(),
+    evidenceExcerpt: z.string(),
+    stance: zMeetingEvidenceStance,
+    qualityScore: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    qualityRationale: z.string()
+});
+
+export const zMeetingAssessmentDto = z.object({
+    id: z.string(),
+    claimVersionId: z.string(),
+    stage: zMeetingAssessmentStage,
+    attemptNumber: z.number().int().gte(0),
+    status: zMeetingAssessmentStatus,
+    current: z.boolean(),
+    supersedesId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    verdict: zMeetingVerdict,
+    confidence: zMeetingConfidence,
+    conclusion: z.array(zMeetingCitedStatementDto),
+    support: z.array(zMeetingCitedStatementDto),
+    contradiction: z.array(zMeetingCitedStatementDto),
+    caveats: z.array(zMeetingCitedStatementDto),
+    limitations: z.array(zMeetingCitedStatementDto),
+    modelProvider: z.string(),
+    model: z.string(),
+    modelVersion: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    usage: z.unknown().optional(),
+    latencyMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    startedAtMs: z.number().int(),
+    completedAtMs: z.number().int(),
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional(),
+    sources: z.array(zMeetingSourceDto),
+    createdAtMs: z.number().int()
+});
+
+export const zMeetingJobStatus = z.enum([
+    'pending',
+    'running',
+    'retry_wait',
+    'complete',
+    'failed',
+    'cancelled'
+]);
+
+export const zMeetingResearchJobDto = z.object({
+    id: z.string(),
+    claimVersionId: z.string(),
+    stage: zMeetingAssessmentStage,
+    gatewayJobId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    idempotencyKey: z.string(),
+    status: zMeetingJobStatus,
+    attemptCount: z.number().int().gte(0),
+    nextRetryAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    startedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    completedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional(),
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingRefinementJobStatus = z.enum([
+    'queued',
+    'uploading',
+    'processing',
+    'reconciling',
+    'complete',
+    'retry_wait',
+    'failed',
+    'cancelled'
+]);
+
+export const zMeetingRefinementJobDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    sourceTranscriptVersionId: z.string(),
+    inputManifestChecksum: z.string(),
+    provider: z.string(),
+    model: z.string(),
+    gatewayJobId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    idempotencyKey: z.string(),
+    status: zMeetingRefinementJobStatus,
+    attemptCount: z.number().int().gte(0),
+    nextRetryAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    usage: z.unknown().optional(),
+    latencyMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    startedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    completedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional(),
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingArtifactDto = z.object({
+    meeting: zMeetingDto,
+    speakers: z.array(zMeetingSpeakerDto),
+    speakerObservations: z.array(zMeetingSpeakerObservationDto),
+    transcriptVersions: z.array(zMeetingTranscriptVersionDto),
+    transcriptSegments: z.array(zMeetingTranscriptSegmentDto),
+    timelineEvents: z.array(zMeetingTimelineEventDto),
+    audioAssets: z.array(zMeetingAudioAssetDto),
+    refinementInputs: z.array(zMeetingRefinementInputDto),
+    claims: z.array(zMeetingClaimDto),
+    claimVersions: z.array(zMeetingClaimVersionDto),
+    manualFactCheckRequests: z.array(zMeetingManualFactCheckRequestDto),
+    pendingClaimGateSegmentIds: z.array(z.string()),
+    pendingClaimGateBatches: z.array(zMeetingClaimGateBatchDto),
+    assessments: z.array(zMeetingAssessmentDto),
+    researchJobs: z.array(zMeetingResearchJobDto),
+    refinementJobs: z.array(zMeetingRefinementJobDto)
+});
+
+export const zMeetingGetResponse_unstable = z.object({
+    artifact: zMeetingArtifactDto
+});
+
+export const zMeetingTranscriptVersionUpsertDto = z.object({
+    id: z.string(),
+    kind: zMeetingTranscriptVersionKind,
+    status: zMeetingTranscriptVersionStatus,
+    revisionNumber: z.number().int().gte(0),
+    provider: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    model: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    gatewayJobId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    parentVersionId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    inputAudioChecksum: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    detectedLanguage: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    reconciliationMetadata: z.unknown().optional(),
+    startedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    completedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingTranscriptSegmentUpsertDto = z.object({
+    id: z.string(),
+    transcriptVersionId: z.string(),
+    provider: z.string(),
+    providerNamespace: z.string(),
+    providerSessionId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    providerTurnId: z.string(),
+    providerTurnOrder: z.number().int(),
+    revisionNumber: z.number().int().gte(0),
+    state: zMeetingTranscriptSegmentState,
+    speakerId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    sourceKind: zMeetingAudioSourceKind,
+    startMs: z.number().int(),
+    endMs: z.number().int(),
+    text: z.string(),
+    words: z.array(zMeetingTimedWordDto),
+    replacedLiveSegmentIds: z.array(z.string())
+});
+
+export const zMeetingSpeakerObservationUpsertDto = z.object({
+    id: z.string(),
+    transcriptVersionId: z.string(),
+    speakerId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    provider: z.string(),
+    providerNamespace: z.string(),
+    providerSpeakerLabel: z.string(),
+    confidence: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    ambiguous: z.boolean(),
+    revisionNumber: z.number().int().gte(0),
+    sourceHint: z.union([
+        zMeetingAudioSourceKind,
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingTranscriptApplyRequest_unstable = z.object({
+    meetingId: z.string(),
+    version: zMeetingTranscriptVersionUpsertDto,
+    segments: z.array(zMeetingTranscriptSegmentUpsertDto).optional().default([]),
+    speakerObservations: z.array(zMeetingSpeakerObservationUpsertDto).optional().default([]),
+    promoteCanonical: z.boolean()
+});
+
+export const zMeetingUpsertOutcomeKind = z.enum([
+    'inserted',
+    'revised',
+    'duplicate',
+    'stale_ignored'
+]);
+
+export const zMeetingUpsertOutcomeDto = z.object({
+    id: z.string(),
+    outcome: zMeetingUpsertOutcomeKind
+});
+
+export const zMeetingTranscriptApplyResponse_unstable = z.object({
+    version: zMeetingTranscriptVersionDto,
+    segmentOutcomes: z.array(zMeetingUpsertOutcomeDto)
+});
+
+export const zMeetingSpeakerSwapDto = z.object({
+    firstSpeakerId: z.string(),
+    secondSpeakerId: z.string()
+});
+
+export const zMeetingSegmentSpeakerUpdateDto = z.object({
+    segmentId: z.string(),
+    speakerId: z.string()
+});
+
+export const zMeetingSpeakersApplyRequest_unstable = z.object({
+    meetingId: z.string(),
+    speakers: z.array(zMeetingSpeakerInputDto).optional().default([]),
+    swaps: z.array(zMeetingSpeakerSwapDto).optional().default([]),
+    segmentUpdates: z.array(zMeetingSegmentSpeakerUpdateDto).optional().default([])
+});
+
+export const zMeetingSpeakersApplyResponse_unstable = z.object({
+    speakers: z.array(zMeetingSpeakerDto)
+});
+
+export const zMeetingTimelineEventUpsertDto = z.object({
+    id: z.string(),
+    kind: zMeetingTimelineEventKind,
+    startMs: z.number().int(),
+    endMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    sourceKind: z.union([
+        zMeetingAudioSourceKind,
+        z.null()
+    ]).optional(),
+    providerNamespace: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    metadata: z.unknown().optional()
+});
+
+export const zMeetingTimelineApplyRequest_unstable = z.object({
+    meetingId: z.string(),
+    events: z.array(zMeetingTimelineEventUpsertDto).optional().default([])
+});
+
+export const zMeetingTimelineApplyResponse_unstable = z.object({
+    events: z.array(zMeetingTimelineEventDto)
+});
+
+export const zMeetingAudioAssetUpsertDto = z.object({
+    id: z.string(),
+    sourceKind: zMeetingAudioSourceKind,
+    timelinePart: z.number().int().gte(0),
+    fileName: z.string(),
+    format: z.string(),
+    sampleRate: z.number().int().gte(0),
+    channels: z.number().int().gte(0).lte(65535),
+    timelineStartMs: z.number().int(),
+    timelineEndMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    durationMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    bytes: z.union([
+        z.number().int().gte(0),
+        z.null()
+    ]).optional(),
+    checksum: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    status: zMeetingAudioAssetStatus
+});
+
+export const zMeetingRefinementInputUpsertDto = z.object({
+    refinementJobId: z.string(),
+    partIndex: z.number().int().gte(0),
+    audioAssetId: z.string(),
+    sourceKind: zMeetingAudioSourceKind,
+    checksum: z.string(),
+    meetingStartMs: z.number().int(),
+    meetingEndMs: z.number().int(),
+    providerStartMs: z.number().int(),
+    providerEndMs: z.number().int(),
+    manifestChecksum: z.string()
+});
+
+export const zMeetingAudioApplyRequest_unstable = z.object({
+    meetingId: z.string(),
+    assets: z.array(zMeetingAudioAssetUpsertDto).optional().default([]),
+    replaceRefinementManifestForJobId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    refinementInputs: z.array(zMeetingRefinementInputUpsertDto).optional().default([])
+});
+
+export const zMeetingAudioApplyResponse_unstable = z.object({
+    assets: z.array(zMeetingAudioAssetDto),
+    refinementInputs: z.array(zMeetingRefinementInputDto)
+});
+
+export const zMeetingManualFactCheckRequestUpsertDto = z.object({
+    id: z.string(),
+    exactSelection: z.string(),
+    contextTurns: z.array(zMeetingClaimGateTurnDto),
+    sourceSegmentIds: z.array(z.string()),
+    speakerId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    startMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    endMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    status: zMeetingManualFactCheckRequestStatus,
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingClaimVersionUpsertDto = z.object({
+    claimId: z.string(),
+    claimVersionId: z.string(),
+    manualRequestId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    origin: zMeetingClaimOrigin,
+    duplicateKey: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    status: zMeetingClaimStatus,
+    versionNumber: z.number().int().gte(0),
+    predecessorId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    supersededById: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    sourceTranscriptVersionId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    exactQuote: z.string(),
+    normalizedClaim: z.string(),
+    speakerId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    startMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    endMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    segmentIds: z.array(z.string()),
+    selectionRationale: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    consequenceScore: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    disputeScore: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    specificityScore: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    timeSensitive: z.boolean(),
+    lifecycle: zMeetingClaimVersionLifecycle,
+    setCurrent: z.boolean()
+});
+
+export const zMeetingClaimGateBatchBeginDto = z.object({
+    id: z.string(),
+    idempotencyKey: z.string(),
+    turns: z.array(zMeetingClaimGateTurnDto)
+});
+
+export const zMeetingClaimsApplyRequest_unstable = z.object({
+    meetingId: z.string(),
+    manualFactCheckRequests: z.array(zMeetingManualFactCheckRequestUpsertDto).optional().default([]),
+    claimVersions: z.array(zMeetingClaimVersionUpsertDto).optional().default([]),
+    markStaleClaimVersionIds: z.array(z.string()).optional().default([]),
+    beginClaimGateBatches: z.array(zMeetingClaimGateBatchBeginDto).optional().default([]),
+    completeClaimGateBatchIds: z.array(z.string()).optional().default([])
+});
+
+export const zMeetingClaimsApplyResponse_unstable = z.object({
+    claims: z.array(zMeetingClaimDto),
+    claimVersions: z.array(zMeetingClaimVersionDto)
+});
+
+export const zMeetingResearchJobUpsertDto = z.object({
+    id: z.string(),
+    claimVersionId: z.string(),
+    stage: zMeetingAssessmentStage,
+    gatewayJobId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    idempotencyKey: z.string(),
+    status: zMeetingJobStatus,
+    attemptCount: z.number().int().gte(0),
+    nextRetryAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    startedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    completedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingSourceInputDto = z.object({
+    id: z.string(),
+    citationKey: z.string(),
+    url: z.string(),
+    canonicalUrl: z.string(),
+    publisher: z.string(),
+    title: z.string(),
+    publicationDate: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    accessedAtMs: z.number().int(),
+    evidenceExcerpt: z.string(),
+    stance: zMeetingEvidenceStance,
+    qualityScore: z.union([
+        z.number(),
+        z.null()
+    ]).optional(),
+    qualityRationale: z.string()
+});
+
+export const zMeetingAssessmentApplyDto = z.object({
+    id: z.string(),
+    claimVersionId: z.string(),
+    stage: zMeetingAssessmentStage,
+    attemptNumber: z.number().int().gte(0),
+    status: zMeetingAssessmentStatus,
+    supersedesId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    verdict: zMeetingVerdict,
+    confidence: zMeetingConfidence,
+    conclusion: z.array(zMeetingCitedStatementDto),
+    support: z.array(zMeetingCitedStatementDto),
+    contradiction: z.array(zMeetingCitedStatementDto),
+    caveats: z.array(zMeetingCitedStatementDto),
+    limitations: z.array(zMeetingCitedStatementDto),
+    modelProvider: z.string(),
+    model: z.string(),
+    modelVersion: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    usage: z.unknown().optional(),
+    latencyMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    startedAtMs: z.number().int(),
+    completedAtMs: z.number().int(),
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional(),
+    sources: z.array(zMeetingSourceInputDto),
+    setCurrent: z.boolean()
+});
+
+export const zMeetingResearchApplyRequest_unstable = z.object({
+    meetingId: z.string(),
+    job: z.union([
+        zMeetingResearchJobUpsertDto,
+        z.null()
+    ]).optional(),
+    assessment: z.union([
+        zMeetingAssessmentApplyDto,
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingResearchApplyResponse_unstable = z.object({
+    job: z.union([
+        zMeetingResearchJobDto,
+        z.null()
+    ]).optional(),
+    assessment: z.union([
+        zMeetingAssessmentDto,
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingRefinementJobUpsertDto = z.object({
+    id: z.string(),
+    sourceTranscriptVersionId: z.string(),
+    inputManifestChecksum: z.string(),
+    provider: z.string(),
+    model: z.string(),
+    gatewayJobId: z.union([
+        z.string(),
+        z.null()
+    ]).optional(),
+    idempotencyKey: z.string(),
+    status: zMeetingRefinementJobStatus,
+    attemptCount: z.number().int().gte(0),
+    nextRetryAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    usage: z.unknown().optional(),
+    latencyMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    startedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    completedAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingRefinementJobApplyRequest_unstable = z.object({
+    meetingId: z.string(),
+    job: zMeetingRefinementJobUpsertDto
+});
+
+export const zMeetingRefinementJobApplyResponse_unstable = z.object({
+    job: zMeetingRefinementJobDto
+});
+
+export const zMeetingRefinementResultApplyRequest_unstable = z.object({
+    meetingId: z.string(),
+    refinementJobId: z.string(),
+    version: zMeetingTranscriptVersionUpsertDto,
+    segments: z.array(zMeetingTranscriptSegmentUpsertDto).optional().default([]),
+    speakerObservations: z.array(zMeetingSpeakerObservationUpsertDto).optional().default([]),
+    markStaleClaimVersionIds: z.array(z.string()).optional().default([]),
+    replacementClaimVersions: z.array(zMeetingClaimVersionUpsertDto).optional().default([])
+});
+
+export const zMeetingRefinementResultApplyResponse_unstable = z.object({
+    canonicalVersion: zMeetingTranscriptVersionDto,
+    segmentOutcomes: z.array(zMeetingUpsertOutcomeDto)
+});
+
+export const zMeetingDeleteRequest_unstable = z.object({
+    meetingId: z.string()
+});
+
+export const zMeetingCleanupStatus = z.enum([
+    'pending',
+    'running',
+    'complete',
+    'retry_wait',
+    'failed',
+    'unavailable'
+]);
+
+export const zMeetingCleanupJobDto = z.object({
+    id: z.string(),
+    meetingId: z.string(),
+    localStatus: zMeetingCleanupStatus,
+    gatewayStatus: zMeetingCleanupStatus,
+    providerStatus: zMeetingCleanupStatus,
+    relativeAudioPaths: z.array(z.string()),
+    attemptCount: z.number().int().gte(0),
+    nextRetryAtMs: z.union([
+        z.number().int(),
+        z.null()
+    ]).optional(),
+    lastError: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional(),
+    createdAtMs: z.number().int(),
+    updatedAtMs: z.number().int()
+});
+
+export const zMeetingDeleteResponse_unstable = z.object({
+    cleanupJob: zMeetingCleanupJobDto
+});
+
+export const zMeetingCleanupConfirmRequest_unstable = z.object({
+    cleanupJobId: z.string(),
+    localStatus: zMeetingCleanupStatus,
+    gatewayStatus: zMeetingCleanupStatus,
+    providerStatus: zMeetingCleanupStatus,
+    error: z.union([
+        zMeetingTypedErrorDto,
+        z.null()
+    ]).optional()
+});
+
+export const zMeetingCleanupConfirmResponse_unstable = z.object({
+    cleanupJob: z.union([
+        zMeetingCleanupJobDto,
+        z.null()
+    ]).optional(),
+    recordsRemoved: z.boolean()
+});
+
+export const zMeetingRecoverRequest_unstable = z.object({
+    reconcileActiveWork: z.boolean().optional().default(false)
+});
+
+export const zMeetingRecoverResponse_unstable = z.object({
+    interruptedMeetingIds: z.array(z.string()),
+    refinementJobIds: z.array(z.string()),
+    researchJobIds: z.array(z.string()),
+    cleanupJobIds: z.array(z.string()),
+    refinementJobs: z.array(zMeetingRefinementJobDto),
+    researchJobs: z.array(zMeetingResearchJobDto),
+    cleanupJobs: z.array(zMeetingCleanupJobDto)
+});
+
 export const zLocalInferenceModelsListRequest_unstable = z.record(z.unknown());
 
 export const zLocalInferenceDownloadState = z.enum([
@@ -2928,6 +4324,21 @@ export const zExtRequest = z.object({
             zDictationModelCancelRequest_unstable,
             zDictationModelDeleteRequest_unstable,
             zDictationModelSelectRequest_unstable,
+            zMeetingCreateRequest_unstable,
+            zMeetingUpdateRequest_unstable,
+            zMeetingListRequest_unstable,
+            zMeetingGetRequest_unstable,
+            zMeetingTranscriptApplyRequest_unstable,
+            zMeetingSpeakersApplyRequest_unstable,
+            zMeetingTimelineApplyRequest_unstable,
+            zMeetingAudioApplyRequest_unstable,
+            zMeetingClaimsApplyRequest_unstable,
+            zMeetingResearchApplyRequest_unstable,
+            zMeetingRefinementJobApplyRequest_unstable,
+            zMeetingRefinementResultApplyRequest_unstable,
+            zMeetingDeleteRequest_unstable,
+            zMeetingCleanupConfirmRequest_unstable,
+            zMeetingRecoverRequest_unstable,
             zLocalInferenceModelsListRequest_unstable,
             zLocalInferenceModelDownloadRequest_unstable,
             zLocalInferenceModelDownloadProgressRequest_unstable,
@@ -3019,6 +4430,21 @@ export const zExtResponse = z.union([
                 zDictationConfigResponse_unstable,
                 zDictationModelsListResponse_unstable,
                 zDictationModelDownloadProgressResponse_unstable,
+                zMeetingCreateResponse_unstable,
+                zMeetingUpdateResponse_unstable,
+                zMeetingListResponse_unstable,
+                zMeetingGetResponse_unstable,
+                zMeetingTranscriptApplyResponse_unstable,
+                zMeetingSpeakersApplyResponse_unstable,
+                zMeetingTimelineApplyResponse_unstable,
+                zMeetingAudioApplyResponse_unstable,
+                zMeetingClaimsApplyResponse_unstable,
+                zMeetingResearchApplyResponse_unstable,
+                zMeetingRefinementJobApplyResponse_unstable,
+                zMeetingRefinementResultApplyResponse_unstable,
+                zMeetingDeleteResponse_unstable,
+                zMeetingCleanupConfirmResponse_unstable,
+                zMeetingRecoverResponse_unstable,
                 zLocalInferenceModelsListResponse_unstable,
                 zLocalInferenceModelDownloadResponse_unstable,
                 zLocalInferenceModelDownloadProgressResponse_unstable,

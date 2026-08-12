@@ -13,6 +13,7 @@ const DEFAULT_CONNECT_SOURCES = [
   'https://api.github.com',
   'https://github.com',
   'https://objects.githubusercontent.com',
+  'wss://streaming.assemblyai.com',
 ];
 
 export function buildConnectSrc(externalBackend?: ExternalBackendConfig): string {
@@ -21,6 +22,13 @@ export function buildConnectSrc(externalBackend?: ExternalBackendConfig): string
   if (externalBackend?.enabled && externalBackend.url) {
     try {
       const externalUrl = new URL(externalBackend.url);
+      if (
+        (externalUrl.protocol !== 'http:' && externalUrl.protocol !== 'https:') ||
+        externalUrl.username ||
+        externalUrl.password
+      ) {
+        throw new Error('Unsupported external backend URL');
+      }
       sources.push(externalUrl.origin);
       externalUrl.protocol = externalUrl.protocol === 'https:' ? 'wss:' : 'ws:';
       sources.push(externalUrl.origin);
@@ -71,7 +79,7 @@ export function buildCSP(externalBackend?: ExternalBackendConfig): string {
     "object-src 'none';" +
     "frame-src 'self' https: http:;" +
     "font-src 'self' data: https:;" +
-    "media-src 'self' mediastream:;" +
+    "media-src 'self' mediastream: obelus-audio:;" +
     "form-action 'none';" +
     "base-uri 'self';" +
     "manifest-src 'self';" +

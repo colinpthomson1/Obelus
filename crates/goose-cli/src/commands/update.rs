@@ -1,3 +1,5 @@
+#![cfg_attr(feature = "disable-update", allow(dead_code, unused_imports))]
+
 use anyhow::{bail, Context, Result};
 use reqwest::{
     header::{HeaderValue, AUTHORIZATION},
@@ -82,6 +84,7 @@ struct AttestationEntry {
 }
 
 const GITHUB_ACTIONS_ISSUER: &str = "https://token.actions.githubusercontent.com";
+const UPDATE_REPOSITORY: &str = "colinpthomson1/Obelus";
 
 fn sanitized_token(token: Option<&str>) -> Option<&str> {
     token.map(str::trim).filter(|tok| !tok.is_empty())
@@ -111,7 +114,7 @@ fn should_retry_attestations_without_token(status: StatusCode, token: Option<&st
 
 async fn fetch_attestations(digest: &str, token: Option<&str>) -> Result<Vec<serde_json::Value>> {
     let url = format!(
-        "https://api.github.com/repos/aaif-goose/goose/attestations/sha256:{digest}\
+        "https://api.github.com/repos/{UPDATE_REPOSITORY}/attestations/sha256:{digest}\
          ?per_page=30&predicate_type=https://slsa.dev/provenance/v1"
     );
 
@@ -146,7 +149,7 @@ async fn fetch_attestations_response(
         .get(url)
         .header("Accept", "application/vnd.github+json")
         .header("X-GitHub-Api-Version", "2022-11-28")
-        .header("User-Agent", "goose-cli");
+        .header("User-Agent", "obelus-cli");
 
     if let Some(value) = token.and_then(authorization_header_value) {
         req = req.header(AUTHORIZATION, value);
@@ -249,6 +252,7 @@ async fn verify_provenance(archive_data: &[u8], tag: &str) -> Result<()> {
 pub async fn update(canary: bool, reconfigure: bool) -> Result<()> {
     #[cfg(feature = "disable-update")]
     {
+        let _ = (canary, reconfigure);
         bail!("Update is disabled in this build.");
     }
 
@@ -256,7 +260,7 @@ pub async fn update(canary: bool, reconfigure: bool) -> Result<()> {
     {
         let tag = if canary { "canary" } else { "stable" };
         let asset = asset_name();
-        let url = format!("https://github.com/aaif-goose/goose/releases/download/{tag}/{asset}");
+        let url = format!("https://github.com/{UPDATE_REPOSITORY}/releases/download/{tag}/{asset}");
 
         println!("Downloading {asset} from {tag} release...");
 
@@ -583,6 +587,13 @@ fn copy_dlls(extracted_binary: &Path, current_exe: &Path) -> Result<()> {
 mod tests {
     use super::*;
     use tempfile::tempdir;
+
+    #[cfg(feature = "disable-update")]
+    #[tokio::test]
+    async fn test_update_is_disabled_for_desktop_builds() {
+        let error = update(false, false).await.unwrap_err();
+        assert_eq!(error.to_string(), "Update is disabled in this build.");
+    }
 
     #[test]
     fn test_asset_name_valid() {

@@ -1,0 +1,27 @@
+.live-workspace {
+  container-type: inline-size;
+}
+
+@container (max-width: 880px) {
+  .live-claim-separator {
+    display: none;
+  }
+
+  .live-claim-panel {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 30;
+    width: min(440px, 100%) !important;
+    border-inline-start: 1px solid var(--color-border-primary);
+    box-shadow: -12px 0 32px rgb(17 21 40 / 10%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-workspace *,
+  .live-workspace *::before,
+  .live-workspace *::after {
+    scroll-behavior: auto !important;
+  }
+}

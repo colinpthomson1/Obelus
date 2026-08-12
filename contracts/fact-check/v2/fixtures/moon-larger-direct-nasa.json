@@ -1,0 +1,63 @@
+{
+  "type": "assessment",
+  "id": "moon-larger-direct-nasa",
+  "claim": {
+    "exactQuote": "The Moon is larger than Earth.",
+    "normalizedClaim": "The Moon is larger than Earth."
+  },
+  "stage": "preliminary",
+  "inventory": [
+    {
+      "citationId": "src_1",
+      "url": "https://science.nasa.gov/moon/facts/",
+      "canonicalUrl": "https://science.nasa.gov/moon/facts",
+      "publisher": "science.nasa.gov",
+      "title": "Moon facts",
+      "publicationDate": null,
+      "accessedAt": "2026-08-11T12:00:00.000Z",
+      "excerpt": "NASA lists Earth's equatorial diameter as about 12,756 kilometers and the Moon's as about 3,475 kilometers.",
+      "excerptType": "page_extract",
+      "sourceType": "government",
+      "retrievalStage": "preliminary"
+    }
+  ],
+  "draft": {
+    "confidence": "high",
+    "conclusion": "NASA's direct measurements show that Earth is larger than the Moon.",
+    "conclusionCitationIds": ["src_1"],
+    "statements": [
+      {
+        "text": "Earth's measured diameter is substantially greater than the Moon's.",
+        "citationIds": ["src_1"]
+      }
+    ],
+    "supports": [],
+    "contradictions": [
+      {
+        "text": "The direct diameter measurements establish the opposite comparison.",
+        "citationIds": ["src_1"]
+      }
+    ],
+    "caveats": [],
+    "limitations": [],
+    "sources": [
+      {
+        "citationId": "src_1",
+        "stance": "contradicts",
+        "qualityScore": 0.99,
+        "qualityRationale": "Direct measurements from NASA address the same size comparison.",
+        "authority": "authoritative",
+        "directness": "direct",
+        "addressesClaim": true,
+        "timeScopeMatch": true
+      }
+    ],
+    "changeExplanation": null
+  },
+  "expected": {
+    "resolution": "resolved",
+    "evidenceRelation": "contradicts",
+    "finding": "disputed",
+    "confidence": "high"
+  }
+}

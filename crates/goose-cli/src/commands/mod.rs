@@ -2,6 +2,7 @@ pub mod configure;
 pub mod doctor;
 pub mod gateway;
 pub mod info;
+pub mod live_fact_check_model;
 pub mod plugin;
 pub mod recipe;
 pub mod review;

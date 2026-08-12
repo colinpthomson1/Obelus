@@ -23,7 +23,7 @@ impl goose_providers::base::ProviderDescriptor for PiAcpProvider {
         ProviderMetadata::new(
             PI_ACP_PROVIDER_NAME,
             "Pi",
-            "Use goose with Pi via the pi-acp adapter.",
+            "Use Obelus with Pi via the pi-acp adapter.",
             ACP_CURRENT_MODEL,
             vec![],
             PI_ACP_DOC_URL,
@@ -32,8 +32,8 @@ impl goose_providers::base::ProviderDescriptor for PiAcpProvider {
         .with_setup_steps(vec![
             "Install the Pi CLI and the pi-acp adapter",
             "Ensure your Pi CLI is authenticated (run `pi` to verify)",
-            "Add to your goose config file (`~/.config/goose/config.yaml` on macOS/Linux):\n  GOOSE_PROVIDER: pi-acp\n  GOOSE_MODEL: current\n  pi-acp_configured: true",
-            "Restart goose for changes to take effect",
+            "Add these compatibility settings to `~/.config/goose/config.yaml` on macOS/Linux:\n  GOOSE_PROVIDER: pi-acp\n  GOOSE_MODEL: current\n  pi-acp_configured: true",
+            "Restart Obelus for changes to take effect",
         ])
         .with_model_selection_hint("Use the Pi CLI to configure models")
     }

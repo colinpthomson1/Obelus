@@ -130,6 +130,36 @@ import type {
   LocalInferenceModelSettingsUpdateResponse_unstable,
   LocalInferenceModelsListRequest_unstable,
   LocalInferenceModelsListResponse_unstable,
+  MeetingAudioApplyRequest_unstable,
+  MeetingAudioApplyResponse_unstable,
+  MeetingClaimsApplyRequest_unstable,
+  MeetingClaimsApplyResponse_unstable,
+  MeetingCleanupConfirmRequest_unstable,
+  MeetingCleanupConfirmResponse_unstable,
+  MeetingCreateRequest_unstable,
+  MeetingCreateResponse_unstable,
+  MeetingDeleteRequest_unstable,
+  MeetingDeleteResponse_unstable,
+  MeetingGetRequest_unstable,
+  MeetingGetResponse_unstable,
+  MeetingListRequest_unstable,
+  MeetingListResponse_unstable,
+  MeetingRecoverRequest_unstable,
+  MeetingRecoverResponse_unstable,
+  MeetingRefinementJobApplyRequest_unstable,
+  MeetingRefinementJobApplyResponse_unstable,
+  MeetingRefinementResultApplyRequest_unstable,
+  MeetingRefinementResultApplyResponse_unstable,
+  MeetingResearchApplyRequest_unstable,
+  MeetingResearchApplyResponse_unstable,
+  MeetingSpeakersApplyRequest_unstable,
+  MeetingSpeakersApplyResponse_unstable,
+  MeetingTimelineApplyRequest_unstable,
+  MeetingTimelineApplyResponse_unstable,
+  MeetingTranscriptApplyRequest_unstable,
+  MeetingTranscriptApplyResponse_unstable,
+  MeetingUpdateRequest_unstable,
+  MeetingUpdateResponse_unstable,
   OnboardingImportApplyRequest_unstable,
   OnboardingImportApplyResponse_unstable,
   OnboardingImportScanRequest_unstable,
@@ -252,6 +282,21 @@ import {
   zLocalInferenceModelSettingsReadResponse_unstable,
   zLocalInferenceModelSettingsUpdateResponse_unstable,
   zLocalInferenceModelsListResponse_unstable,
+  zMeetingAudioApplyResponse_unstable,
+  zMeetingClaimsApplyResponse_unstable,
+  zMeetingCleanupConfirmResponse_unstable,
+  zMeetingCreateResponse_unstable,
+  zMeetingDeleteResponse_unstable,
+  zMeetingGetResponse_unstable,
+  zMeetingListResponse_unstable,
+  zMeetingRecoverResponse_unstable,
+  zMeetingRefinementJobApplyResponse_unstable,
+  zMeetingRefinementResultApplyResponse_unstable,
+  zMeetingResearchApplyResponse_unstable,
+  zMeetingSpeakersApplyResponse_unstable,
+  zMeetingTimelineApplyResponse_unstable,
+  zMeetingTranscriptApplyResponse_unstable,
+  zMeetingUpdateResponse_unstable,
   zOnboardingImportApplyResponse_unstable,
   zOnboardingImportScanResponse_unstable,
   zParseRecipeResponse_unstable,
@@ -1337,6 +1382,186 @@ export class GooseExtClient {
       "_goose/unstable/dictation/models/select",
       params,
     );
+  }
+
+  async meetingsCreate_unstable(
+    params: MeetingCreateRequest_unstable,
+  ): Promise<MeetingCreateResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/create",
+      params,
+    );
+    return zMeetingCreateResponse_unstable.parse(
+      raw,
+    ) as MeetingCreateResponse_unstable;
+  }
+
+  async meetingsUpdate_unstable(
+    params: MeetingUpdateRequest_unstable,
+  ): Promise<MeetingUpdateResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/update",
+      params,
+    );
+    return zMeetingUpdateResponse_unstable.parse(
+      raw,
+    ) as MeetingUpdateResponse_unstable;
+  }
+
+  async meetingsList_unstable(
+    params: MeetingListRequest_unstable,
+  ): Promise<MeetingListResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/list",
+      params,
+    );
+    return zMeetingListResponse_unstable.parse(
+      raw,
+    ) as MeetingListResponse_unstable;
+  }
+
+  async meetingsGet_unstable(
+    params: MeetingGetRequest_unstable,
+  ): Promise<MeetingGetResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/get",
+      params,
+    );
+    return zMeetingGetResponse_unstable.parse(
+      raw,
+    ) as MeetingGetResponse_unstable;
+  }
+
+  async meetingsTranscriptApply_unstable(
+    params: MeetingTranscriptApplyRequest_unstable,
+  ): Promise<MeetingTranscriptApplyResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/transcript/apply",
+      params,
+    );
+    return zMeetingTranscriptApplyResponse_unstable.parse(
+      raw,
+    ) as MeetingTranscriptApplyResponse_unstable;
+  }
+
+  async meetingsSpeakersApply_unstable(
+    params: MeetingSpeakersApplyRequest_unstable,
+  ): Promise<MeetingSpeakersApplyResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/speakers/apply",
+      params,
+    );
+    return zMeetingSpeakersApplyResponse_unstable.parse(
+      raw,
+    ) as MeetingSpeakersApplyResponse_unstable;
+  }
+
+  async meetingsTimelineApply_unstable(
+    params: MeetingTimelineApplyRequest_unstable,
+  ): Promise<MeetingTimelineApplyResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/timeline/apply",
+      params,
+    );
+    return zMeetingTimelineApplyResponse_unstable.parse(
+      raw,
+    ) as MeetingTimelineApplyResponse_unstable;
+  }
+
+  async meetingsAudioApply_unstable(
+    params: MeetingAudioApplyRequest_unstable,
+  ): Promise<MeetingAudioApplyResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/audio/apply",
+      params,
+    );
+    return zMeetingAudioApplyResponse_unstable.parse(
+      raw,
+    ) as MeetingAudioApplyResponse_unstable;
+  }
+
+  async meetingsClaimsApply_unstable(
+    params: MeetingClaimsApplyRequest_unstable,
+  ): Promise<MeetingClaimsApplyResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/claims/apply",
+      params,
+    );
+    return zMeetingClaimsApplyResponse_unstable.parse(
+      raw,
+    ) as MeetingClaimsApplyResponse_unstable;
+  }
+
+  async meetingsResearchApply_unstable(
+    params: MeetingResearchApplyRequest_unstable,
+  ): Promise<MeetingResearchApplyResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/research/apply",
+      params,
+    );
+    return zMeetingResearchApplyResponse_unstable.parse(
+      raw,
+    ) as MeetingResearchApplyResponse_unstable;
+  }
+
+  async meetingsRefinementJobApply_unstable(
+    params: MeetingRefinementJobApplyRequest_unstable,
+  ): Promise<MeetingRefinementJobApplyResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/refinement/job/apply",
+      params,
+    );
+    return zMeetingRefinementJobApplyResponse_unstable.parse(
+      raw,
+    ) as MeetingRefinementJobApplyResponse_unstable;
+  }
+
+  async meetingsRefinementResultApply_unstable(
+    params: MeetingRefinementResultApplyRequest_unstable,
+  ): Promise<MeetingRefinementResultApplyResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/refinement/result/apply",
+      params,
+    );
+    return zMeetingRefinementResultApplyResponse_unstable.parse(
+      raw,
+    ) as MeetingRefinementResultApplyResponse_unstable;
+  }
+
+  async meetingsDelete_unstable(
+    params: MeetingDeleteRequest_unstable,
+  ): Promise<MeetingDeleteResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/delete",
+      params,
+    );
+    return zMeetingDeleteResponse_unstable.parse(
+      raw,
+    ) as MeetingDeleteResponse_unstable;
+  }
+
+  async meetingsCleanupConfirm_unstable(
+    params: MeetingCleanupConfirmRequest_unstable,
+  ): Promise<MeetingCleanupConfirmResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/cleanup/confirm",
+      params,
+    );
+    return zMeetingCleanupConfirmResponse_unstable.parse(
+      raw,
+    ) as MeetingCleanupConfirmResponse_unstable;
+  }
+
+  async meetingsRecover_unstable(
+    params: MeetingRecoverRequest_unstable,
+  ): Promise<MeetingRecoverResponse_unstable> {
+    const raw = await this.conn.extMethod(
+      "_goose/unstable/meetings/recover",
+      params,
+    );
+    return zMeetingRecoverResponse_unstable.parse(
+      raw,
+    ) as MeetingRecoverResponse_unstable;
   }
 
   async localInferenceModelsList_unstable(
