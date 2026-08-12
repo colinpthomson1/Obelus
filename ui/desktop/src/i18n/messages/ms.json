@@ -17,6 +17,9 @@
   "appLayout.openNavigation": {
     "defaultMessage": "Buka navigasi"
   },
+  "appLayout.resizeNavigation": {
+    "defaultMessage": "Resize navigation"
+  },
   "appsView.customApp": {
     "defaultMessage": "Apl tersuai"
   },
@@ -27,7 +30,7 @@
     "defaultMessage": "Delete \"{name}\"? This cannot be undone."
   },
   "appsView.description": {
-    "defaultMessage": "Aplikasi daripada pelayan MCP anda dan Apl yang dibina oleh goose sendiri. Anda boleh memintanya mencipta apl baharu melalui antara muka sembang dan ia akan muncul di sini."
+    "defaultMessage": "Applications from your MCP servers and apps built through Obelus. Ask Obelus to create an app and it will appear here."
   },
   "appsView.errorLoading": {
     "defaultMessage": "Ralat memuatkan apl: {error}"
@@ -45,7 +48,7 @@
     "defaultMessage": "Memuatkan apl..."
   },
   "appsView.noAppsDescription": {
-    "defaultMessage": "Buka sembang dan minta goose untuk apl yang anda mahukan. Ia boleh membina satu untuk anda dan ia akan muncul di sini. Atau jika seseorang berkongsi apl, anda boleh mengimportnya menggunakan butang di atas."
+    "defaultMessage": "Open a thread and ask Obelus to build the app you need. You can also import an app that someone shared with you."
   },
   "appsView.noAppsTitle": {
     "defaultMessage": "Tiada apl tersedia"
@@ -84,7 +87,7 @@
     "defaultMessage": "Kelayakan dipadam"
   },
   "authSettings.description": {
-    "defaultMessage": "Urus kelayakan pembekal yang disimpan secara setempat oleh goose."
+    "defaultMessage": "Manage provider credentials stored locally by Obelus."
   },
   "authSettings.empty": {
     "defaultMessage": "Tiada kelayakan pembekal yang disimpan secara setempat ditemui."
@@ -168,10 +171,10 @@
     "defaultMessage": "Lancarkan"
   },
   "chat.notification.taskComplete.body": {
-    "defaultMessage": "Klik di sini untuk membawa Goose kembali ke fokus."
+    "defaultMessage": "Click to bring Obelus back into focus."
   },
   "chat.notification.taskComplete.title": {
-    "defaultMessage": "Goose telah menyelesaikan tugasan."
+    "defaultMessage": "Obelus finished the task."
   },
   "chatInput.contextWindow": {
     "defaultMessage": "Tetingkap konteks"
@@ -183,7 +186,7 @@
     "defaultMessage": "Gagal membaca fail imej"
   },
   "chatInput.navigationShortcut": {
-    "defaultMessage": "{prefix}↑/{prefix}↓ untuk menavigasi mesej"
+    "defaultMessage": "Ask Obelus anything · {prefix}↑/{prefix}↓ for history"
   },
   "chatInput.processingDroppedFiles": {
     "defaultMessage": "Memproses fail yang dilepaskan..."
@@ -222,13 +225,13 @@
     "defaultMessage": "Menunggu imej disimpan..."
   },
   "chatSettings.modeDescription": {
-    "defaultMessage": "Pilih mod lalai yang Goose gunakan untuk sesi baharu. Sesi sedia ada mengekalkan mod semasanya."
+    "defaultMessage": "Choose the default mode Obelus uses for new sessions. Existing sessions keep their current mode."
   },
   "chatSettings.modeTitle": {
     "defaultMessage": "Mod Lalai"
   },
   "chatSettings.responseStylesDescription": {
-    "defaultMessage": "Pilih cara Goose memformat dan menggaya respons"
+    "defaultMessage": "Choose how Obelus formats and styles its responses"
   },
   "chatSettings.responseStylesTitle": {
     "defaultMessage": "Gaya Respons"
@@ -249,10 +252,10 @@
     "defaultMessage": "Editor Konfigurasi"
   },
   "configSettings.description": {
-    "defaultMessage": "Edit tetapan konfigurasi goose anda"
+    "defaultMessage": "Edit your Obelus configuration settings"
   },
   "configSettings.descriptionWithProvider": {
-    "defaultMessage": "Edit tetapan konfigurasi goose anda (tetapan semasa untuk {provider})"
+    "defaultMessage": "Edit your Obelus configuration settings (current provider: {provider})"
   },
   "configSettings.done": {
     "defaultMessage": "Selesai"
@@ -324,7 +327,7 @@
     "defaultMessage": "Pusingan Maksimum"
   },
   "conversationLimitsDropdown.maxTurnsDescription": {
-    "defaultMessage": "Pusingan ejen maksimum sebelum Goose meminta input pengguna"
+    "defaultMessage": "Maximum agent turns before Obelus asks for your input"
   },
   "costTracker.costUnavailable": {
     "defaultMessage": "Data kos tidak tersedia untuk {model} ({inputTokens} token input, {outputTokens} token output)"
@@ -366,7 +369,7 @@
     "defaultMessage": "Menjana deeplink..."
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Ketahui lebih lanjut"
+    "defaultMessage": "Upstream Goose recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Resipi berjaya disimpan dan dilancarkan"
@@ -777,7 +780,7 @@
     "defaultMessage": "Edit tetapan {name}"
   },
   "defaultCardButtons.getStarted": {
-    "defaultMessage": "Mulakan dengan goose!"
+    "defaultMessage": "Use with Obelus"
   },
   "defaultProviderSetupForm.apiHostLabel": {
     "defaultMessage": "Hos API"
@@ -936,7 +939,7 @@
     "defaultMessage": "Permintaan maklumat telah dibatalkan."
   },
   "elicitationRequest.defaultMessage": {
-    "defaultMessage": "Goose memerlukan beberapa maklumat daripada anda."
+    "defaultMessage": "Obelus needs a little more information."
   },
   "elicitationRequest.expired": {
     "defaultMessage": "Permintaan ini telah luput. Sambungan perlu bertanya semula."
@@ -981,10 +984,10 @@
     "defaultMessage": "Satu ralat telah berlaku."
   },
   "errorBoundary.errorWithVersion": {
-    "defaultMessage": "Satu ralat telah berlaku dalam Goose v{version}."
+    "defaultMessage": "An error occurred in Obelus v{version}."
   },
   "errorBoundary.heading": {
-    "defaultMessage": "Honk!"
+    "defaultMessage": "Something interrupted the thread"
   },
   "errorBoundary.reload": {
     "defaultMessage": "Muat Semula"
@@ -1145,9 +1148,6 @@
   "extensionsSection.addExtension": {
     "defaultMessage": "Tambah Sambungan"
   },
-  "extensionsSection.browseExtensions": {
-    "defaultMessage": "Layari sambungan"
-  },
   "extensionsSection.saveChanges": {
     "defaultMessage": "Simpan Perubahan"
   },
@@ -1160,14 +1160,11 @@
   "extensionsView.addExtension": {
     "defaultMessage": "Tambah Sambungan"
   },
-  "extensionsView.browseExtensions": {
-    "defaultMessage": "Layari sambungan"
-  },
   "extensionsView.defaultNote": {
     "defaultMessage": "Sambungan yang didayakan di sini digunakan sebagai lalai untuk sembang baharu. Anda juga boleh menogol sambungan aktif semasa sembang."
   },
   "extensionsView.description": {
-    "defaultMessage": "Sambungan ini menggunakan Model Context Protocol (MCP). Ia boleh mengembangkan keupayaan Goose menggunakan tiga komponen utama: Prompts, Resources, dan Tools. {searchShortcut} untuk mencari."
+    "defaultMessage": "Extensions use the Model Context Protocol (MCP) to add prompts, resources, and tools to Obelus. {searchShortcut} to search."
   },
   "extensionsView.heading": {
     "defaultMessage": "Sambungan"
@@ -1185,19 +1182,19 @@
     "defaultMessage": "AA:BB:CC:... atau sha256/base64"
   },
   "externalBackendSection.description": {
-    "defaultMessage": "Secara lalai goose melancarkan pelayan untuk anda, gunakan ini untuk menyambung ke pelayan goose luaran"
+    "defaultMessage": "Obelus starts a local backend by default. Use this setting to connect to an external ACP-compatible backend."
   },
   "externalBackendSection.fingerprintRequiresHttps": {
     "defaultMessage": "Certificate fingerprint requires an https URL"
   },
   "externalBackendSection.restartNote": {
-    "defaultMessage": "Perubahan memerlukan memulakan semula Goose untuk berkuat kuasa. Tetingkap sembang baharu akan menyambung ke pelayan luaran."
+    "defaultMessage": "Changes apply to new windows. Restart Obelus to update windows already open."
   },
   "externalBackendSection.secretKey": {
     "defaultMessage": "Kunci Rahsia"
   },
   "externalBackendSection.secretKeyHelp": {
-    "defaultMessage": "Kunci rahsia yang dikonfigurasikan pada pelayan Goose (GOOSE_SERVER__SECRET_KEY)"
+    "defaultMessage": "Kunci rahsia yang dikonfigurasikan pada pelayan Obelus (GOOSE_SERVER__SECRET_KEY)"
   },
   "externalBackendSection.secretKeyPlaceholder": {
     "defaultMessage": "Masukkan kunci rahsia pelayan"
@@ -1206,10 +1203,10 @@
     "defaultMessage": "URL Pelayan"
   },
   "externalBackendSection.serverUrlHelp": {
-    "defaultMessage": "Enter the HTTP(S) base URL. Goose checks /status and connects to /acp under this base."
+    "defaultMessage": "Enter the HTTP(S) base URL. Obelus checks /status and connects to /acp under this base."
   },
   "externalBackendSection.title": {
-    "defaultMessage": "Pelayan Goose"
+    "defaultMessage": "Pelayan Obelus"
   },
   "externalBackendSection.urlBaseError": {
     "defaultMessage": "URL must be the backend base URL before /acp, without query parameters or fragments"
@@ -1224,7 +1221,7 @@
     "defaultMessage": "Gunakan pelayan luaran"
   },
   "externalBackendSection.useExternalServerDescription": {
-    "defaultMessage": "Sambung ke pelayan goose yang berjalan di tempat lain (memerlukan memulakan semula aplikasi)"
+    "defaultMessage": "Sambung ke pelayan Obelus yang berjalan di tempat lain (memerlukan memulakan semula aplikasi)"
   },
   "goosehintsModal.close": {
     "defaultMessage": "Tutup"
@@ -1233,7 +1230,7 @@
     "defaultMessage": "Pembangun"
   },
   "goosehintsModal.dialogDescription": {
-    "defaultMessage": "Berikan konteks tambahan tentang projek anda untuk meningkatkan komunikasi dengan Goose"
+    "defaultMessage": "Provide project context to help Obelus respond more precisely"
   },
   "goosehintsModal.dialogTitle": {
     "defaultMessage": "Konfigurasikan Petunjuk Projek (.goosehints)"
@@ -1254,7 +1251,7 @@
     "defaultMessage": "Fail .goosehints dijumpai di: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".goosehints ialah fail teks yang digunakan untuk memberikan konteks tambahan tentang projek anda dan meningkatkan komunikasi dengan Goose."
+    "defaultMessage": ".goosehints is a compatibility file that gives Obelus additional context about your project."
   },
   "goosehintsModal.helpText2": {
     "defaultMessage": "Sila pastikan sambungan {bold} didayakan dalam halaman sambungan. Sambungan ini diperlukan untuk menggunakan .goosehints. Anda perlu memulakan semula sesi anda untuk kemas kini .goosehints berkuat kuasa."
@@ -1263,7 +1260,7 @@
     "defaultMessage": "Lihat {link} untuk maklumat lanjut."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "menggunakan .goosehints"
+    "defaultMessage": "the upstream Goose .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Masukkan petunjuk projek di sini..."
@@ -1281,13 +1278,13 @@
     "defaultMessage": "Konfigurasikan"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Konfigurasikan fail .goosehints projek anda untuk memberikan konteks tambahan kepada Goose"
+    "defaultMessage": "Configure your project's compatible .goosehints file to give Obelus additional context"
   },
   "goosehintsSection.title": {
     "defaultMessage": "Petunjuk Projek (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
-    "defaultMessage": "Tanya goose"
+    "defaultMessage": "Ask Obelus"
   },
   "groupedExtensionLoadingToast.collapseDetails": {
     "defaultMessage": "Runtuhkan butiran"
@@ -1346,14 +1343,38 @@
   "headersSection.value": {
     "defaultMessage": "Nilai"
   },
-  "hub.goodAfternoon": {
-    "defaultMessage": "Selamat tengah hari"
+  "hub.capabilityBuild": {
+    "defaultMessage": "Build"
   },
-  "hub.goodEvening": {
-    "defaultMessage": "Selamat petang"
+  "hub.capabilityBuildDescription": {
+    "defaultMessage": "Write code, automate tasks, and use tools"
   },
-  "hub.goodMorning": {
-    "defaultMessage": "Selamat pagi"
+  "hub.capabilityCreate": {
+    "defaultMessage": "Create"
+  },
+  "hub.capabilityCreateDescription": {
+    "defaultMessage": "Draft, revise, explain, and structure ideas"
+  },
+  "hub.capabilityResearch": {
+    "defaultMessage": "Research"
+  },
+  "hub.capabilityResearchDescription": {
+    "defaultMessage": "Find, compare, and synthesize information"
+  },
+  "hub.category": {
+    "defaultMessage": "Evidence-led AI workspace"
+  },
+  "hub.description": {
+    "defaultMessage": "Bring a question, document, or task. Obelus can research, reason, write, code, and work with the tools you connect—keeping the work visible in the conversation."
+  },
+  "hub.headline": {
+    "defaultMessage": "What should we examine?"
+  },
+  "hub.privacy": {
+    "defaultMessage": "Your files stay on this device unless you choose to share them with a model or connected tool."
+  },
+  "hub.startThread": {
+    "defaultMessage": "Start a new research thread"
   },
   "huggingFaceModelSearch.download": {
     "defaultMessage": "Muat Turun"
@@ -1407,7 +1428,7 @@
     "defaultMessage": "Hugging Face"
   },
   "imagePreview.altText": {
-    "defaultMessage": "imej goose"
+    "defaultMessage": "Image shared with Obelus"
   },
   "imagePreview.clickToCollapse": {
     "defaultMessage": "Klik untuk meruntuhkan"
@@ -1422,10 +1443,10 @@
     "defaultMessage": "Batal"
   },
   "importRecipeForm.deeplinkHint": {
-    "defaultMessage": "Tampal pautan dalam resipi yang bermula dengan \"goose://recipe?config=\""
+    "defaultMessage": "Paste a recipe deep link starting with \"obelus://recipe?config=\""
   },
   "importRecipeForm.deeplinkPlaceholder": {
-    "defaultMessage": "Tampal pautan dalam goose://recipe?config=... anda di sini"
+    "defaultMessage": "Paste your obelus://recipe?config=... deep link here"
   },
   "importRecipeForm.example": {
     "defaultMessage": "contoh"
@@ -1455,7 +1476,7 @@
     "defaultMessage": "Fail Resipi"
   },
   "importRecipeForm.reviewWarning": {
-    "defaultMessage": "Pastikan anda menyemak kandungan fail resipi sebelum menambahnya ke antara muka goose anda."
+    "defaultMessage": "Review every recipe before adding it to Obelus. Recipes can configure tools and external services."
   },
   "importRecipeForm.schemaDescription": {
     "defaultMessage": "Fail YAML atau JSON anda harus mengikut struktur ini. Medan yang diperlukan ialah: title, description, dan sama ada instructions atau prompt."
@@ -1566,13 +1587,13 @@
     "defaultMessage": "Pintasan Aplikasi"
   },
   "keyboardShortcuts.categoryApplicationDescription": {
-    "defaultMessage": "Pintasan ini berfungsi apabila Goose ialah aplikasi aktif"
+    "defaultMessage": "These shortcuts work when Obelus is the active application"
   },
   "keyboardShortcuts.categoryGlobal": {
     "defaultMessage": "Pintasan Global"
   },
   "keyboardShortcuts.categoryGlobalDescription": {
-    "defaultMessage": "Pintasan ini berfungsi di seluruh sistem, walaupun Goose tidak difokuskan"
+    "defaultMessage": "These shortcuts work system-wide, even when Obelus is not focused"
   },
   "keyboardShortcuts.categorySearch": {
     "defaultMessage": "Pintasan Carian"
@@ -1614,10 +1635,10 @@
     "defaultMessage": "Cari Sebelumnya"
   },
   "keyboardShortcuts.focusWindowDescription": {
-    "defaultMessage": "Bawa tetingkap Goose ke hadapan dari mana-mana sahaja"
+    "defaultMessage": "Bring the Obelus window to the front from anywhere"
   },
   "keyboardShortcuts.focusWindowLabel": {
-    "defaultMessage": "Fokus Tetingkap Goose"
+    "defaultMessage": "Focus Obelus window"
   },
   "keyboardShortcuts.loading": {
     "defaultMessage": "Memuatkan..."
@@ -1629,7 +1650,7 @@
     "defaultMessage": "Sembang Baharu"
   },
   "keyboardShortcuts.newChatWindowDescription": {
-    "defaultMessage": "Buka tetingkap Goose baharu"
+    "defaultMessage": "Open a new Obelus window"
   },
   "keyboardShortcuts.newChatWindowLabel": {
     "defaultMessage": "Tetingkap Sembang Baharu"
@@ -1668,7 +1689,7 @@
     "defaultMessage": "Set Semula kepada Lalai"
   },
   "keyboardShortcuts.restartDescription": {
-    "defaultMessage": "Perubahan pada pintasan aplikasi (seperti Sembang Baharu, Tetapan, dll.) memerlukan Goose dimulakan semula untuk berkuat kuasa. Pintasan global (Fokus Tetingkap, Pelancar Pantas) berfungsi serta-merta."
+    "defaultMessage": "Restart Obelus to apply application shortcut changes. Global shortcuts such as Focus Window and Quick Launcher work immediately."
   },
   "keyboardShortcuts.restartRequired": {
     "defaultMessage": "Mula Semula Diperlukan"
@@ -1697,29 +1718,35 @@
   "keyboardShortcuts.toggleNavigationLabel": {
     "defaultMessage": "Togol Navigasi"
   },
+  "launcher.inputLabel": {
+    "defaultMessage": "Start a new Obelus research thread"
+  },
   "launcher.placeholder": {
-    "defaultMessage": "Tanya goose apa sahaja..."
+    "defaultMessage": "Ask Obelus to research, write, build, or explain…"
+  },
+  "launcher.submit": {
+    "defaultMessage": "Open research thread"
   },
   "loadingGoose.compacting": {
-    "defaultMessage": "goose sedang memadatkan perbualan..."
+    "defaultMessage": "Refining the conversation…"
   },
   "loadingGoose.idle": {
-    "defaultMessage": "goose sedang mengusahakannya…"
+    "defaultMessage": "Ready"
   },
   "loadingGoose.loadingConversation": {
-    "defaultMessage": "memuatkan perbualan..."
+    "defaultMessage": "Opening the research thread…"
   },
   "loadingGoose.restartingAgent": {
-    "defaultMessage": "memulakan semula sesi..."
+    "defaultMessage": "Restarting the session…"
   },
   "loadingGoose.streaming": {
-    "defaultMessage": "goose sedang mengusahakannya…"
+    "defaultMessage": "Obelus is building the response…"
   },
   "loadingGoose.thinking": {
-    "defaultMessage": "goose sedang berfikir…"
+    "defaultMessage": "Obelus is examining the request…"
   },
   "loadingGoose.waiting": {
-    "defaultMessage": "goose sedang menunggu…"
+    "defaultMessage": "Waiting for your direction…"
   },
   "localInferenceSettings.deleteConfirm": {
     "defaultMessage": "Padam model ini? Anda boleh memuat turunnya semula kemudian."
@@ -1827,13 +1854,16 @@
     "defaultMessage": "Tunjukkan yang disyorkan sahaja"
   },
   "localModelPicker.bestForMachine": {
-    "defaultMessage": "Terbaik untuk mesin anda"
+    "defaultMessage": "Recommended for this device"
   },
   "localModelPicker.cancelDownload": {
     "defaultMessage": "Batalkan Muat Turun"
   },
   "localModelPicker.checkingModels": {
     "defaultMessage": "Menyemak model tersedia..."
+  },
+  "localModelPicker.downloadFailed": {
+    "defaultMessage": "The model download failed."
   },
   "localModelPicker.downloadModel": {
     "defaultMessage": "Muat turun {modelId} ({size})"
@@ -1851,16 +1881,25 @@
     "defaultMessage": "Sembunyikan saiz lain"
   },
   "localModelPicker.localModelsNote": {
-    "defaultMessage": "Model tempatan menyimpan segala-galanya pada mesin anda untuk privasi penuh. Prestasi dan saiz tetingkap konteks mungkin berbeza berbanding penyedia awan bergantung pada perkakasan dan saiz model anda."
+    "defaultMessage": "Model inference stays on this device. Tools and extensions may still connect to external services, so review them before sharing sensitive material. Performance depends on your hardware and model size."
   },
   "localModelPicker.lostConnection": {
     "defaultMessage": "Sambungan ke muat turun terputus. Sila cuba lagi."
   },
+  "localModelPicker.minutesRemaining": {
+    "defaultMessage": "About {minutes} minutes remaining"
+  },
   "localModelPicker.modelNotFound": {
     "defaultMessage": "Model tidak dijumpai"
   },
+  "localModelPicker.modelOptions": {
+    "defaultMessage": "Choose a local model"
+  },
   "localModelPicker.ready": {
     "defaultMessage": "Sedia"
+  },
+  "localModelPicker.secondsRemaining": {
+    "defaultMessage": "About {seconds} seconds remaining"
   },
   "localModelPicker.selectModel": {
     "defaultMessage": "Pilih model"
@@ -2342,6 +2381,9 @@
   "navigation.itemHome": {
     "defaultMessage": "Sembang Baharu"
   },
+  "navigation.itemLiveFactCheck": {
+    "defaultMessage": "Semakan Fakta Langsung"
+  },
   "navigation.itemRecipes": {
     "defaultMessage": "Resipi"
   },
@@ -2394,43 +2436,40 @@
     "defaultMessage": "Sesi tanpa tajuk"
   },
   "onboardingGuard.checkProviderErrorDescription": {
-    "defaultMessage": "Pelayan mungkin sedang dimulakan atau tidak tersedia buat sementara waktu."
+    "defaultMessage": "The local service may still be starting. Wait a moment, then try again."
   },
   "onboardingGuard.checkProviderErrorTitle": {
-    "defaultMessage": "Tidak dapat menyambung ke pelayan Goose"
+    "defaultMessage": "Unable to connect to Obelus"
+  },
+  "onboardingGuard.checkingProvider": {
+    "defaultMessage": "Preparing Obelus…"
   },
   "onboardingGuard.retry": {
     "defaultMessage": "Cuba Semula"
   },
   "onboardingGuard.welcomeDescription": {
-    "defaultMessage": "Ejen AI tempatan anda. Sambungkan penyedia model AI untuk bermula."
+    "defaultMessage": "A local AI workspace for careful research and clear answers. Connect a model provider to begin."
   },
   "onboardingGuard.welcomeTitle": {
-    "defaultMessage": "Selamat datang ke goose"
+    "defaultMessage": "Welcome to Obelus"
   },
   "onboardingSuccess.allSet": {
-    "defaultMessage": "Anda sudah bersedia untuk mula menggunakan goose."
+    "defaultMessage": "Obelus is ready. Start a research thread or open a project."
   },
   "onboardingSuccess.connectedTo": {
     "defaultMessage": "Disambungkan ke {providerName}"
   },
   "onboardingSuccess.getStarted": {
-    "defaultMessage": "Mulakan"
-  },
-  "onboardingSuccess.learnMore": {
-    "defaultMessage": "Ketahui lebih lanjut"
+    "defaultMessage": "Open Obelus"
   },
   "onboardingSuccess.localModelReady": {
     "defaultMessage": "Model setempat sedia"
   },
   "onboardingSuccess.privacyDescription": {
-    "defaultMessage": "Data penggunaan tanpa nama membantu menambah baik goose. Kami tidak sekali-kali mengumpul perbualan, kod atau data peribadi anda."
+    "defaultMessage": "Product analytics and automatic updates are off in this build. Model providers, tools, and extensions follow their own data policies."
   },
   "onboardingSuccess.privacyTitle": {
-    "defaultMessage": "Privasi"
-  },
-  "onboardingSuccess.shareUsageData": {
-    "defaultMessage": "Kongsi data penggunaan tanpa nama"
+    "defaultMessage": "A private starting point"
   },
   "parameterInput.defaultValue": {
     "defaultMessage": "Nilai Lalai"
@@ -2576,35 +2615,26 @@
   "permissionSetting.permissionRulesDescription": {
     "defaultMessage": "Arahan tersembunyi yang akan dihantar kepada penyedia untuk membantu mengarah dan menambah konteks pada respons anda."
   },
-  "privacyInfoModal.collectErrors": {
-    "defaultMessage": "Jenis ralat (cth., \"rate_limit\", \"auth\" - tanpa butiran)"
-  },
-  "privacyInfoModal.collectExtensions": {
-    "defaultMessage": "Sambungan dan kiraan penggunaan alat (nama sahaja)"
-  },
   "privacyInfoModal.collectOs": {
-    "defaultMessage": "Sistem pengendalian, versi dan seni bina"
+    "defaultMessage": "Prompts and files you choose to send to a cloud model provider"
   },
   "privacyInfoModal.collectProvider": {
-    "defaultMessage": "Penyedia dan model yang digunakan"
-  },
-  "privacyInfoModal.collectSession": {
-    "defaultMessage": "Metrik sesi (tempoh, kiraan interaksi, penggunaan token)"
+    "defaultMessage": "Information you explicitly share through session or recipe features"
   },
   "privacyInfoModal.collectVersion": {
-    "defaultMessage": "Versi goose dan kaedah pemasangan"
+    "defaultMessage": "Requests made by tools, extensions, and connected services"
   },
   "privacyInfoModal.description": {
-    "defaultMessage": "Data penggunaan tanpa nama membantu kami memahami cara goose digunakan dan mengenal pasti bidang untuk penambahbaikan."
+    "defaultMessage": "Obelus product analytics are disabled. The application does not send usage events to a project-owned analytics service."
   },
   "privacyInfoModal.neverCollect": {
-    "defaultMessage": "Kami tidak sekali-kali mengumpul perbualan, kod, argumen alat, mesej ralat atau sebarang data peribadi anda. Anda boleh menukar tetapan ini pada bila-bila masa dalam Tetapan."
+    "defaultMessage": "Review each provider and extension policy before working with sensitive material. Local model inference keeps model requests on this device, but tools may still use the network."
   },
   "privacyInfoModal.title": {
-    "defaultMessage": "Butiran privasi"
+    "defaultMessage": "Privacy in this build"
   },
   "privacyInfoModal.whatWeCollect": {
-    "defaultMessage": "Apa yang kami kumpul:"
+    "defaultMessage": "What may still leave this device:"
   },
   "progressiveMessageList.loadingMessages": {
     "defaultMessage": "Memuatkan mesej... ({renderedCount}/{totalCount})"
@@ -2664,7 +2694,7 @@
     "defaultMessage": "Gagal menyimpan gesaan"
   },
   "promptsSettings.promptEditingDescription": {
-    "defaultMessage": "Sesuaikan gesaan yang mentakrifkan tingkah laku goose dalam konteks yang berbeza. Gesaan ini menggunakan sintaks templat Jinja2. Berhati-hati semasa mengubah suai pemboleh ubah templat, kerana perubahan yang salah boleh merosakkan fungsi. Sila kongsikan sebarang penambahbaikan dengan komuniti."
+    "defaultMessage": "Customize the prompts that guide Obelus in different contexts. These prompts use Jinja2 templates; changing template variables incorrectly can break the corresponding workflow."
   },
   "promptsSettings.promptEditingTitle": {
     "defaultMessage": "Pengeditan Gesaan"
@@ -2739,7 +2769,7 @@
     "defaultMessage": "Pilih format API dan penyedia. Kami akan mengisi konfigurasi secara automatik untuk anda."
   },
   "providerConfigForm.browserWindowOpen": {
-    "defaultMessage": "Tetingkap pelayar akan dibuka untuk anda melengkapkan log masuk."
+    "defaultMessage": "Your browser will open so you can finish signing in with the provider."
   },
   "providerConfigForm.configuring": {
     "defaultMessage": "Mengkonfigurasi..."
@@ -2748,10 +2778,19 @@
     "defaultMessage": "Teruskan"
   },
   "providerConfigForm.deviceCodeFlowHint": {
-    "defaultMessage": "Tetingkap pelayar akan dibuka dan kod pengesahan akan disalin ke papan keratan anda. Tampalkannya dalam pelayar untuk melengkapkan log masuk."
+    "defaultMessage": "Your browser will open and the verification code will be copied to your clipboard. Paste the code there to finish signing in."
+  },
+  "providerConfigForm.fieldRequired": {
+    "defaultMessage": "{field} is required"
   },
   "providerConfigForm.noApiKey": {
     "defaultMessage": "Tidak mempunyai kunci API?"
+  },
+  "providerConfigForm.openExternalLink": {
+    "defaultMessage": "Open {url} in your browser"
+  },
+  "providerConfigForm.setupFailed": {
+    "defaultMessage": "Could not complete setup: {error}"
   },
   "providerConfigForm.signInWith": {
     "defaultMessage": "Log masuk dengan {providerName}"
@@ -2760,7 +2799,7 @@
     "defaultMessage": "Sedang log masuk..."
   },
   "providerConfigurationModal.addApiKeyDescription": {
-    "defaultMessage": "Tambah kunci API anda untuk penyedia ini bagi disepadukan ke dalam goose"
+    "defaultMessage": "Add provider credentials for use with Obelus"
   },
   "providerConfigurationModal.browserWindowHint": {
     "defaultMessage": "Tetingkap pelayar akan dibuka untuk anda melengkapkan log masuk."
@@ -2796,7 +2835,7 @@
     "defaultMessage": "Ralat"
   },
   "providerConfigurationModal.externalSetupIntro": {
-    "defaultMessage": "Penyedia ini dikonfigurasikan di luar goose. Ikuti langkah-langkah ini:"
+    "defaultMessage": "This provider is configured outside Obelus. Follow these steps:"
   },
   "providerConfigurationModal.goBack": {
     "defaultMessage": "Kembali"
@@ -2856,22 +2895,25 @@
     "defaultMessage": "Tambah penyedia tersuai"
   },
   "providerSelector.addCustomProviderTitle": {
-    "defaultMessage": "Tambah Penyedia Tersuai"
+    "defaultMessage": "Add a custom provider"
   },
   "providerSelector.connectProvider": {
-    "defaultMessage": "Sambung ke Penyedia"
+    "defaultMessage": "Connect a provider"
   },
   "providerSelector.connectProviderDescription": {
-    "defaultMessage": "Sambung OpenAI, Anthropic, Google, dll"
+    "defaultMessage": "Use OpenAI, Anthropic, Google, or another supported provider."
+  },
+  "providerSelector.connectionChoices": {
+    "defaultMessage": "Model connection"
   },
   "providerSelector.localModelDescription": {
-    "defaultMessage": "Muat turun model dan jalankan sepenuhnya pada mesin anda. Tiada kunci API, tiada akaun."
+    "defaultMessage": "Keep model requests on this device. No API key or account is required."
   },
   "providerSelector.selectProvider": {
     "defaultMessage": "Pilih penyedia"
   },
   "providerSelector.useLocalModel": {
-    "defaultMessage": "Guna Model Tempatan"
+    "defaultMessage": "Run a model locally"
   },
   "providerSettings.configurationSettings": {
     "defaultMessage": "Tetapan Konfigurasi Penyedia"
@@ -2880,7 +2922,7 @@
     "defaultMessage": "Memuatkan penyedia..."
   },
   "providerSettings.onboardingDescription": {
-    "defaultMessage": "Pilih penyedia model AI untuk bermula dengan goose. Anda perlu menggunakan kunci API yang dijana oleh setiap penyedia yang akan disulitkan dan disimpan secara setempat. Anda boleh menukar penyedia anda pada bila-bila masa dalam tetapan."
+    "defaultMessage": "Choose a model provider for Obelus. Provider credentials are encrypted and stored locally, and you can change providers at any time in settings."
   },
   "providerSettings.otherProviders": {
     "defaultMessage": "Penyedia lain"
@@ -3450,7 +3492,7 @@
     "defaultMessage": "Pautan dalam"
   },
   "scheduleModal.deepLinkPlaceholder": {
-    "defaultMessage": "Tampal pautan goose://recipe di sini..."
+    "defaultMessage": "Paste an obelus://recipe link here…"
   },
   "scheduleModal.editSchedule": {
     "defaultMessage": "Edit Jadual"
@@ -3462,7 +3504,7 @@
     "defaultMessage": "Gagal membaca fail yang dipilih."
   },
   "scheduleModal.invalidDeepLink": {
-    "defaultMessage": "Pautan dalam tidak sah. Sila gunakan pautan goose://recipe."
+    "defaultMessage": "Invalid deep link. Use an obelus://recipe link."
   },
   "scheduleModal.invalidFileType": {
     "defaultMessage": "Jenis fail tidak sah: Sila pilih fail YAML (.yaml atau .yml)"
@@ -3789,7 +3831,7 @@
     "defaultMessage": "Sejarah sembang"
   },
   "sessions.chatHistoryDesc": {
-    "defaultMessage": "Lihat dan cari perbualan lepas anda dengan Goose. {shortcut} untuk mencari."
+    "defaultMessage": "View and search your past Obelus conversations. {shortcut} to search."
   },
   "sessions.close": {
     "defaultMessage": "Tutup"
@@ -3825,10 +3867,10 @@
     "defaultMessage": "Import Pautan"
   },
   "sessions.importNostr.description": {
-    "defaultMessage": "Tampal pautan kongsi Nostr Goose untuk mengambil, menyahsulit, dan mengimport sesi."
+    "defaultMessage": "Paste an Obelus Nostr share link to fetch, decrypt, and import the session."
   },
   "sessions.importNostr.placeholder": {
-    "defaultMessage": "goose://sessions/nostr?nevent=...&key=..."
+    "defaultMessage": "obelus://sessions/nostr?nevent=...&key=..."
   },
   "sessions.importNostr.title": {
     "defaultMessage": "Import Sesi Nostr"
@@ -3900,7 +3942,7 @@
     "defaultMessage": "Penerangan sesi berjaya dikemas kini"
   },
   "settings.appearance.description": {
-    "defaultMessage": "Konfigurasikan cara goose muncul pada sistem anda"
+    "defaultMessage": "Choose how Obelus appears and behaves on this device"
   },
   "settings.appearance.title": {
     "defaultMessage": "Penampilan"
@@ -3912,28 +3954,28 @@
     "defaultMessage": "Tunjukkan harga model dan kos penggunaan"
   },
   "settings.costTracking.title": {
-    "defaultMessage": "Penjejakan Kos"
+    "defaultMessage": "Cost tracking"
   },
   "settings.dockIcon.description": {
-    "defaultMessage": "Tunjukkan goose dalam dok"
+    "defaultMessage": "Show Obelus in the Dock"
   },
   "settings.dockIcon.title": {
     "defaultMessage": "Ikon dok"
   },
   "settings.help.description": {
-    "defaultMessage": "Bantu kami menambah baik goose dengan melaporkan isu atau meminta ciri baharu"
+    "defaultMessage": "Report an issue or suggest a considered improvement to Obelus"
   },
   "settings.help.reportBug": {
-    "defaultMessage": "Laporkan Pepijat"
+    "defaultMessage": "Report an issue"
   },
   "settings.help.requestFeature": {
-    "defaultMessage": "Minta Ciri"
+    "defaultMessage": "Suggest a feature"
   },
   "settings.help.title": {
     "defaultMessage": "Bantuan & maklum balas"
   },
   "settings.language.description": {
-    "defaultMessage": "Pilih bahasa paparan untuk goose"
+    "defaultMessage": "Choose the display language for Obelus"
   },
   "settings.language.english": {
     "defaultMessage": "English"
@@ -3972,7 +4014,7 @@
     "defaultMessage": "Bahasa Sepanyol"
   },
   "settings.language.systemDefault": {
-    "defaultMessage": "Lalai Sistem"
+    "defaultMessage": "System default"
   },
   "settings.language.title": {
     "defaultMessage": "Bahasa"
@@ -3990,7 +4032,7 @@
     "defaultMessage": "Bahasa Cina (Tradisional)"
   },
   "settings.menuBarIcon.description": {
-    "defaultMessage": "Tunjukkan goose dalam bar menu"
+    "defaultMessage": "Show Obelus in the menu bar"
   },
   "settings.menuBarIcon.title": {
     "defaultMessage": "Ikon bar menu"
@@ -4005,19 +4047,19 @@
     "defaultMessage": "Untuk mendayakan pemberitahuan pada macOS:"
   },
   "settings.notifications.modal.macStep1": {
-    "defaultMessage": "Buka System Preferences"
+    "defaultMessage": "Open System Settings"
   },
   "settings.notifications.modal.macStep2": {
     "defaultMessage": "Klik pada Notifications"
   },
   "settings.notifications.modal.macStep3": {
-    "defaultMessage": "Cari dan pilih goose dalam senarai aplikasi"
+    "defaultMessage": "Find and select Obelus in the application list"
   },
   "settings.notifications.modal.macStep4": {
     "defaultMessage": "Dayakan pemberitahuan dan laraskan tetapan mengikut kehendak"
   },
   "settings.notifications.modal.title": {
-    "defaultMessage": "Cara Mendayakan Pemberitahuan"
+    "defaultMessage": "Enable notifications"
   },
   "settings.notifications.modal.winInstructions": {
     "defaultMessage": "Untuk mendayakan pemberitahuan pada Windows:"
@@ -4029,7 +4071,7 @@
     "defaultMessage": "Pergi ke System > Notifications"
   },
   "settings.notifications.modal.winStep3": {
-    "defaultMessage": "Cari dan pilih goose dalam senarai aplikasi"
+    "defaultMessage": "Find and select Obelus in the application list"
   },
   "settings.notifications.modal.winStep4": {
     "defaultMessage": "Hidupkan pemberitahuan dan laraskan tetapan mengikut kehendak"
@@ -4038,7 +4080,7 @@
     "defaultMessage": "Buka Tetapan"
   },
   "settings.notifications.task.description": {
-    "defaultMessage": "Beritahu apabila Goose menyelesaikan tugasan semasa tetingkap berada di latar belakang"
+    "defaultMessage": "Notify you when Obelus finishes a task in the background"
   },
   "settings.notifications.task.title": {
     "defaultMessage": "Pemberitahuan penyelesaian tugasan"
@@ -4047,25 +4089,31 @@
     "defaultMessage": "Pemberitahuan"
   },
   "settings.preventSleep.description": {
-    "defaultMessage": "Pastikan komputer anda kekal terjaga semasa goose sedang menjalankan tugasan (skrin masih boleh dikunci)"
+    "defaultMessage": "Keep your computer awake while Obelus is working; the screen can still lock"
   },
   "settings.preventSleep.title": {
-    "defaultMessage": "Cegah Tidur"
+    "defaultMessage": "Prevent sleep"
   },
   "settings.theme.description": {
-    "defaultMessage": "Sesuaikan rupa dan rasa goose"
+    "defaultMessage": "Choose a light, dark, or system appearance for Obelus"
   },
   "settings.theme.title": {
     "defaultMessage": "Tema"
   },
   "settings.updates.description": {
-    "defaultMessage": "Semak dan pasang kemas kini untuk memastikan goose berjalan dengan terbaik"
+    "defaultMessage": "Release channel status for this Obelus build"
   },
   "settings.updates.title": {
     "defaultMessage": "Kemas Kini"
   },
+  "settings.version.description": {
+    "defaultMessage": "Evidence-led local AI, built on the open-source Goose core."
+  },
+  "settings.version.label": {
+    "defaultMessage": "Version {version}"
+  },
   "settings.version.title": {
-    "defaultMessage": "Versi"
+    "defaultMessage": "About Obelus"
   },
   "settingsView.tabApp": {
     "defaultMessage": "Aplikasi"
@@ -4134,7 +4182,7 @@
     "defaultMessage": "Cari kemahiran..."
   },
   "skillsView.skillsDescription": {
-    "defaultMessage": "Lihat kemahiran terpasang yang meluaskan keupayaan Goose. {shortcut} untuk mencari."
+    "defaultMessage": "View installed skills that extend Obelus. {shortcut} to search."
   },
   "skillsView.skillsTitle": {
     "defaultMessage": "Kemahiran"
@@ -4319,9 +4367,6 @@
   "switchModelModal.providerPlaceholder": {
     "defaultMessage": "Penyedia, taip untuk mencari"
   },
-  "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Panduan permulaan pantas"
-  },
   "switchModelModal.recommended": {
     "defaultMessage": "Disyorkan"
   },
@@ -4376,44 +4421,17 @@
   "switchModelModal.useOtherProvider": {
     "defaultMessage": "Gunakan penyedia lain"
   },
-  "telemetryConsentPrompt.description": {
-    "defaultMessage": "Adakah anda ingin berkongsi data penggunaan tanpa nama untuk membantu menambah baik goose? Kami tidak pernah mengumpul perbualan, kod, atau data peribadi anda."
+  "telemetrySettings.analyticsOff": {
+    "defaultMessage": "Product analytics are off"
   },
-  "telemetryConsentPrompt.heading": {
-    "defaultMessage": "Bantu menambah baik goose"
-  },
-  "telemetryConsentPrompt.learnMore": {
-    "defaultMessage": "Ketahui lebih lanjut"
-  },
-  "telemetryConsentPrompt.optIn": {
-    "defaultMessage": "Ya, kongsi data penggunaan tanpa nama"
-  },
-  "telemetryConsentPrompt.optOut": {
-    "defaultMessage": "Tidak, terima kasih"
-  },
-  "telemetrySettings.configErrorTitle": {
-    "defaultMessage": "Ralat Konfigurasi"
+  "telemetrySettings.analyticsOffDescription": {
+    "defaultMessage": "Obelus does not send usage events to an analytics service. Providers, tools, and extensions may still process data you choose to share with them."
   },
   "telemetrySettings.description": {
-    "defaultMessage": "Kawal cara data anda digunakan"
-  },
-  "telemetrySettings.learnMore": {
-    "defaultMessage": "Ketahui lebih lanjut"
-  },
-  "telemetrySettings.loadError": {
-    "defaultMessage": "Gagal memuatkan tetapan telemetri."
+    "defaultMessage": "Clear boundaries for this Obelus build"
   },
   "telemetrySettings.title": {
     "defaultMessage": "Privasi"
-  },
-  "telemetrySettings.toggleDescription": {
-    "defaultMessage": "Bantu menambah baik goose dengan berkongsi statistik penggunaan tanpa nama."
-  },
-  "telemetrySettings.toggleLabel": {
-    "defaultMessage": "Data penggunaan tanpa nama"
-  },
-  "telemetrySettings.updateError": {
-    "defaultMessage": "Gagal mengemas kini tetapan telemetri."
   },
   "themeSelector.dark": {
     "defaultMessage": "Gelap"
@@ -4485,82 +4503,19 @@
     "defaultMessage": "Benarkan {toolName}?"
   },
   "toolConfirmation.gooseWouldLikeToCallWithName": {
-    "defaultMessage": "Goose ingin memanggil {toolName}. Benarkan?"
-  },
-  "updateSection.autoDownload": {
-    "defaultMessage": "Goose akan memuat turun kemas kini di latar belakang dan memasangnya pada kali seterusnya anda keluar atau mula semula."
-  },
-  "updateSection.autoDownloadDisabledByEnv": {
-    "defaultMessage": "Muat turun automatik dilumpuhkan melalui pemboleh ubah persekitaran GOOSE_DISABLE_AUTO_DOWNLOAD."
-  },
-  "updateSection.autoDownloadDisabledNote": {
-    "defaultMessage": "Muat turun automatik dilumpuhkan. Klik \"Muat Turun Sekarang\" untuk memuat turun secara manual."
-  },
-  "updateSection.autoInstallNote": {
-    "defaultMessage": "Tiada pemasangan manual diperlukan."
-  },
-  "updateSection.checkForUpdates": {
-    "defaultMessage": "Semak Kemas Kini"
-  },
-  "updateSection.checking": {
-    "defaultMessage": "Menyemak kemas kini..."
+    "defaultMessage": "Obelus would like to use {toolName}. Allow it?"
   },
   "updateSection.currentVersion": {
     "defaultMessage": "Versi semasa"
   },
-  "updateSection.disableAutoDownload": {
-    "defaultMessage": "Lumpuhkan muat turun kemas kini automatik"
+  "updateSection.updateChannelDescription": {
+    "defaultMessage": "This build is not connected to an Obelus release service. It will not check Goose or any other upstream channel for updates."
   },
-  "updateSection.disableAutoDownloadDesc": {
-    "defaultMessage": "Apabila didayakan, Goose akan memberitahu anda tentang versi baharu tetapi tidak akan memuat turunnya secara automatik."
+  "updateSection.updateChannelOff": {
+    "defaultMessage": "Automatic updates are off"
   },
-  "updateSection.downloadNow": {
-    "defaultMessage": "Muat Turun Sekarang"
-  },
-  "updateSection.downloadReady": {
-    "defaultMessage": "Kemas kini dimuat turun dan sedia untuk dipasang!"
-  },
-  "updateSection.downloadingProgress": {
-    "defaultMessage": "Memuat turun kemas kini... {percent}%"
-  },
-  "updateSection.downloadingUpdate": {
-    "defaultMessage": "Memuat turun kemas kini..."
-  },
-  "updateSection.installAndRestart": {
-    "defaultMessage": "Pasang & Mula Semula"
-  },
-  "updateSection.installNowHint": {
-    "defaultMessage": "Klik \"Pasang & Mula Semula\" untuk mengemas kini sekarang."
-  },
-  "updateSection.latestVersion": {
-    "defaultMessage": "Anda sedang menjalankan versi terkini!"
-  },
-  "updateSection.loading": {
-    "defaultMessage": "Memuatkan..."
-  },
-  "updateSection.manualInstallNote": {
-    "defaultMessage": "Selepas muat turun, anda perlu memasang kemas kini secara manual."
-  },
-  "updateSection.manualInstallRequired": {
-    "defaultMessage": "Pemasangan manual diperlukan untuk kaedah kemas kini ini."
-  },
-  "updateSection.readyInstallAuto": {
-    "defaultMessage": "✓ Kemas kini sudah sedia. Mula semula Goose untuk menyelesaikan pemasangannya, atau keluar apabila anda selesai."
-  },
-  "updateSection.readyInstallManual": {
-    "defaultMessage": "✓ Kemas kini sudah sedia! Klik \"Pasang & Mula Semula\" untuk arahan pemasangan."
-  },
-  "updateSection.upToDate": {
-    "defaultMessage": "(terkini)"
-  },
-  "updateSection.updateAvailable": {
-    "defaultMessage": "Kemas kini tersedia!"
-  },
-  "updateSection.versionAvailable": {
-    "defaultMessage": "→ {version} tersedia"
-  },
-  "updateSection.versionIsAvailable": {
-    "defaultMessage": "Versi {version} tersedia"
+  "updateSection.viewRepository": {
+    "defaultMessage": "View Obelus repository"
   },
   "userMessage.cancel": {
     "defaultMessage": "Batal"

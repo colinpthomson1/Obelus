@@ -1,0 +1,13 @@
+{
+  "type": "operational_failure",
+  "id": "provider-outage",
+  "error": {
+    "code": "provider_unavailable",
+    "message": "Private provider diagnostic that must not be returned",
+    "retryable": true
+  },
+  "expected": {
+    "operationalState": "research_unavailable",
+    "assessment": null
+  }
+}

@@ -26,7 +26,7 @@ impl goose_providers::base::ProviderDescriptor for CopilotAcpProvider {
         ProviderMetadata::new(
             COPILOT_ACP_PROVIDER_NAME,
             "GitHub Copilot CLI (ACP)",
-            "Use goose with your GitHub Copilot subscription via the Copilot CLI.",
+            "Use Obelus with your GitHub Copilot subscription via the Copilot CLI.",
             ACP_CURRENT_MODEL,
             vec![],
             COPILOT_ACP_DOC_URL,
@@ -35,8 +35,8 @@ impl goose_providers::base::ProviderDescriptor for CopilotAcpProvider {
         .with_setup_steps(vec![
             "Install the Copilot CLI: `npm install -g @github/copilot`",
             "Run `copilot login` to authenticate with your GitHub account",
-            "Add to your goose config file (`~/.config/goose/config.yaml` on macOS/Linux):\n  GOOSE_PROVIDER: copilot-acp\n  GOOSE_MODEL: current\n  copilot-acp_configured: true",
-            "Restart goose for changes to take effect",
+            "Add these compatibility settings to `~/.config/goose/config.yaml` on macOS/Linux:\n  GOOSE_PROVIDER: copilot-acp\n  GOOSE_MODEL: current\n  copilot-acp_configured: true",
+            "Restart Obelus for changes to take effect",
         ])
     }
 }

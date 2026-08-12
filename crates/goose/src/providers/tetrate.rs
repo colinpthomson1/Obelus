@@ -58,8 +58,8 @@ impl TetrateProvider {
         let auth = AuthMethod::BearerToken(api_key);
         let api_client = ApiClient::new_with_tls(host, auth, tls_config)?
             .with_request_builder(crate::session_context::session_id_request_builder())
-            .with_header("HTTP-Referer", "https://goose-docs.ai")?
-            .with_header("X-Title", "goose")?;
+            .with_header("HTTP-Referer", "https://github.com/colinpthomson1/Obelus")?
+            .with_header("X-Title", "Obelus")?;
 
         Ok(Self {
             api_client,

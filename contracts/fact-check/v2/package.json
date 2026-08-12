@@ -1,0 +1,22 @@
+{
+  "name": "@obelus/fact-check-contract",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Public JSON Schema and conformance fixtures for the Obelus fact-check contract V2",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "files": [
+    "README.md",
+    "assessment.schema.json",
+    "fact-check-packet.schema.json",
+    "fixtures/*.json"
+  ],
+  "exports": {
+    "./assessment": "./assessment.schema.json",
+    "./assessment.schema.json": "./assessment.schema.json",
+    "./fact-check-packet": "./fact-check-packet.schema.json",
+    "./fact-check-packet.schema.json": "./fact-check-packet.schema.json",
+    "./fixtures/*": "./fixtures/*.json",
+    "./package.json": "./package.json"
+  }
+}

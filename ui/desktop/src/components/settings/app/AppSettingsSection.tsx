@@ -13,11 +13,9 @@ import {
 } from '../../ui/dropdown-menu';
 import UpdateSection from './UpdateSection';
 
-import { COST_TRACKING_ENABLED, UPDATES_ENABLED } from '../../../updates';
+import { COST_TRACKING_ENABLED } from '../../../updates';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui/card';
 import ThemeSelector from '../../GooseSidebar/ThemeSelector';
-import BlockLogoBlack from './icons/block-lockup_black.png';
-import BlockLogoWhite from './icons/block-lockup_white.png';
 import TelemetrySettings from './TelemetrySettings';
 import { trackSettingToggled } from '../../../utils/analytics';
 import type { LanguageSetting } from '../../../utils/settings';
@@ -26,7 +24,7 @@ const i18n = defineMessages({
   appearanceTitle: { id: 'settings.appearance.title', defaultMessage: 'Appearance' },
   appearanceDesc: {
     id: 'settings.appearance.description',
-    defaultMessage: 'Configure how goose appears on your system',
+    defaultMessage: 'Choose how Obelus appears and behaves on this device',
   },
   notifications: { id: 'settings.notifications.title', defaultMessage: 'Notifications' },
   notificationsDesc: {
@@ -41,22 +39,21 @@ const i18n = defineMessages({
   },
   taskNotificationsDesc: {
     id: 'settings.notifications.task.description',
-    defaultMessage: 'Notify when Goose finishes a task while the window is in the background',
+    defaultMessage: 'Notify you when Obelus finishes a task in the background',
   },
   menuBarIcon: { id: 'settings.menuBarIcon.title', defaultMessage: 'Menu bar icon' },
   menuBarIconDesc: {
     id: 'settings.menuBarIcon.description',
-    defaultMessage: 'Show goose in the menu bar',
+    defaultMessage: 'Show Obelus in the menu bar',
   },
   dockIcon: { id: 'settings.dockIcon.title', defaultMessage: 'Dock icon' },
-  dockIconDesc: { id: 'settings.dockIcon.description', defaultMessage: 'Show goose in the dock' },
-  preventSleep: { id: 'settings.preventSleep.title', defaultMessage: 'Prevent Sleep' },
+  dockIconDesc: { id: 'settings.dockIcon.description', defaultMessage: 'Show Obelus in the Dock' },
+  preventSleep: { id: 'settings.preventSleep.title', defaultMessage: 'Prevent sleep' },
   preventSleepDesc: {
     id: 'settings.preventSleep.description',
-    defaultMessage:
-      'Keep your computer awake while goose is running a task (screen can still lock)',
+    defaultMessage: 'Keep your computer awake while Obelus is working; the screen can still lock',
   },
-  costTracking: { id: 'settings.costTracking.title', defaultMessage: 'Cost Tracking' },
+  costTracking: { id: 'settings.costTracking.title', defaultMessage: 'Cost tracking' },
   costTrackingDesc: {
     id: 'settings.costTracking.description',
     defaultMessage: 'Show model pricing and usage costs',
@@ -64,14 +61,14 @@ const i18n = defineMessages({
   themeTitle: { id: 'settings.theme.title', defaultMessage: 'Theme' },
   themeDesc: {
     id: 'settings.theme.description',
-    defaultMessage: 'Customize the look and feel of goose',
+    defaultMessage: 'Choose a light, dark, or system appearance for Obelus',
   },
   languageTitle: { id: 'settings.language.title', defaultMessage: 'Language' },
   languageDesc: {
     id: 'settings.language.description',
-    defaultMessage: 'Choose the display language for goose',
+    defaultMessage: 'Choose the display language for Obelus',
   },
-  languageSystem: { id: 'settings.language.systemDefault', defaultMessage: 'System Default' },
+  languageSystem: { id: 'settings.language.systemDefault', defaultMessage: 'System default' },
   languageEnglish: { id: 'settings.language.english', defaultMessage: 'English' },
   languageChineseSimplified: {
     id: 'settings.language.zhCN',
@@ -97,19 +94,27 @@ const i18n = defineMessages({
   helpTitle: { id: 'settings.help.title', defaultMessage: 'Help & feedback' },
   helpDesc: {
     id: 'settings.help.description',
-    defaultMessage: 'Help us improve goose by reporting issues or requesting new features',
+    defaultMessage: 'Report an issue or suggest a considered improvement to Obelus',
   },
-  reportBug: { id: 'settings.help.reportBug', defaultMessage: 'Report a Bug' },
-  requestFeature: { id: 'settings.help.requestFeature', defaultMessage: 'Request a Feature' },
-  versionTitle: { id: 'settings.version.title', defaultMessage: 'Version' },
+  reportBug: { id: 'settings.help.reportBug', defaultMessage: 'Report an issue' },
+  requestFeature: { id: 'settings.help.requestFeature', defaultMessage: 'Suggest a feature' },
+  versionTitle: { id: 'settings.version.title', defaultMessage: 'About Obelus' },
+  versionDescription: {
+    id: 'settings.version.description',
+    defaultMessage: 'Evidence-led local AI, built on the open-source Goose core.',
+  },
+  versionLabel: {
+    id: 'settings.version.label',
+    defaultMessage: 'Version {version}',
+  },
   updatesTitle: { id: 'settings.updates.title', defaultMessage: 'Updates' },
   updatesDesc: {
     id: 'settings.updates.description',
-    defaultMessage: 'Check for and install updates to keep goose running at its best',
+    defaultMessage: 'Release channel status for this Obelus build',
   },
   notificationsModalTitle: {
     id: 'settings.notifications.modal.title',
-    defaultMessage: 'How to Enable Notifications',
+    defaultMessage: 'Enable notifications',
   },
   notificationsMacInstructions: {
     id: 'settings.notifications.modal.macInstructions',
@@ -117,7 +122,7 @@ const i18n = defineMessages({
   },
   notificationsMacStep1: {
     id: 'settings.notifications.modal.macStep1',
-    defaultMessage: 'Open System Preferences',
+    defaultMessage: 'Open System Settings',
   },
   notificationsMacStep2: {
     id: 'settings.notifications.modal.macStep2',
@@ -125,7 +130,7 @@ const i18n = defineMessages({
   },
   notificationsMacStep3: {
     id: 'settings.notifications.modal.macStep3',
-    defaultMessage: 'Find and select goose in the application list',
+    defaultMessage: 'Find and select Obelus in the application list',
   },
   notificationsMacStep4: {
     id: 'settings.notifications.modal.macStep4',
@@ -145,7 +150,7 @@ const i18n = defineMessages({
   },
   notificationsWinStep3: {
     id: 'settings.notifications.modal.winStep3',
-    defaultMessage: 'Find and select goose in the application list',
+    defaultMessage: 'Find and select Obelus in the application list',
   },
   notificationsWinStep4: {
     id: 'settings.notifications.modal.winStep4',
@@ -188,28 +193,10 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showPricing, setShowPricing] = useState(true);
   const [language, setLanguage] = useState<LanguageSetting>('system');
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const updateSectionRef = useRef<HTMLDivElement>(null);
-  const shouldShowUpdates = !window.appConfig.get('GOOSE_VERSION');
 
   useEffect(() => {
     setIsMacOS(window.electron.platform === 'darwin');
-  }, []);
-
-  useEffect(() => {
-    const updateTheme = () => {
-      setIsDarkMode(document.documentElement.classList.contains('dark'));
-    };
-
-    updateTheme();
-
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -346,12 +333,13 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
               <p className="text-xs text-text-secondary max-w-md mt-[2px]">
                 {intl.formatMessage(i18n.notificationsDesc, {
                   link: (
-                    <span
-                      className="underline hover:cursor-pointer"
+                    <button
+                      type="button"
+                      className="underline"
                       onClick={() => setShowNotificationModal(true)}
                     >
                       {intl.formatMessage(i18n.configGuide)}
-                    </span>
+                    </button>
                   ),
                 })}
               </p>
@@ -389,6 +377,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
                 checked={notificationsEnabled}
                 onCheckedChange={handleNotificationsToggle}
                 variant="mono"
+                aria-label={intl.formatMessage(i18n.taskNotifications)}
               />
             </div>
           </div>
@@ -405,6 +394,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
                 checked={menuBarIconEnabled}
                 onCheckedChange={handleMenuBarIconToggle}
                 variant="mono"
+                aria-label={intl.formatMessage(i18n.menuBarIcon)}
               />
             </div>
           </div>
@@ -423,6 +413,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
                   checked={dockIconEnabled}
                   onCheckedChange={handleDockIconToggle}
                   variant="mono"
+                  aria-label={intl.formatMessage(i18n.dockIcon)}
                 />
               </div>
             </div>
@@ -441,6 +432,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
                 checked={wakelockEnabled}
                 onCheckedChange={handleWakelockToggle}
                 variant="mono"
+                aria-label={intl.formatMessage(i18n.preventSleep)}
               />
             </div>
           </div>
@@ -459,6 +451,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
                   checked={showPricing}
                   onCheckedChange={handleShowPricingToggle}
                   variant="mono"
+                  aria-label={intl.formatMessage(i18n.costTracking)}
                 />
               </div>
             </div>
@@ -483,7 +476,10 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
         </CardHeader>
         <CardContent className="pt-4 px-4">
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex w-full max-w-[260px] items-center justify-between gap-2 rounded-md border border-border-primary bg-background-primary px-3 py-2 text-sm text-text-primary transition-colors hover:border-border-primary">
+            <DropdownMenuTrigger
+              aria-label={intl.formatMessage(i18n.languageTitle)}
+              className="flex w-full max-w-[260px] items-center justify-between gap-2 rounded-md border border-border-primary bg-background-primary px-3 py-2 text-sm text-text-primary transition-colors hover:border-border-primary"
+            >
               <span className="truncate">{intl.formatMessage(i18n[selectedLanguage.message])}</span>
               <ChevronDown className="h-4 w-4 shrink-0" />
             </DropdownMenuTrigger>
@@ -510,9 +506,8 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
           <div className="flex space-x-4">
             <Button
               onClick={() => {
-                window.open(
-                  'https://github.com/aaif-goose/goose/issues/new?template=bug_report.md',
-                  '_blank'
+                window.electron.openExternal(
+                  'https://github.com/colinpthomson1/Obelus/issues/new?template=bug_report.md'
                 );
               }}
               variant="secondary"
@@ -522,9 +517,8 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
             </Button>
             <Button
               onClick={() => {
-                window.open(
-                  'https://github.com/aaif-goose/goose/issues/new?template=feature_request.md',
-                  '_blank'
+                window.electron.openExternal(
+                  'https://github.com/colinpthomson1/Obelus/issues/new?template=feature_request.md'
                 );
               }}
               variant="secondary"
@@ -536,41 +530,33 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
         </CardContent>
       </Card>
 
-      {/* Version Section - only show if GOOSE_VERSION is set */}
-      {!shouldShowUpdates && (
+      <Card className="rounded-lg">
+        <CardHeader className="pb-0">
+          <CardTitle className="mb-1">{intl.formatMessage(i18n.versionTitle)}</CardTitle>
+          <CardDescription>{intl.formatMessage(i18n.versionDescription)}</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-4 px-4">
+          <p className="font-mono text-sm tabular-nums text-text-primary">
+            {intl.formatMessage(i18n.versionLabel, {
+              version: String(
+                window.appConfig.get('GOOSE_VERSION') || window.electron.getVersion()
+              ),
+            })}
+          </p>
+        </CardContent>
+      </Card>
+
+      <div ref={updateSectionRef}>
         <Card className="rounded-lg">
           <CardHeader className="pb-0">
-            <CardTitle className="mb-1">{intl.formatMessage(i18n.versionTitle)}</CardTitle>
+            <CardTitle className="mb-1">{intl.formatMessage(i18n.updatesTitle)}</CardTitle>
+            <CardDescription>{intl.formatMessage(i18n.updatesDesc)}</CardDescription>
           </CardHeader>
           <CardContent className="pt-4 px-4">
-            <div className="flex items-center gap-3">
-              <img
-                src={isDarkMode ? BlockLogoWhite : BlockLogoBlack}
-                alt="Block Logo" // TODO: replace with AAIF logo asset
-                className="h-8 w-auto"
-              />
-              <span className="text-2xl font-mono text-black dark:text-white">
-                {String(window.appConfig.get('GOOSE_VERSION') || 'Development')}
-              </span>
-            </div>
+            <UpdateSection />
           </CardContent>
         </Card>
-      )}
-
-      {/* Update Section - only show if GOOSE_VERSION is NOT set */}
-      {UPDATES_ENABLED && shouldShowUpdates && (
-        <div ref={updateSectionRef}>
-          <Card className="rounded-lg">
-            <CardHeader className="pb-0">
-              <CardTitle className="mb-1">{intl.formatMessage(i18n.updatesTitle)}</CardTitle>
-              <CardDescription>{intl.formatMessage(i18n.updatesDesc)}</CardDescription>
-            </CardHeader>
-            <CardContent className="px-4">
-              <UpdateSection />
-            </CardContent>
-          </Card>
-        </div>
-      )}
+      </div>
 
       {/* Notification Instructions Modal */}
       <Dialog

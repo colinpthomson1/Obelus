@@ -4,7 +4,6 @@ import type { ExtensionConfig } from '../../types/extensions';
 import { MainPanelLayout } from '../Layout/MainPanelLayout';
 import { Button } from '../ui/button';
 import { Plus } from 'lucide-react';
-import { GPSIcon } from '../ui/icons';
 import { useState, useEffect } from 'react';
 import kebabCase from 'lodash/kebabCase';
 import ExtensionModal from '../settings/extensions/modal/ExtensionModal';
@@ -27,7 +26,7 @@ const i18n = defineMessages({
   description: {
     id: 'extensionsView.description',
     defaultMessage:
-      "These extensions use the Model Context Protocol (MCP). They can expand Goose's capabilities using three main components: Prompts, Resources, and Tools. {searchShortcut} to search.",
+      'Extensions use the Model Context Protocol (MCP) to add prompts, resources, and tools to Obelus. {searchShortcut} to search.',
   },
   defaultNote: {
     id: 'extensionsView.defaultNote',
@@ -37,10 +36,6 @@ const i18n = defineMessages({
   addCustomExtension: {
     id: 'extensionsView.addCustomExtension',
     defaultMessage: 'Add custom extension',
-  },
-  browseExtensions: {
-    id: 'extensionsView.browseExtensions',
-    defaultMessage: 'Browse extensions',
   },
   searchPlaceholder: {
     id: 'extensionsView.searchPlaceholder',
@@ -142,7 +137,6 @@ export default function ExtensionsView({
               {intl.formatMessage(i18n.defaultNote)}
             </p>
 
-            {/* Action Buttons */}
             <div className="flex gap-4 mb-8">
               <Button
                 className="flex items-center gap-2 justify-center"
@@ -151,14 +145,6 @@ export default function ExtensionsView({
               >
                 <Plus className="h-4 w-4" />
                 {intl.formatMessage(i18n.addCustomExtension)}
-              </Button>
-              <Button
-                className="flex items-center gap-2 justify-center"
-                variant="secondary"
-                onClick={() => window.open('https://goose-docs.ai/v1/extensions/', '_blank')}
-              >
-                <GPSIcon size={12} />
-                {intl.formatMessage(i18n.browseExtensions)}
               </Button>
             </div>
           </div>

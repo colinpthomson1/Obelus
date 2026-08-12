@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { Bot, ExternalLink } from 'lucide-react';
+import { Bot } from 'lucide-react';
 import { defineMessages, useIntl } from '../../../../i18n';
 
 import {
@@ -11,7 +11,6 @@ import {
   DialogTitle,
 } from '../../../ui/dialog';
 import { Button } from '../../../ui/button';
-import { QUICKSTART_GUIDE_URL } from '../../providers/modal/constants';
 import { Input } from '../../../ui/input';
 import { Select } from '../../../ui/Select';
 import {
@@ -167,10 +166,6 @@ const i18n = defineMessages({
   thinkingBudget: {
     id: 'switchModelModal.thinkingBudget',
     defaultMessage: 'Thinking Budget (tokens)',
-  },
-  quickStartGuide: {
-    id: 'switchModelModal.quickStartGuide',
-    defaultMessage: 'Quick start guide',
   },
   cancel: {
     id: 'switchModelModal.cancel',
@@ -968,15 +963,6 @@ export const SwitchModelModal = ({
         </div>
 
         <DialogFooter className="pt-4 flex-col sm:flex-row gap-3">
-          <a
-            href={QUICKSTART_GUIDE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-text-secondary hover:text-text-primary text-sm mr-auto"
-          >
-            <ExternalLink size={14} className="mr-1" />
-            {intl.formatMessage(i18n.quickStartGuide)}
-          </a>
           <div className="flex gap-2">
             <Button variant="outline" onClick={handleClose} type="button">
               {intl.formatMessage(i18n.cancel)}

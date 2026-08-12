@@ -283,7 +283,8 @@ impl GooseAcpAgent {
 }
 
 fn is_nostr_session_link(input: &str) -> bool {
-    input.trim_start().starts_with("goose://sessions/nostr")
+    let input = input.trim_start();
+    input.starts_with("obelus://sessions/nostr") || input.starts_with("goose://sessions/nostr")
 }
 
 #[cfg(feature = "nostr")]

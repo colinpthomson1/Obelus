@@ -90,7 +90,7 @@ pub fn edit_conversation(conversation: &Conversation) -> Result<Conversation> {
 
 /// Build the markdown template content for the editor prompt.
 fn build_template(messages: &[&str], prefill: Option<&str>) -> String {
-    let mut content = String::from("# Goose Prompt Editor\n\n");
+    let mut content = String::from("# Obelus Prompt Editor\n\n");
 
     content.push_str("# Your prompt:\n\n");
     if let Some(text) = prefill {
@@ -114,7 +114,7 @@ fn build_template(messages: &[&str], prefill: Option<&str>) -> String {
 /// Create temporary markdown file with conversation history and optional prefill text
 fn create_temp_file(messages: &[&str], prefill: Option<&str>) -> Result<NamedTempFile> {
     let temp_file = Builder::new()
-        .prefix("goose_prompt_")
+        .prefix("obelus_prompt_")
         .suffix(".md")
         .tempfile()?;
 
@@ -197,7 +197,7 @@ pub fn get_editor_input(
     let temp_file = create_temp_file(messages, prefill)?;
     let temp_path = temp_file.path().to_path_buf();
 
-    let symlink_path = PathBuf::from(".goose_prompt_temp.md");
+    let symlink_path = PathBuf::from(".obelus_prompt_temp.md");
 
     if symlink_path.exists() {
         std::fs::remove_file(&symlink_path)?;
@@ -315,11 +315,11 @@ This is the user's input
         let path = temp_file.path();
 
         assert!(path.exists());
-        assert!(path.to_str().unwrap().contains("goose_prompt_"));
+        assert!(path.to_str().unwrap().contains("obelus_prompt_"));
         assert!(path.to_str().unwrap().ends_with(".md"));
 
         let content = fs::read_to_string(path).unwrap();
-        assert!(content.contains("# Goose Prompt Editor"));
+        assert!(content.contains("# Obelus Prompt Editor"));
         assert!(content.contains("## User: Hello"));
         assert!(content.contains("## Assistant: Hi there!"));
         assert!(content.contains("# Your prompt:"));
@@ -559,7 +559,7 @@ with multiple lines.
     #[test]
     fn test_build_template_no_prefill_no_messages() {
         let content = build_template(&[], None);
-        assert_eq!(content, "# Goose Prompt Editor\n\n# Your prompt:\n\n");
+        assert_eq!(content, "# Obelus Prompt Editor\n\n# Your prompt:\n\n");
     }
 
     #[test]

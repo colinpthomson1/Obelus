@@ -1,8 +1,9 @@
 [Desktop Entry]
-Name=Goose
-Exec=/usr/lib/goose/Goose %U
-Icon=/usr/share/pixmaps/goose.png
+Name=Obelus
+Comment=Local-first desktop AI agent
+Exec=/usr/lib/obelus/Obelus %U
+Icon=/usr/share/pixmaps/obelus.png
 Terminal=false
 Type=Application
-Categories=Development;
-MimeType=x-scheme-handler/goose;
+Categories=Utility;Development;
+MimeType=x-scheme-handler/obelus;

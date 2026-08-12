@@ -1,6 +1,7 @@
 # GitHub Copilot Code Review Instructions
 
 ## Review Philosophy
+
 - Only comment when you have HIGH CONFIDENCE (>80%) that an issue exists
 - Be concise: one sentence per comment when possible
 - Focus on actionable feedback, not observations
@@ -9,6 +10,7 @@
 ## Priority Areas (Review These)
 
 ### Security & Safety
+
 - Unsafe code blocks without justification
 - Command injection risks (shell commands, user input)
 - Path traversal vulnerabilities
@@ -17,6 +19,7 @@
 - Improper error handling that could leak sensitive info
 
 ### Correctness Issues
+
 - Logic errors that could cause panics or incorrect behavior
 - Race conditions in async code
 - Resource leaks (files, connections, memory)
@@ -29,13 +32,11 @@
 - Unnecessary comments that just restate what the code already shows (remove them)
 
 ### Architecture & Patterns
+
 - Code that violates existing patterns in the codebase
 - Missing error handling (should use `anyhow::Result`)
 - Async/await misuse or blocking operations in async contexts
 - Improper trait implementations
-
-### No Doc Updates with Code Changes
-- PRs with code changes shouldn't update `/documentation` - docs deploy on merge, code on release. Use `unlisted: true` or remove/hide docs.
 
 ## Project-Specific Context
 
@@ -44,7 +45,6 @@
 - Error handling: Use `anyhow::Result`, not `unwrap()` in production code
 - Async runtime: tokio
 - MCP protocol implementations require extra scrutiny
-- Naming convention: In `documentation/docs` and `documentation/blog`, always refer to the project as "goose" (lowercase), never "Goose" (even at the start of sentences)
 
 ## CI Pipeline Context
 
@@ -53,16 +53,19 @@
 ### What Our CI Checks (`.github/workflows/ci.yml`)
 
 **Rust checks:**
+
 - `cargo fmt --check` - Code formatting (rustfmt)
 - `cargo test --jobs 2` - All tests
 - `cargo clippy --all-targets -- -D warnings` - Linting (clippy)
 
 **Desktop app checks:**
+
 - `pnpm install --frozen-lockfile` - Fresh dependency install (in `ui/desktop/`)
 - `pnpm run lint:check` - ESLint + Prettier
 - `pnpm run test:run` - Vitest tests
 
 **Setup steps CI performs:**
+
 - Installs system dependencies (libdbus, gnome-keyring, libxcb)
 - Activates hermit environment (`source bin/activate-hermit`)
 - Caches Cargo and pnpm dependencies
@@ -73,6 +76,7 @@
 ## Skip These (Low Value)
 
 Do not comment on:
+
 - **Style/formatting** - CI handles this (rustfmt, prettier)
 - **Clippy warnings** - CI handles this (clippy)
 - **Test failures** - CI handles this (full test suite)
@@ -87,11 +91,13 @@ Do not comment on:
 ## Response Format
 
 When you identify an issue:
+
 1. **State the problem** (1 sentence)
 2. **Why it matters** (1 sentence, only if not obvious)
 3. **Suggested fix** (code snippet or specific action)
 
 Example:
+
 ```
 This could panic if the vector is empty. Consider using `.get(0)` or add a length check.
 ```

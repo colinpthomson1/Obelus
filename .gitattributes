@@ -1,1 +1,4 @@
 crates/goose/src/agents/snapshots/*.snap linguist-language=Text
+
+# Preserve the verbatim licenses distributed with the bundled runtime fonts.
+/ui/desktop/src/assets/brand/fonts/*-OFL.txt -text -whitespace

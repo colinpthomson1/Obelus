@@ -1,0 +1,58 @@
+{
+  "type": "assessment",
+  "id": "no-addressing-evidence",
+  "claim": {
+    "exactQuote": "The proposed material lasts exactly 80 years.",
+    "normalizedClaim": "The proposed material lasts exactly 80 years."
+  },
+  "stage": "preliminary",
+  "inventory": [
+    {
+      "citationId": "src_1",
+      "url": "https://example.org/materials-overview",
+      "canonicalUrl": "https://example.org/materials-overview",
+      "publisher": "example.org",
+      "title": "Materials overview",
+      "publicationDate": null,
+      "accessedAt": "2026-08-11T12:00:00.000Z",
+      "excerpt": "The overview discusses categories of materials but gives no durability measurement.",
+      "excerptType": "search_snippet",
+      "sourceType": "unknown",
+      "retrievalStage": "preliminary"
+    }
+  ],
+  "draft": {
+    "confidence": "medium",
+    "conclusion": "The retrieved material does not address the claimed 80-year lifetime.",
+    "conclusionCitationIds": [],
+    "statements": [],
+    "supports": [],
+    "contradictions": [],
+    "caveats": [],
+    "limitations": [
+      {
+        "text": "The retrieved overview provides no durability measurement.",
+        "citationIds": ["src_1"]
+      }
+    ],
+    "sources": [
+      {
+        "citationId": "src_1",
+        "stance": "neutral",
+        "qualityScore": 0.4,
+        "qualityRationale": "The source is topically related but does not address the proposition.",
+        "authority": "unknown",
+        "directness": "indirect",
+        "addressesClaim": false,
+        "timeScopeMatch": true
+      }
+    ],
+    "changeExplanation": null
+  },
+  "expected": {
+    "resolution": "unresolved",
+    "evidenceRelation": "none",
+    "finding": "unverified",
+    "confidence": "low"
+  }
+}

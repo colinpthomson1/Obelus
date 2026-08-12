@@ -123,7 +123,7 @@ impl GatewayHandler {
                         .send_message(
                             &message.user,
                             OutgoingMessage::Text {
-                                body: "Welcome! Enter your pairing code to connect to goose."
+                                body: "Welcome! Enter your pairing code to connect to Obelus."
                                     .into(),
                             },
                         )
@@ -314,7 +314,7 @@ impl GatewayHandler {
             .send_message(
                 user,
                 OutgoingMessage::Text {
-                    body: "Paired! You can now chat with goose.".into(),
+                    body: "Paired! You can now chat with Obelus.".into(),
                 },
             )
             .await?;

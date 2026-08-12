@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ inputs.ref }}
 
@@ -106,8 +106,16 @@ jobs:
             git \
             tar
 
+      - name: Set up pinned Rust toolchain (manylinux container)
+        if: matrix.container != ''
+        uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          toolchain: 1.96.1
+          target: ${{ matrix.architecture }}-${{ matrix.target-suffix }}
+          cache: false
+
       - name: Cache Cargo artifacts
-        uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4  # v2.9.1
+        uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
         with:
           key: ${{ matrix.architecture }}-${{ matrix.target-suffix }}-${{ matrix.build-on }}-${{ matrix.container || 'native' }}
 
@@ -124,15 +132,15 @@ jobs:
           echo "Rust toolchain info:"
           rustup show
 
-          FEATURE_ARGS=()
+          FEATURE_ARGS=(--features disable-update)
           if [ "${{ matrix.variant }}" = "vulkan" ]; then
-            FEATURE_ARGS=(--features vulkan)
+            FEATURE_ARGS=(--features vulkan,disable-update)
           fi
 
           if [ "${{ matrix.variant }}" = "musl" ]; then
             cargo build --release --target ${TARGET} -p goose-cli --bin goose \
               --no-default-features \
-              --features portable-default
+              --features portable-default,disable-update
           else
             cargo build --release --target ${TARGET} -p goose-cli --bin goose "${FEATURE_ARGS[@]}"
           fi
@@ -142,21 +150,11 @@ jobs:
         env:
           RUST_BACKTRACE: 1
         run: |
-          # Hermit's tool cache is host-runner-scoped; inside the container we
-          # bootstrap rustup directly and let rust-toolchain.toml pin the channel.
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
-            | sh -s -- -y --default-toolchain none --profile minimal --no-modify-path
-          export PATH="$HOME/.cargo/bin:$PATH"
           TARGET="${{ matrix.architecture }}-${{ matrix.target-suffix }}"
-          RUST_CHANNEL=$(grep '^channel' rust-toolchain.toml | cut -d'"' -f2)
-          if [ -z "$RUST_CHANNEL" ]; then
-            echo "Could not parse channel from rust-toolchain.toml" >&2
-            exit 1
-          fi
-          rustup toolchain install "$RUST_CHANNEL" --profile minimal \
-            --component rustc,cargo --target "$TARGET"
+          rustup target add "$TARGET"
           rustup show
-          cargo build --release --target "$TARGET" -p goose-cli --bin goose
+          cargo build --release --target "$TARGET" -p goose-cli --bin goose \
+            --features disable-update
 
       - name: Package CLI
         run: |
@@ -183,7 +181,7 @@ jobs:
           echo "ARTIFACT_GZ=target/${TARGET}/release/goose-${TARGET}${VARIANT_SUFFIX}.tar.gz" >> $GITHUB_ENV
 
       - name: Upload CLI artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: goose-${{ matrix.architecture }}-${{ matrix.target-suffix }}${{ matrix.variant != 'standard' && matrix.variant != 'musl' && format('-{0}', matrix.variant) || '' }}
           path: |

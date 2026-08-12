@@ -279,7 +279,7 @@ pub async fn handle_session_export(
     }
     #[cfg(not(feature = "nostr"))]
     if nostr {
-        return Err(anyhow::anyhow!("goose was not built with nostr support"));
+        return Err(anyhow::anyhow!("Obelus was not built with Nostr support"));
     }
 
     if let Some(output_path) = output_path {
@@ -295,13 +295,16 @@ pub async fn handle_session_export(
 }
 
 pub async fn handle_session_import(input: String, nostr: bool) -> Result<()> {
-    let json = if nostr || input.starts_with("goose://sessions/nostr") {
+    let json = if nostr
+        || input.starts_with("obelus://sessions/nostr")
+        || input.starts_with("goose://sessions/nostr")
+    {
         #[cfg(feature = "nostr")]
         {
             nostr_share::import_session_json_from_deeplink(&input).await?
         }
         #[cfg(not(feature = "nostr"))]
-        return Err(anyhow::anyhow!("goose was not built with nostr support"));
+        return Err(anyhow::anyhow!("Obelus was not built with Nostr support"));
     } else {
         fs::read_to_string(&input)
             .with_context(|| format!("Failed to read session import file: {input}"))?

@@ -11,21 +11,25 @@ import { defineMessages, useIntl } from '../../i18n';
 import { useFeatures } from '../../contexts/FeaturesContext';
 
 const i18n = defineMessages({
+  connectionChoices: {
+    id: 'providerSelector.connectionChoices',
+    defaultMessage: 'Model connection',
+  },
   useLocalModel: {
     id: 'providerSelector.useLocalModel',
-    defaultMessage: 'Use a Local Model',
+    defaultMessage: 'Run a model locally',
   },
   localModelDescription: {
     id: 'providerSelector.localModelDescription',
-    defaultMessage: 'Download a model and run it on this device. No API key or account needed.',
+    defaultMessage: 'Keep model requests on this device. No API key or account is required.',
   },
   connectProvider: {
     id: 'providerSelector.connectProvider',
-    defaultMessage: 'Connect to a Provider',
+    defaultMessage: 'Connect a provider',
   },
   connectProviderDescription: {
     id: 'providerSelector.connectProviderDescription',
-    defaultMessage: 'Connect OpenAI, Anthropic, Google, etc',
+    defaultMessage: 'Use OpenAI, Anthropic, Google, or another supported provider.',
   },
   selectProvider: {
     id: 'providerSelector.selectProvider',
@@ -37,7 +41,7 @@ const i18n = defineMessages({
   },
   addCustomProviderTitle: {
     id: 'providerSelector.addCustomProviderTitle',
-    defaultMessage: 'Add Custom Provider',
+    defaultMessage: 'Add a custom provider',
   },
 });
 
@@ -131,52 +135,67 @@ export default function ProviderSelector({
 
   return (
     <div>
-      <div className={`grid ${localInference ? 'grid-cols-2' : 'grid-cols-1'} gap-3 mb-6`}>
+      <fieldset className={`grid ${localInference ? 'grid-cols-2' : 'grid-cols-1'} mb-6 gap-3`}>
+        <legend className="sr-only">{intl.formatMessage(i18n.connectionChoices)}</legend>
         {localInference && (
-          <div
-            onClick={handleLocalModelClick}
-            className={`p-4 border rounded-xl transition-all duration-200 cursor-pointer group ${
+          <label
+            className={`group cursor-pointer rounded-xl border p-4 text-left transition-colors duration-200 focus-within:ring-2 focus-within:ring-ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background-primary ${
               selectedPath === LOCAL_MODEL
-                ? 'border-blue-400 bg-background-muted'
-                : 'border-border-default bg-background-muted hover:border-blue-400'
+                ? 'border-border-info bg-background-tertiary'
+                : 'border-border-primary bg-background-secondary hover:border-border-info'
             }`}
           >
-            <HardDrive size={20} className="text-text-muted mb-2" />
-            <span className="font-medium text-text-default text-base block">
+            <input
+              type="radio"
+              name="provider-path"
+              value={LOCAL_MODEL}
+              checked={selectedPath === LOCAL_MODEL}
+              onChange={handleLocalModelClick}
+              className="sr-only"
+            />
+            <HardDrive size={20} className="mb-2 text-text-info" aria-hidden="true" />
+            <span className="block text-base font-medium text-text-primary">
               {intl.formatMessage(i18n.useLocalModel)}
             </span>
-            <p className="text-text-muted text-sm mt-1">
+            <p className="mt-1 text-sm text-text-secondary">
               {intl.formatMessage(i18n.localModelDescription)}
             </p>
-          </div>
+          </label>
         )}
 
-        <div
-          onClick={handleOwnProviderClick}
-          className={`p-4 border rounded-xl transition-all duration-200 cursor-pointer group ${
+        <label
+          className={`group cursor-pointer rounded-xl border p-4 text-left transition-colors duration-200 focus-within:ring-2 focus-within:ring-ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background-primary ${
             selectedPath === OWN_PROVIDER
-              ? 'border-blue-400 bg-background-muted'
-              : 'border-border-default bg-background-muted hover:border-blue-400'
+              ? 'border-border-info bg-background-tertiary'
+              : 'border-border-primary bg-background-secondary hover:border-border-info'
           }`}
         >
-          <Key size={20} className="text-text-muted mb-2" />
-          <span className="font-medium text-text-default text-base block">
+          <input
+            type="radio"
+            name="provider-path"
+            value={OWN_PROVIDER}
+            checked={selectedPath === OWN_PROVIDER}
+            onChange={handleOwnProviderClick}
+            className="sr-only"
+          />
+          <Key size={20} className="mb-2 text-text-info" aria-hidden="true" />
+          <span className="block text-base font-medium text-text-primary">
             {intl.formatMessage(i18n.connectProvider)}
           </span>
-          <p className="text-text-muted text-sm mt-1">
+          <p className="mt-1 text-sm text-text-secondary">
             {intl.formatMessage(i18n.connectProviderDescription)}
           </p>
-        </div>
-      </div>
+        </label>
+      </fieldset>
 
       {localInference && selectedPath === LOCAL_MODEL && (
-        <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="animate-in fade-in slide-in-from-top-2 duration-[var(--ob-motion-standard)]">
           <LocalModelPicker onConfigured={onConfigured} />
         </div>
       )}
 
       {selectedPath === OWN_PROVIDER && (
-        <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="animate-in fade-in slide-in-from-top-2 duration-[var(--ob-motion-standard)]">
           <div className="mb-4">
             <Select
               options={options}
@@ -191,10 +210,11 @@ export default function ProviderSelector({
           </div>
 
           <button
+            type="button"
             onClick={() => setShowCustomModal(true)}
-            className="flex items-center gap-1 text-sm text-text-muted hover:text-text-default transition-colors mb-6"
+            className="mb-6 flex min-h-11 items-center gap-1 rounded-md px-2 text-sm text-text-secondary transition-colors hover:text-text-primary focus-visible:ring-2 focus-visible:ring-ring-primary"
           >
-            <Plus size={14} />
+            <Plus size={14} aria-hidden="true" />
             <span>{intl.formatMessage(i18n.addCustomProvider)}</span>
           </button>
 

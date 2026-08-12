@@ -511,6 +511,81 @@
       "responseType": "EmptyResponse"
     },
     {
+      "method": "_goose/unstable/meetings/create",
+      "requestType": "MeetingCreateRequest_unstable",
+      "responseType": "MeetingCreateResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/update",
+      "requestType": "MeetingUpdateRequest_unstable",
+      "responseType": "MeetingUpdateResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/list",
+      "requestType": "MeetingListRequest_unstable",
+      "responseType": "MeetingListResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/get",
+      "requestType": "MeetingGetRequest_unstable",
+      "responseType": "MeetingGetResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/transcript/apply",
+      "requestType": "MeetingTranscriptApplyRequest_unstable",
+      "responseType": "MeetingTranscriptApplyResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/speakers/apply",
+      "requestType": "MeetingSpeakersApplyRequest_unstable",
+      "responseType": "MeetingSpeakersApplyResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/timeline/apply",
+      "requestType": "MeetingTimelineApplyRequest_unstable",
+      "responseType": "MeetingTimelineApplyResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/audio/apply",
+      "requestType": "MeetingAudioApplyRequest_unstable",
+      "responseType": "MeetingAudioApplyResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/claims/apply",
+      "requestType": "MeetingClaimsApplyRequest_unstable",
+      "responseType": "MeetingClaimsApplyResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/research/apply",
+      "requestType": "MeetingResearchApplyRequest_unstable",
+      "responseType": "MeetingResearchApplyResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/refinement/job/apply",
+      "requestType": "MeetingRefinementJobApplyRequest_unstable",
+      "responseType": "MeetingRefinementJobApplyResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/refinement/result/apply",
+      "requestType": "MeetingRefinementResultApplyRequest_unstable",
+      "responseType": "MeetingRefinementResultApplyResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/delete",
+      "requestType": "MeetingDeleteRequest_unstable",
+      "responseType": "MeetingDeleteResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/cleanup/confirm",
+      "requestType": "MeetingCleanupConfirmRequest_unstable",
+      "responseType": "MeetingCleanupConfirmResponse_unstable"
+    },
+    {
+      "method": "_goose/unstable/meetings/recover",
+      "requestType": "MeetingRecoverRequest_unstable",
+      "responseType": "MeetingRecoverResponse_unstable"
+    },
+    {
       "method": "_goose/unstable/local-inference/models/list",
       "requestType": "LocalInferenceModelsListRequest_unstable",
       "responseType": "LocalInferenceModelsListResponse_unstable"

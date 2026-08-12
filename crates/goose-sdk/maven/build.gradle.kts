@@ -36,18 +36,13 @@ dependencies {
 tasks.jar {
     manifest {
         attributes(
-            "Implementation-Title" to "Goose SDK",
+            "Implementation-Title" to "Obelus SDK",
             "Implementation-Version" to project.version,
         )
     }
 }
 
 mavenPublishing {
-    publishToMavenCentral(automaticRelease = true)
-    if (providers.gradleProperty("signingInMemoryKey").isPresent) {
-        signAllPublications()
-    }
-
     coordinates(
         groupId = "io.github.aaif-goose",
         artifactId = "gdk",
@@ -55,10 +50,10 @@ mavenPublishing {
     )
 
     pom {
-        name.set("Goose GDK")
-        description.set("Kotlin/JVM bindings for the Goose SDK")
+        name.set("Obelus GDK")
+        description.set("Kotlin/JVM bindings for the Goose-compatible Obelus SDK")
         inceptionYear.set("2026")
-        url.set("https://github.com/aaif-goose/goose")
+        url.set("https://github.com/colinpthomson1/Obelus")
         licenses {
             license {
                 name.set("Apache License, Version 2.0")
@@ -68,15 +63,19 @@ mavenPublishing {
         }
         developers {
             developer {
+                id.set("obelus")
+                name.set("Obelus contributors")
+            }
+            developer {
                 id.set("aaif")
                 name.set("Agentic AI Foundation")
                 email.set("ai-oss-tools@block.xyz")
             }
         }
         scm {
-            connection.set("scm:git:https://github.com/aaif-goose/goose.git")
-            developerConnection.set("scm:git:ssh://git@github.com/aaif-goose/goose.git")
-            url.set("https://github.com/aaif-goose/goose")
+            connection.set("scm:git:https://github.com/colinpthomson1/Obelus.git")
+            developerConnection.set("scm:git:ssh://git@github.com/colinpthomson1/Obelus.git")
+            url.set("https://github.com/colinpthomson1/Obelus")
         }
     }
 }

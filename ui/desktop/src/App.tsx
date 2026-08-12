@@ -1,13 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { IpcRendererEvent } from 'electron';
-import {
-  HashRouter,
-  Routes,
-  Route,
-  useNavigate,
-  useLocation,
-  useSearchParams,
-} from 'react-router';
+import { HashRouter, Routes, Route, useNavigate, useLocation, useSearchParams } from 'react-router';
 import { importNostrSessionFromDeepLink } from './sessionLinks';
 import { ErrorUI } from './components/ErrorBoundary';
 import { ExtensionInstallModal } from './components/ExtensionInstallModal';
@@ -53,12 +46,16 @@ import { View, ViewOptions } from './utils/navigationUtils';
 
 import { useNavigation } from './hooks/useNavigation';
 import { errorMessage } from './utils/conversionUtils';
+import { isSupportedProductDeepLink } from './utils/deepLinks';
 import { getInitialWorkingDir } from './utils/workingDir';
 import { usePageViewTracking } from './hooks/useAnalytics';
 import { trackErrorWithContext } from './utils/analytics';
 import { AppEvents } from './constants/events';
 import { registerPlatformEventHandlers } from './utils/platform_events';
 import { reconnectAcpAfterSystemResume } from './acp/acpConnection';
+import LiveFactCheckView from './components/live/LiveFactCheckView';
+import { GlobalRecordingIndicator } from './components/live/GlobalRecordingIndicator';
+import { LiveMeetingRuntimeProvider } from './live/LiveMeetingRuntimeProvider';
 
 function PageViewTracker() {
   usePageViewTracking();
@@ -251,6 +248,9 @@ const PermissionRoute = () => {
           case 'skills':
             navigate('/skills');
             break;
+          case 'live':
+            navigate('/live');
+            break;
           default:
             navigate('/');
         }
@@ -421,7 +421,7 @@ export function AppInner() {
       const link = args[0] as string;
       window.electron.logInfo('Opening session share link');
 
-      if (!link.startsWith('goose://sessions/nostr')) {
+      if (!isSupportedProductDeepLink(link, 'sessions', '/nostr')) {
         toast.error('Unsupported session share link');
         navigate('/sessions');
         return;
@@ -667,10 +667,12 @@ export function AppInner() {
               <Route path="schedules" element={<SchedulesRoute />} />
               <Route path="recipes" element={<RecipesRoute />} />
               <Route path="skills" element={<SkillsRoute />} />
+              <Route path="live" element={<LiveFactCheckView />} />
               <Route path="permission" element={<PermissionRoute />} />
             </Route>
           </Routes>
         </div>
+        <GlobalRecordingIndicator />
       </div>
     </>
   );
@@ -682,7 +684,9 @@ export default function App() {
       <FeaturesProvider>
         <ModelAndProviderProvider>
           <HashRouter>
-            <AppInner />
+            <LiveMeetingRuntimeProvider>
+              <AppInner />
+            </LiveMeetingRuntimeProvider>
           </HashRouter>
           <AnnouncementModal />
           <TelemetryConsentPrompt />

@@ -8,8 +8,7 @@
   ],
   "scripts": {
     "changeset": "changeset",
-    "version": "changeset version",
-    "release": "changeset publish"
+    "version": "changeset version"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1"

@@ -165,15 +165,15 @@ pub fn configure_telemetry_consent_dialog() -> anyhow::Result<bool> {
     let config = Config::global();
 
     println!();
-    println!("{}", style("Help improve goose").bold());
+    println!("{}", style("Help improve Obelus").bold());
     println!();
     println!(
         "{}",
-        style("Would you like to help improve goose by sharing anonymous usage data?").dim()
+        style("Would you like to help improve Obelus by sharing anonymous usage data?").dim()
     );
     println!(
         "{}",
-        style("This helps us understand how goose is used and identify areas for improvement.")
+        style("This helps us understand how Obelus is used and identify areas for improvement.")
             .dim()
     );
     println!();
@@ -182,7 +182,7 @@ pub fn configure_telemetry_consent_dialog() -> anyhow::Result<bool> {
         "{}",
         style("  • Operating system, version, and architecture").dim()
     );
-    println!("{}", style("  • goose version and install method").dim());
+    println!("{}", style("  • Obelus version and install method").dim());
     println!("{}", style("  • Provider and model used").dim());
     println!(
         "{}",
@@ -207,14 +207,14 @@ pub fn configure_telemetry_consent_dialog() -> anyhow::Result<bool> {
     );
     println!();
 
-    let enabled = cliclack::confirm("Share anonymous usage data to help improve goose?")
+    let enabled = cliclack::confirm("Share anonymous usage data to help improve Obelus?")
         .initial_value(true)
         .interact()?;
 
     config.set_param(TELEMETRY_ENABLED_KEY, enabled)?;
 
     if enabled {
-        let _ = cliclack::log::success("Thank you for helping improve goose!");
+        let _ = cliclack::log::success("Thank you for helping improve Obelus!");
     } else {
         let _ = cliclack::log::info("Telemetry disabled. You can enable it anytime in settings.");
     }
@@ -224,7 +224,10 @@ pub fn configure_telemetry_consent_dialog() -> anyhow::Result<bool> {
 
 async fn handle_first_time_setup(config: &Config) -> anyhow::Result<()> {
     println!();
-    println!("{}", style("Welcome to goose! Let's get you set up.").dim());
+    println!(
+        "{}",
+        style("Welcome to Obelus! Let's get you set up.").dim()
+    );
     println!(
         "{}",
         style("  you can rerun this command later to update your configuration").dim()
@@ -235,7 +238,7 @@ async fn handle_first_time_setup(config: &Config) -> anyhow::Result<()> {
     configure_telemetry_consent_dialog()?;
 
     println!();
-    cliclack::intro(style(" goose-configure ").on_cyan().black())?;
+    cliclack::intro(style(" Obelus configure ").on_cyan().black())?;
 
     let setup_method = cliclack::select("How would you like to set up your provider?")
         .item(
@@ -298,7 +301,7 @@ async fn handle_manual_provider_setup(config: &Config) {
         Ok(false) => {
             let _ = config.clear();
             println!(
-                "\n  {}: We did not save your config, inspect your credentials\n   and run '{}' again to ensure goose can connect",
+                "\n  {}: We did not save your config, inspect your credentials\n   and run '{}' again to ensure Obelus can connect",
                 style("Warning").yellow().italic(),
                 style("goose configure").cyan()
             );
@@ -349,7 +352,7 @@ fn print_manual_config_error(e: &anyhow::Error) {
         }
         _ => {
             println!(
-                "\n  {} {} \n  We did not save your config, inspect your credentials\n   and run '{}' again to ensure goose can connect",
+                "\n  {} {} \n  We did not save your config, inspect your credentials\n   and run '{}' again to ensure Obelus can connect",
                 style("Error").red().italic(),
                 e,
                 style("goose configure").cyan()
@@ -403,7 +406,7 @@ async fn handle_existing_config() -> anyhow::Result<()> {
     );
     println!();
 
-    cliclack::intro(style(" goose-configure ").on_cyan().black())?;
+    cliclack::intro(style(" Obelus configure ").on_cyan().black())?;
     let action = cliclack::select("What would you like to configure?")
         .item(
             "providers",
@@ -424,8 +427,8 @@ async fn handle_existing_config() -> anyhow::Result<()> {
         .item("remove", "Remove Extension", "Remove an extension")
         .item(
             "settings",
-            "goose settings",
-            "Set the goose mode, Tool Output, Tool Permissions, Experiment, goose recipe github repo and more",
+            "Obelus settings",
+            "Set the Obelus mode, tool output, tool permissions, experiments, Obelus recipe repository, and more",
         )
         .interact()?;
 
@@ -1321,7 +1324,7 @@ pub fn configure_extensions_dialog() -> anyhow::Result<()> {
         .item(
             "built-in",
             "Built-in Extension",
-            "Use an extension that comes with goose",
+            "Use an extension that comes with Obelus",
         )
         .item(
             "stdio",
@@ -1411,8 +1414,8 @@ pub async fn configure_settings_dialog() -> anyhow::Result<()> {
     #[allow(unused_mut)]
     let mut setting_select = cliclack::select("What setting would you like to configure?").item(
         "goose_mode",
-        "goose mode",
-        "Configure goose mode",
+        "Obelus mode",
+        "Configure Obelus mode",
     );
     #[cfg(feature = "telemetry")]
     {
@@ -1450,8 +1453,8 @@ pub async fn configure_settings_dialog() -> anyhow::Result<()> {
         )
         .item(
             "recipe",
-            "goose recipe github repo",
-            "goose will pull recipes from this repo if not found locally.",
+            "Obelus recipe GitHub repository",
+            "Obelus will pull recipes from this repository if they are not found locally.",
         )
         .interact()?;
 
@@ -1504,7 +1507,7 @@ pub fn configure_goose_mode_dialog() -> anyhow::Result<()> {
         );
     }
 
-    let mode = cliclack::select("Which goose mode would you like to configure?")
+    let mode = cliclack::select("Which Obelus mode would you like to configure?")
         .item(
             GooseMode::Auto,
             "Auto Mode",
@@ -1557,14 +1560,14 @@ pub fn configure_telemetry_dialog() -> anyhow::Result<()> {
 
     let _ = cliclack::log::info(format!("Current telemetry status: {}", current_status));
 
-    let enabled = cliclack::confirm("Share anonymous usage data to help improve goose?")
+    let enabled = cliclack::confirm("Share anonymous usage data to help improve Obelus?")
         .initial_value(current_choice.unwrap_or(true))
         .interact()?;
 
     config.set_param(TELEMETRY_ENABLED_KEY, enabled)?;
 
     if enabled {
-        cliclack::outro("Telemetry enabled - thank you for helping improve goose!")?;
+        cliclack::outro("Telemetry enabled—thank you for helping improve Obelus!")?;
     } else {
         cliclack::outro("Telemetry disabled")?;
     }
@@ -1647,8 +1650,9 @@ pub fn configure_keyring_dialog() -> anyhow::Result<()> {
             // Set to empty string to enable keyring (absence or empty = enabled)
             config.set_param("GOOSE_DISABLE_KEYRING", Value::String("".to_string()))?;
             cliclack::outro("Secret storage set to system keyring (secure)")?;
-            let _ =
-                cliclack::log::info("You may need to restart goose for this change to take effect");
+            let _ = cliclack::log::info(
+                "You may need to restart Obelus for this change to take effect",
+            );
         }
         "file" => {
             // Set the disable flag to use file storage
@@ -1657,8 +1661,9 @@ pub fn configure_keyring_dialog() -> anyhow::Result<()> {
                 "Secret storage set to file ({}). Keep this file secure!",
                 secrets_path.display(),
             ))?;
-            let _ =
-                cliclack::log::info("You may need to restart goose for this change to take effect");
+            let _ = cliclack::log::info(
+                "You may need to restart Obelus for this change to take effect",
+            );
         }
         _ => unreachable!(),
     };
@@ -1885,7 +1890,7 @@ fn configure_recipe_dialog() -> anyhow::Result<()> {
         .ok()
         .or_else(|| config.get_param(key_name).unwrap_or(None));
     let mut recipe_repo_input = cliclack::input(
-        "Enter your goose recipe GitHub repo (owner/repo): eg: my_org/goose-recipes",
+        "Enter your Obelus recipe GitHub repository (owner/repo), for example: my_org/obelus-recipes",
     )
     .required(false);
     if let Some(recipe_repo) = default_recipe_repo {
@@ -1925,7 +1930,7 @@ pub fn configure_max_turns_dialog() -> anyhow::Result<()> {
     config.set_param("GOOSE_MAX_TURNS", max_turns)?;
 
     cliclack::outro(format!(
-        "Set maximum turns to {} - goose will ask for input after {} consecutive actions",
+        "Set maximum turns to {}—Obelus will ask for input after {} consecutive actions",
         max_turns, max_turns
     ))?;
 
@@ -1971,7 +1976,7 @@ pub async fn handle_openrouter_auth() -> anyhow::Result<()> {
             let test_result = provider
                 .complete(
                     &model_config,
-                    "You are goose, an AI assistant.",
+                    "You are Obelus, an AI assistant.",
                     &[Message::user().with_text("Say 'Configuration test successful!'")],
                     &[],
                 )
@@ -2001,7 +2006,7 @@ pub async fn handle_openrouter_auth() -> anyhow::Result<()> {
                         println!("✓ Developer extension enabled");
                     }
 
-                    cliclack::outro("OpenRouter setup complete! You can now use goose.")?;
+                    cliclack::outro("OpenRouter setup complete! You can now use Obelus.")?;
                 }
                 Err(e) => {
                     eprintln!("⚠️  Configuration test failed: {}", e);
@@ -2071,7 +2076,7 @@ pub async fn handle_tetrate_auth() -> anyhow::Result<()> {
                     }
 
                     cliclack::outro(
-                        "Tetrate Agent Router Service setup complete! You can now use goose.",
+                        "Tetrate Agent Router Service setup complete! You can now use Obelus.",
                     )?;
                 }
                 Err(e) => {

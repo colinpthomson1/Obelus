@@ -125,7 +125,7 @@ pub async fn run_checks_in_parallel(
         let (idx, check, result, quiet) = match joined {
             Ok(v) => v,
             Err(e) => {
-                eprintln!("goose review: check task panicked: {e}");
+                eprintln!("Obelus review: check task panicked: {e}");
                 continue;
             }
         };
@@ -134,7 +134,7 @@ pub async fn run_checks_in_parallel(
             Ok(findings) => {
                 if !quiet {
                     eprintln!(
-                        "goose review: check '{}' completed: {} finding(s)",
+                        "Obelus review: check '{}' completed: {} finding(s)",
                         check.name,
                         findings.len()
                     );
@@ -144,7 +144,7 @@ pub async fn run_checks_in_parallel(
             Err(e) => {
                 // Per-check failure must never abort the review — emit a
                 // warning and continue with empty findings for this check.
-                eprintln!("goose review: check '{}' failed: {e}", check.name);
+                eprintln!("Obelus review: check '{}' failed: {e}", check.name);
                 results[idx] = Vec::new();
             }
         }
@@ -232,7 +232,7 @@ async fn run_subprocess_for_findings(
     model: Option<&str>,
     max_turns: Option<usize>,
 ) -> Result<Vec<RawFinding>> {
-    let goose_bin = std::env::current_exe().context("locate current goose binary")?;
+    let goose_bin = std::env::current_exe().context("locate the Obelus compatibility binary")?;
 
     let mut cmd = Command::new(&goose_bin);
     cmd.arg("run")
@@ -355,7 +355,7 @@ pub async fn run_main_pass_in_parallel(
         let (idx, path, result, quiet) = match joined {
             Ok(v) => v,
             Err(e) => {
-                eprintln!("goose review: main-pass task panicked: {e}");
+                eprintln!("Obelus review: main-pass task panicked: {e}");
                 continue;
             }
         };
@@ -374,7 +374,7 @@ pub async fn run_main_pass_in_parallel(
                     .collect();
                 if !quiet {
                     eprintln!(
-                        "goose review: main pass on '{}' completed: {} finding(s)",
+                        "Obelus review: main pass on '{}' completed: {} finding(s)",
                         path,
                         findings.len()
                     );
@@ -384,7 +384,7 @@ pub async fn run_main_pass_in_parallel(
             Err(e) => {
                 // A single broken file must not abort the entire main
                 // pass; surface a warning and continue.
-                eprintln!("goose review: main pass on '{}' failed: {e}", path);
+                eprintln!("Obelus review: main pass on '{}' failed: {e}", path);
                 per_file_results[idx] = Vec::new();
             }
         }
@@ -569,13 +569,13 @@ fn take_quoted(s: &str) -> Option<(String, &str)> {
 }
 
 /// Prompt section telling review subprocesses about the `--max-turns`
-/// cap enforced by goose. Without this, models routinely burn turns on
+/// cap enforced by Obelus. Without this, models routinely burn turns on
 /// tool loops and return nothing when the limit stops the session.
 fn build_subprocess_turn_budget_section(max_turns: usize) -> String {
     format!(
         "## Turn budget\n\n\
          You may take at most {max_turns} agent turns (model/tool iterations) in this run. \
-         goose enforces this via `--max-turns`; when you exhaust it, the session stops and \
+         Obelus enforces this via `--max-turns`; when you exhaust it, the session stops and \
          any findings not yet emitted as JSON are lost.\n\n\
          Plan for the limit:\n\
          - As turns run low, stop exploring and return JSON with the findings you have verified.\n\

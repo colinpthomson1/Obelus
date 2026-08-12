@@ -119,6 +119,10 @@ impl ChatGptCodexAuthState {
 static CHATGPT_CODEX_AUTH_STATE: LazyLock<Arc<ChatGptCodexAuthState>> =
     LazyLock::new(|| Arc::new(ChatGptCodexAuthState::new()));
 
+#[cfg(test)]
+static OAUTH_FLOW_START_COUNT: std::sync::atomic::AtomicUsize =
+    std::sync::atomic::AtomicUsize::new(0);
+
 fn build_input_items(messages: &[Message]) -> Result<Vec<Value>> {
     let mut items = Vec::new();
 
@@ -592,7 +596,7 @@ async fn refresh_access_token_with_issuer(
 const HTML_SUCCESS_TEMPLATE: &str = r#"<!doctype html>
 <html>
   <head>
-    <title>goose - ChatGPT Authorization Successful</title>
+    <title>Obelus - ChatGPT authorization successful</title>
     <style>
       body {
         font-family: system-ui, -apple-system, sans-serif;
@@ -612,7 +616,7 @@ const HTML_SUCCESS_TEMPLATE: &str = r#"<!doctype html>
   <body>
     <div class="container">
       <h1>Authorization Successful</h1>
-      <p>You can close this window and return to goose.</p>
+      <p>You can close this window and return to Obelus.</p>
     </div>
     <script>const AUTO_CLOSE_TIMEOUT_MS = __AUTO_CLOSE_TIMEOUT_MS__; setTimeout(() => window.close(), AUTO_CLOSE_TIMEOUT_MS)</script>
   </body>
@@ -631,7 +635,7 @@ fn html_error(error: &str) -> String {
         r#"<!doctype html>
 <html>
   <head>
-    <title>goose - ChatGPT Authorization Failed</title>
+    <title>Obelus - ChatGPT authorization failed</title>
     <style>
       body {{
         font-family: system-ui, -apple-system, sans-serif;
@@ -771,6 +775,9 @@ async fn wait_for_oauth_code(rx: oneshot::Receiver<Result<String>>) -> Result<St
 }
 
 async fn perform_oauth_flow(auth_state: &ChatGptCodexAuthState) -> Result<TokenData> {
+    #[cfg(test)]
+    OAUTH_FLOW_START_COUNT.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+
     let _guard = auth_state.oauth_mutex.try_lock().map_err(|_| {
         anyhow!("Another OAuth flow is already in progress; please try again later")
     })?;
@@ -815,6 +822,7 @@ async fn perform_oauth_flow(auth_state: &ChatGptCodexAuthState) -> Result<TokenD
 struct ChatGptCodexAuthProvider {
     cache: TokenCache,
     state: Arc<ChatGptCodexAuthState>,
+    allow_interactive_oauth: bool,
 }
 
 impl ChatGptCodexAuthProvider {
@@ -822,6 +830,15 @@ impl ChatGptCodexAuthProvider {
         Self {
             cache: TokenCache::new(),
             state,
+            allow_interactive_oauth: true,
+        }
+    }
+
+    fn cached_only(state: Arc<ChatGptCodexAuthState>) -> Self {
+        Self {
+            cache: TokenCache::new(),
+            state,
+            allow_interactive_oauth: false,
         }
     }
 
@@ -829,35 +846,63 @@ impl ChatGptCodexAuthProvider {
         self.cache.clear();
     }
 
+    async fn refresh_token_data_with_issuer(
+        &self,
+        mut token_data: TokenData,
+        issuer: &str,
+    ) -> Result<TokenData> {
+        let new_tokens =
+            refresh_access_token_with_issuer(issuer, &token_data.refresh_token).await?;
+        token_data.access_token = new_tokens.access_token;
+        token_data.refresh_token = new_tokens.refresh_token;
+        if new_tokens.id_token.is_some() {
+            token_data.id_token = new_tokens.id_token;
+        }
+        token_data.expires_at =
+            Utc::now() + chrono::Duration::seconds(new_tokens.expires_in.unwrap_or(3600));
+        if token_data.account_id.is_none() {
+            token_data.account_id = extract_account_id(&token_data, self.state.as_ref()).await;
+        }
+        self.cache.save(&token_data)?;
+        Ok(token_data)
+    }
+
     async fn get_valid_token(&self) -> Result<TokenData> {
-        if let Some(mut token_data) = self.cache.load() {
+        self.get_valid_token_with_issuer(ISSUER).await
+    }
+
+    async fn get_valid_token_with_issuer(&self, issuer: &str) -> Result<TokenData> {
+        if let Some(token_data) = self.cache.load() {
             if token_data.expires_at > Utc::now() + chrono::Duration::seconds(60) {
                 return Ok(token_data);
             }
 
             tracing::debug!("Token expired, attempting refresh");
-            match refresh_access_token_with_issuer(ISSUER, &token_data.refresh_token).await {
-                Ok(new_tokens) => {
-                    token_data.access_token = new_tokens.access_token;
-                    token_data.refresh_token = new_tokens.refresh_token;
-                    if new_tokens.id_token.is_some() {
-                        token_data.id_token = new_tokens.id_token;
-                    }
-                    token_data.expires_at = Utc::now()
-                        + chrono::Duration::seconds(new_tokens.expires_in.unwrap_or(3600));
-                    if token_data.account_id.is_none() {
-                        token_data.account_id =
-                            extract_account_id(&token_data, self.state.as_ref()).await;
-                    }
-                    self.cache.save(&token_data)?;
+            match self
+                .refresh_token_data_with_issuer(token_data, issuer)
+                .await
+            {
+                Ok(token_data) => {
                     tracing::info!("Token refreshed successfully");
                     return Ok(token_data);
                 }
                 Err(e) => {
+                    if !self.allow_interactive_oauth {
+                        tracing::warn!("Cached ChatGPT token refresh failed");
+                        return Err(anyhow!(
+                            "ChatGPT credentials could not be refreshed for non-interactive use"
+                        ));
+                    }
                     tracing::warn!("Token refresh failed, will re-authenticate: {}", e);
                     self.cache.clear();
                 }
             }
+        }
+
+        if !self.allow_interactive_oauth {
+            return Err(anyhow!(
+                "ChatGPT credentials are unavailable for non-interactive use"
+            ));
         }
 
         tracing::info!("Starting OAuth flow for ChatGPT Codex");
@@ -906,6 +951,29 @@ impl ChatGptCodexProvider {
             name: CHATGPT_CODEX_PROVIDER_NAME.to_string(),
             request_builder: crate::session_context::session_id_request_builder(),
         })
+    }
+
+    pub async fn from_cached_session(
+        _tls_config: Option<crate::providers::api_client::TlsConfig>,
+    ) -> Result<Self> {
+        let auth_provider = Arc::new(ChatGptCodexAuthProvider::cached_only(
+            ChatGptCodexAuthState::instance(),
+        ));
+
+        Ok(Self {
+            auth_provider,
+            name: CHATGPT_CODEX_PROVIDER_NAME.to_string(),
+            request_builder: crate::session_context::session_id_request_builder(),
+        })
+    }
+
+    pub async fn validate_cached_session(
+        _tls_config: Option<crate::providers::api_client::TlsConfig>,
+    ) -> Result<()> {
+        let auth_provider =
+            ChatGptCodexAuthProvider::cached_only(ChatGptCodexAuthState::instance());
+        auth_provider.get_valid_token().await?;
+        Ok(())
     }
 
     async fn post_streaming(&self, payload: &Value) -> Result<reqwest::Response, ProviderError> {
@@ -1276,6 +1344,170 @@ mod tests {
 
         let payload = create_codex_request(&config, "sys", &[], &[]).unwrap();
         assert!(payload.get("temperature").is_none());
+    }
+
+    // The ChatGPT subscription Codex endpoint rejects max_output_tokens even though the public
+    // Responses API accepts it. Keep output bounds at the caller's schema/timeout boundary.
+    #[test]
+    fn test_create_codex_request_omits_unsupported_max_output_tokens() {
+        let config = ModelConfig::new("gpt-5.6-sol").with_max_tokens(Some(512));
+
+        let payload = create_codex_request(&config, "sys", &[], &[]).unwrap();
+
+        assert!(payload.get("max_output_tokens").is_none());
+        assert!(payload.get("max_tokens").is_none());
+    }
+
+    #[tokio::test]
+    #[serial_test::serial]
+    async fn cached_only_auth_never_starts_oauth_when_credentials_are_missing() {
+        let root = tempfile::tempdir().unwrap();
+        let root_path = root.path().to_string_lossy().to_string();
+        let _guard = env_lock::lock_env([
+            ("GOOSE_PATH_ROOT", Some(root_path.as_str())),
+            ("GOOSE_DISABLE_KEYRING", Some("1")),
+        ]);
+        TokenCache::new().clear();
+        let auth = ChatGptCodexAuthProvider::cached_only(ChatGptCodexAuthState::instance());
+        let oauth_starts_before = OAUTH_FLOW_START_COUNT.load(std::sync::atomic::Ordering::SeqCst);
+
+        let result = tokio::time::timeout(
+            std::time::Duration::from_millis(100),
+            auth.get_valid_token(),
+        )
+        .await
+        .expect("cached-only auth must return without waiting for browser OAuth");
+
+        assert!(result
+            .unwrap_err()
+            .to_string()
+            .contains("non-interactive use"));
+        assert_eq!(
+            OAUTH_FLOW_START_COUNT.load(std::sync::atomic::Ordering::SeqCst),
+            oauth_starts_before
+        );
+        assert!(!TokenCache::new().has_token());
+    }
+
+    #[tokio::test]
+    #[serial_test::serial]
+    async fn cached_session_support_validation_refreshes_near_expiry_without_model_or_oauth() {
+        let server = MockServer::start().await;
+        Mock::given(method("POST"))
+            .and(path("/oauth/token"))
+            .and(body_string_contains("grant_type=refresh_token"))
+            .and(body_string_contains("refresh_token=refresh-old"))
+            .respond_with(ResponseTemplate::new(200).set_body_json(json!({
+                "access_token": "access-new",
+                "refresh_token": "refresh-new",
+                "expires_in": 3600
+            })))
+            .expect(1)
+            .mount(&server)
+            .await;
+        let root = tempfile::tempdir().unwrap();
+        let root_path = root.path().to_string_lossy().to_string();
+        let _guard = env_lock::lock_env([
+            ("GOOSE_PATH_ROOT", Some(root_path.as_str())),
+            ("GOOSE_DISABLE_KEYRING", Some("1")),
+        ]);
+        TokenCache::new()
+            .save(&TokenData {
+                access_token: "access-old".to_string(),
+                refresh_token: "refresh-old".to_string(),
+                id_token: None,
+                expires_at: Utc::now() + chrono::Duration::seconds(30),
+                account_id: Some("account".to_string()),
+            })
+            .unwrap();
+        let auth = ChatGptCodexAuthProvider::cached_only(ChatGptCodexAuthState::instance());
+        let oauth_starts_before = OAUTH_FLOW_START_COUNT.load(std::sync::atomic::Ordering::SeqCst);
+
+        let refreshed = auth
+            .get_valid_token_with_issuer(&server.uri())
+            .await
+            .unwrap();
+
+        assert_eq!(refreshed.access_token, "access-new");
+        assert_eq!(refreshed.refresh_token, "refresh-new");
+        assert_eq!(TokenCache::new().load().unwrap().access_token, "access-new");
+        assert_eq!(
+            OAUTH_FLOW_START_COUNT.load(std::sync::atomic::Ordering::SeqCst),
+            oauth_starts_before
+        );
+    }
+
+    #[tokio::test]
+    #[serial_test::serial]
+    async fn cached_session_support_validation_does_not_refresh_a_valid_token() {
+        let server = MockServer::start().await;
+        let root = tempfile::tempdir().unwrap();
+        let root_path = root.path().to_string_lossy().to_string();
+        let _guard = env_lock::lock_env([
+            ("GOOSE_PATH_ROOT", Some(root_path.as_str())),
+            ("GOOSE_DISABLE_KEYRING", Some("1")),
+        ]);
+        TokenCache::new()
+            .save(&TokenData {
+                access_token: "access-valid".to_string(),
+                refresh_token: "refresh-must-not-be-used".to_string(),
+                id_token: None,
+                expires_at: Utc::now() + chrono::Duration::hours(1),
+                account_id: Some("account".to_string()),
+            })
+            .unwrap();
+        let auth = ChatGptCodexAuthProvider::cached_only(ChatGptCodexAuthState::instance());
+        let oauth_starts_before = OAUTH_FLOW_START_COUNT.load(std::sync::atomic::Ordering::SeqCst);
+
+        let token = auth
+            .get_valid_token_with_issuer(&server.uri())
+            .await
+            .unwrap();
+
+        assert_eq!(token.access_token, "access-valid");
+        assert!(server.received_requests().await.unwrap().is_empty());
+        assert_eq!(
+            OAUTH_FLOW_START_COUNT.load(std::sync::atomic::Ordering::SeqCst),
+            oauth_starts_before
+        );
+    }
+
+    #[tokio::test]
+    #[serial_test::serial]
+    async fn cached_session_support_validation_rejects_revoked_auth_without_oauth() {
+        let server = MockServer::start().await;
+        Mock::given(method("POST"))
+            .and(path("/oauth/token"))
+            .and(body_string_contains("refresh_token=refresh-revoked"))
+            .respond_with(ResponseTemplate::new(401))
+            .expect(1)
+            .mount(&server)
+            .await;
+        let root = tempfile::tempdir().unwrap();
+        let root_path = root.path().to_string_lossy().to_string();
+        let _guard = env_lock::lock_env([
+            ("GOOSE_PATH_ROOT", Some(root_path.as_str())),
+            ("GOOSE_DISABLE_KEYRING", Some("1")),
+        ]);
+        TokenCache::new()
+            .save(&TokenData {
+                access_token: "access-revoked".to_string(),
+                refresh_token: "refresh-revoked".to_string(),
+                id_token: None,
+                expires_at: Utc::now() + chrono::Duration::seconds(30),
+                account_id: Some("account".to_string()),
+            })
+            .unwrap();
+        let auth = ChatGptCodexAuthProvider::cached_only(ChatGptCodexAuthState::instance());
+        let oauth_starts_before = OAUTH_FLOW_START_COUNT.load(std::sync::atomic::Ordering::SeqCst);
+
+        let result = auth.get_valid_token_with_issuer(&server.uri()).await;
+
+        assert!(result.is_err());
+        assert_eq!(
+            OAUTH_FLOW_START_COUNT.load(std::sync::atomic::Ordering::SeqCst),
+            oauth_starts_before
+        );
     }
 
     #[test_case(

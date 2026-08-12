@@ -4,7 +4,6 @@ use std::process::Command;
 
 const TUI_NPM_SPEC_ENV: &str = "GOOSE_TUI_NPM_SPEC";
 const TUI_REL_PATH: &str = "ui/text/dist/tui.js";
-const DEFAULT_NPM_SPEC: &str = "@aaif/goose@latest";
 const NPM_BIN_NAME: &str = "goose-tui";
 
 enum TuiSource {
@@ -34,12 +33,25 @@ fn find_local_script_from(exe: &Path) -> Option<PathBuf> {
     None
 }
 
-fn resolve_source() -> TuiSource {
+fn resolve_source() -> Result<TuiSource> {
     if let Some(script) = find_local_script() {
-        return TuiSource::LocalScript(script);
+        return Ok(TuiSource::LocalScript(script));
     }
-    let spec = std::env::var(TUI_NPM_SPEC_ENV).unwrap_or_else(|_| DEFAULT_NPM_SPEC.to_string());
-    TuiSource::Npx(spec)
+
+    explicit_npx_source(std::env::var(TUI_NPM_SPEC_ENV).ok())
+}
+
+fn explicit_npx_source(spec: Option<String>) -> Result<TuiSource> {
+    let spec = spec
+        .map(|value| value.trim().to_string())
+        .filter(|value| !value.is_empty())
+        .ok_or_else(|| {
+            anyhow!(
+                "Obelus terminal UI bundle not found; install a packaged Obelus build or explicitly set {TUI_NPM_SPEC_ENV}"
+            )
+        })?;
+
+    Ok(TuiSource::Npx(spec))
 }
 
 fn build_command(source: &TuiSource, args: &[String]) -> Result<Command> {
@@ -63,10 +75,10 @@ fn build_command(source: &TuiSource, args: &[String]) -> Result<Command> {
 }
 
 pub fn handle_tui(args: Vec<String>) -> Result<()> {
-    let source = resolve_source();
+    let source = resolve_source()?;
 
     let goose_binary = std::env::current_exe()
-        .context("could not determine current goose executable to expose as GOOSE_BINARY")?;
+        .context("could not determine the Obelus compatibility executable")?;
 
     let mut cmd = build_command(&source, &args)?;
     cmd.env("GOOSE_BINARY", &goose_binary);
@@ -123,5 +135,16 @@ mod tests {
             find_local_script_from(&executable).as_deref(),
             Some(bundled_script.as_path())
         );
+    }
+
+    #[test]
+    fn npx_source_requires_an_explicit_non_empty_spec() {
+        assert!(explicit_npx_source(None).is_err());
+        assert!(explicit_npx_source(Some("  ".to_string())).is_err());
+
+        match explicit_npx_source(Some("@obelus/tui@2.0.0".to_string())).unwrap() {
+            TuiSource::Npx(spec) => assert_eq!(spec, "@obelus/tui@2.0.0"),
+            TuiSource::LocalScript(_) => panic!("expected an explicit npm source"),
+        }
     }
 }

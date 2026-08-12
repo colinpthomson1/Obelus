@@ -132,7 +132,7 @@ pub struct SessionOptions {
         long = "container",
         value_name = "CONTAINER_ID",
         help = "Docker container ID to run extensions inside",
-        long_help = "Run extensions (stdio and built-in) inside the specified container. The extension must exist in the container. For built-in extensions, goose must be installed inside the container."
+        long_help = "Run extensions (stdio and built-in) inside the specified container. The extension must exist in the container. For built-in extensions, the Obelus CLI must be installed inside the container."
     )]
     pub container: Option<String>,
 }
@@ -195,7 +195,7 @@ pub struct ExtensionOptions {
         long = "with-builtin",
         value_name = "NAME",
         help = "Add builtin extensions by name (e.g., 'developer' or multiple: 'developer,github')",
-        long_help = "Add one or more builtin extensions that are bundled with goose by specifying their names, comma-separated",
+        long_help = "Add one or more built-in extensions bundled with Obelus by specifying their names, comma-separated",
         value_delimiter = ','
     )]
     pub builtins: Vec<String>,
@@ -226,8 +226,8 @@ pub struct InputOptions {
         short = 't',
         long = "text",
         value_name = "TEXT",
-        help = "Input text to provide to goose directly",
-        long_help = "Input text containing commands for goose. Use this in lieu of the instructions argument.",
+        help = "Input text to provide to Obelus directly",
+        long_help = "Input text containing commands for Obelus. Use this in lieu of the instructions argument.",
         conflicts_with = "instructions",
         conflicts_with = "recipe"
     )]
@@ -258,7 +258,7 @@ pub struct InputOptions {
     #[arg(
         long,
         value_name = "KEY=VALUE",
-        help = "Dynamic parameters (e.g., --params username=alice --params channel_name=goose-channel)",
+        help = "Dynamic parameters (e.g., --params username=alice --params channel_name=obelus-channel)",
         long_help = "Key-value parameters to pass to the recipe file. Can be specified multiple times.",
         action = clap::ArgAction::Append,
         value_parser = parse_key_val,
@@ -569,7 +569,7 @@ enum SessionCommand {
 
         #[arg(
             long = "nostr",
-            help = "Publish the JSON session export as an encrypted Nostr event and print a Goose share link"
+            help = "Publish the JSON session export as an encrypted Nostr event and print an Obelus share link"
         )]
         nostr: bool,
 
@@ -586,7 +586,7 @@ enum SessionCommand {
     )]
     Import {
         #[arg(
-            help = "Path to a goose session export, a Claude Code, Codex, or Pi .jsonl transcript, or a goose://sessions/nostr share link"
+            help = "Path to an Obelus session export, a Claude Code, Codex, or Pi .jsonl transcript, or an obelus://sessions/nostr share link"
         )]
         input: String,
 
@@ -727,7 +727,7 @@ enum PluginCommand {
 #[derive(Subcommand)]
 enum SkillsCommand {
     /// List all skills available to the goose agent
-    #[command(about = "List all skills available to the goose agent")]
+    #[command(about = "List all skills available to the Obelus agent")]
     List,
 }
 
@@ -759,8 +759,8 @@ enum RecipeCommand {
         params: Vec<String>,
     },
 
-    /// Open a recipe in Goose Desktop
-    #[command(about = "Open a recipe in Goose Desktop")]
+    /// Open a recipe in Obelus Desktop
+    #[command(about = "Open a recipe in Obelus Desktop")]
     Open {
         /// Recipe name to get recipe file to open
         #[arg(help = "recipe name or full path to the recipe file")]
@@ -799,12 +799,15 @@ enum RecipeCommand {
 
 #[derive(Subcommand)]
 enum Command {
-    /// Configure goose settings
-    #[command(about = "Configure goose settings")]
+    #[command(name = "live-fact-check-model", hide = true)]
+    LiveFactCheckModel {},
+
+    /// Configure Obelus settings
+    #[command(about = "Configure Obelus settings")]
     Configure {},
 
-    /// Display goose configuration information
-    #[command(about = "Display goose information")]
+    /// Display Obelus configuration information
+    #[command(about = "Display Obelus information")]
     Info {
         /// Show verbose information including current configuration
         #[arg(short, long, help = "Show verbose information including config.yaml")]
@@ -813,25 +816,25 @@ enum Command {
         check: bool,
     },
 
-    #[command(about = "Check that your Goose setup is working")]
+    #[command(about = "Check that your Obelus setup is working")]
     Doctor {},
 
     /// Manage system prompts and behaviors
-    #[command(about = "Run one of the mcp servers bundled with goose")]
+    #[command(about = "Run one of the MCP servers bundled with Obelus")]
     Mcp {
         #[arg(value_parser = clap::value_parser!(McpCommand))]
         server: McpCommand,
     },
 
-    /// Run goose as an ACP (Agent Client Protocol) agent
-    #[command(about = "Run goose as an ACP agent server on stdio")]
+    /// Run Obelus as an ACP (Agent Client Protocol) agent
+    #[command(about = "Run Obelus as an ACP agent server on stdio")]
     Acp {
         /// Add builtin extensions by name
         #[arg(
             long = "with-builtin",
             value_name = "NAME",
             help = "Add builtin extensions by name (e.g., 'developer' or multiple: 'developer,github')",
-            long_help = "Add one or more builtin extensions that are bundled with goose by specifying their names, comma-separated",
+            long_help = "Add one or more built-in extensions bundled with Obelus by specifying their names, comma-separated",
             value_delimiter = ','
         )]
         builtins: Vec<String>,
@@ -865,7 +868,7 @@ enum Command {
             long = "with-builtin",
             value_name = "NAME",
             help = "Add builtin extensions by name (e.g., 'developer' or multiple: 'developer,github')",
-            long_help = "Add one or more builtin extensions that are bundled with goose by specifying their names, comma-separated",
+            long_help = "Add one or more built-in extensions bundled with Obelus by specifying their names, comma-separated",
             value_delimiter = ',',
             action = clap::ArgAction::Append
         )]
@@ -1006,28 +1009,28 @@ enum Command {
         command: GatewayCommand,
     },
 
-    /// Update the goose CLI version
+    /// Update the Obelus CLI version
     #[cfg(feature = "update")]
-    #[command(about = "Update the goose CLI version")]
+    #[command(about = "Update the Obelus CLI version")]
     Update {
         /// Update to canary version
         #[arg(
             short,
             long,
             help = "Update to canary version",
-            long_help = "Update to the latest canary version of the goose CLI, otherwise updates to the latest stable version."
+            long_help = "Update to the latest canary version of the Obelus CLI, otherwise update to the latest stable version."
         )]
         canary: bool,
 
         /// Enforce to re-configure goose during update
-        #[arg(short, long, help = "Enforce to re-configure goose during update")]
+        #[arg(short, long, help = "Reconfigure Obelus after updating")]
         reconfigure: bool,
     },
 
     /// Terminal-integrated session (one session per terminal)
     #[command(
-        about = "Terminal-integrated goose session",
-        long_about = "Runs a goose session tied to your terminal window.\n\
+        about = "Terminal-integrated Obelus session",
+        long_about = "Runs an Obelus session tied to your terminal window.\n\
                       Each terminal maintains its own persistent session that resumes automatically.\n\n\
                       Setup:\n  \
                         eval \"$(goose term init zsh)\"  # zsh/bash\n  \
@@ -1042,19 +1045,18 @@ enum Command {
         command: TermCommand,
     },
 
-    /// Launch the goose terminal UI (TUI)
+    /// Launch the Obelus terminal UI (TUI)
     #[cfg(feature = "tui")]
     #[command(
-        about = "Launch the goose terminal UI",
-        long_about = "Launch the goose terminal UI (the @aaif/goose npm package).\n\
+        about = "Launch the Obelus terminal UI",
+        long_about = "Launch the Obelus terminal UI.\n\
                       \n\
                       Resolution order:\n  \
-                      1. GOOSE_TUI_SCRIPT, if set to an existing dist/tui.js\n  \
-                      2. A local checkout's ui/text/dist/tui.js (dev workflow)\n  \
-                      3. `npx --yes --package <spec> -- goose-tui` (deployed installs)\n\
+                      1. A packaged or local checkout's ui/text/dist/tui.js\n  \
+                      2. An explicitly configured GOOSE_TUI_NPM_SPEC\n\
                       \n\
-                      Override the npm spec via GOOSE_TUI_NPM_SPEC (default: @aaif/goose@latest).\n\
-                      Local script mode requires `node` on PATH; npx mode requires `npx` on PATH.\n\
+                      Obelus never downloads the upstream Goose TUI by default.\n\
+                      Local script mode requires `node` on PATH; an explicit npm override requires `npx`.\n\
                       Any extra arguments are passed through to the TUI."
     )]
     Tui {
@@ -1089,7 +1091,7 @@ enum Command {
     /// `**/.agents/REVIEW.md` scoped prompt overrides, builds a review
     /// request from the working tree (or an explicit diff range), and
     /// runs the review through goose.
-    #[command(about = "Review the current diff using goose")]
+    #[command(about = "Review the current diff using Obelus")]
     Review {
         /// Diff range to review (e.g. "main...HEAD"). Defaults to the working
         /// tree vs HEAD.
@@ -1231,7 +1233,7 @@ enum TermCommand {
     #[command(
         about = "Print shell initialization script",
         long_about = "Prints shell configuration to set up terminal-integrated sessions.\n\
-                      Each terminal gets a persistent goose session that automatically resumes.\n\n\
+                      Each terminal gets a persistent Obelus session that automatically resumes.\n\n\
                       Setup:\n  \
                         echo 'eval \"$(goose term init zsh)\"' >> ~/.zshrc\n  \
                         source ~/.zshrc\n\n\
@@ -1239,7 +1241,7 @@ enum TermCommand {
                         let init = ($nu.cache-dir | path join \"goose-term-init.nu\")\n  \
                         ^goose term init nu | save --force $init\n  \
                         source $init\n\n\
-                      With --default (anything typed that isn't a command goes to goose):\n  \
+                      With --default (anything typed that isn't a command goes to Obelus):\n  \
                         echo 'eval \"$(goose term init zsh --default)\"' >> ~/.zshrc\n  \
                         ^goose term init nu --default | save --force $init"
     )]
@@ -1251,11 +1253,11 @@ enum TermCommand {
         #[arg(short, long, help = "Name for the terminal session")]
         name: Option<String>,
 
-        /// Make goose the default handler for unknown commands
+        /// Make Obelus the default handler for unknown commands
         #[arg(
             long = "default",
-            help = "Make goose the default handler for unknown commands",
-            long_help = "When enabled, anything you type that isn't a valid command will be sent to goose. Supported for zsh, bash, and nu."
+            help = "Make Obelus the default handler for unknown commands",
+            long_help = "When enabled, anything you type that isn't a valid command will be sent to Obelus. Supported for zsh, bash, and nu."
         )]
         default: bool,
     },
@@ -1277,7 +1279,7 @@ enum TermCommand {
                         @g why did that fail  # short alias"
     )]
     Run {
-        /// The prompt to send to goose (multiple words allowed without quotes)
+        /// The prompt to send to Obelus (multiple words allowed without quotes)
         #[arg(required = true, num_args = 1..)]
         prompt: Vec<String>,
     },
@@ -1331,6 +1333,7 @@ pub struct InputConfig {
 
 fn get_command_name(command: &Option<Command>) -> &'static str {
     match command {
+        Some(Command::LiveFactCheckModel {}) => "live-fact-check-model",
         Some(Command::Configure {}) => "configure",
         Some(Command::Doctor {}) => "doctor",
         Some(Command::Info { .. }) => "info",
@@ -2223,6 +2226,9 @@ pub async fn cli() -> anyhow::Result<()> {
     );
 
     match cli.command {
+        Some(Command::LiveFactCheckModel {}) => {
+            crate::commands::live_fact_check_model::handle_live_fact_check_model().await
+        }
         Some(Command::Completion { shell, bin_name }) => {
             let mut cmd = Cli::command();
             shell.generate(&mut cmd, &bin_name, &mut std::io::stdout());
@@ -2395,6 +2401,18 @@ mod tests {
             }) => {}
             _ => panic!("expected nu completion shell"),
         }
+    }
+
+    #[test]
+    fn hidden_live_fact_check_model_worker_command_parses() {
+        let cli = Cli::try_parse_from(["goose", "live-fact-check-model"]).expect("parse failed");
+        assert!(matches!(cli.command, Some(Command::LiveFactCheckModel {})));
+
+        let mut command = Cli::command();
+        let worker = command
+            .find_subcommand_mut("live-fact-check-model")
+            .expect("worker command");
+        assert!(worker.is_hide_set());
     }
 
     #[test]

@@ -1,4 +1,4 @@
-use super::discover_skills;
+use super::discover_runtime_skills;
 use super::loaded_skill_context_with_args;
 use crate::agents::extension::PlatformExtensionContext;
 use crate::agents::mcp_client::{Error, McpClientTrait};
@@ -39,15 +39,16 @@ impl SkillsClient {
         })
     }
 
-    /// Controls whether Goose's bundled skills are exposed by this client.
-    /// Bundled skills are enabled by default.
+    /// Controls whether eligible bundled skills are exposed by this client.
+    /// This does not bypass per-skill opt-in requirements such as the explicit
+    /// `GOOSE_DOCS_ROOT` requirement for upstream Goose documentation.
     pub fn with_builtin_skills(mut self, enabled: bool) -> Self {
         self.exclude_builtin_skills = !enabled;
         self
     }
 
     fn discover_skills(&self) -> Vec<SourceEntry> {
-        discover_skills(Some(&self.working_dir))
+        discover_runtime_skills(Some(&self.working_dir))
             .into_iter()
             .filter(|skill| {
                 !self.exclude_builtin_skills || skill.source_type != SourceType::BuiltinSkill
@@ -136,7 +137,7 @@ impl McpClientTrait for SkillsClient {
             return match loaded_skill_context_with_args(skill, args) {
                 Ok(rendered) => Ok(CallToolResult::success(vec![ContentBlock::text(rendered)])),
                 Err(e) => Ok(CallToolResult::error(vec![ContentBlock::text(format!(
-                    "Failed to parse skill arguments: {}",
+                    "Failed to load skill: {}",
                     e
                 ))])),
             };

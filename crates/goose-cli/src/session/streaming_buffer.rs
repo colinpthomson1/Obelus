@@ -178,7 +178,7 @@ fn find_closing_fence(region: &str, fence_char: char, min_len: usize) -> Option<
 
 fn save_to_temp_file(content: &str) -> Option<String> {
     let mut file = tempfile::Builder::new()
-        .prefix("goose-")
+        .prefix("obelus-")
         .suffix(".txt")
         .tempfile()
         .ok()?;

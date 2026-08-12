@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240" role="img" aria-labelledby="title desc" >
+  <title id="title">Obelus Evidence Thread</title>
+  <desc id="desc">A source-node graphic connecting a claim to multiple points of evidence.</desc>
+  <rect width="800" height="240" fill="#FCFCF8"/>
+  <path d="M40 120H760" stroke="#D9DEEA" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="64" cy="120" r="7" fill="#3B50E0"/><path d="M64 120C124.0 120 124.0 154 184 154" fill="none" stroke="#B5BBCD" stroke-width="2"/><circle cx="184" cy="154" r="5" fill="#2BC7B9"/><path d="M184 154C252.0 154 252.0 102 320 102" fill="none" stroke="#B5BBCD" stroke-width="2"/><circle cx="320" cy="102" r="5" fill="#3B50E0"/><path d="M320 102C398.0 102 398.0 142 476 142" fill="none" stroke="#B5BBCD" stroke-width="2"/><circle cx="476" cy="142" r="5" fill="#2BC7B9"/><path d="M476 142C554.0 142 554.0 90 632 90" fill="none" stroke="#B5BBCD" stroke-width="2"/><circle cx="632" cy="90" r="5" fill="#3B50E0"/><path d="M632 90C684.0 90 684.0 128 736 128" fill="none" stroke="#B5BBCD" stroke-width="2"/><circle cx="736" cy="128" r="7" fill="#2BC7B9"/>
+</svg>

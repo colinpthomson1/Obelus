@@ -381,7 +381,7 @@ async fn poll_device_code_token(device: &DeviceCodeResponse) -> Result<TokenResp
 const HTML_SUCCESS_TEMPLATE: &str = r#"<!doctype html>
 <html>
   <head>
-    <title>goose - xAI Authorization Successful</title>
+    <title>Obelus - xAI authorization successful</title>
     <style>
       body {
         font-family: system-ui, -apple-system, sans-serif;
@@ -401,7 +401,7 @@ const HTML_SUCCESS_TEMPLATE: &str = r#"<!doctype html>
   <body>
     <div class="container">
       <h1>Authorization Successful</h1>
-      <p>You can close this window and return to goose.</p>
+      <p>You can close this window and return to Obelus.</p>
     </div>
     <script>const AUTO_CLOSE_TIMEOUT_MS = __AUTO_CLOSE_TIMEOUT_MS__; setTimeout(() => window.close(), AUTO_CLOSE_TIMEOUT_MS)</script>
   </body>
@@ -420,7 +420,7 @@ fn html_error(error: &str) -> String {
         r#"<!doctype html>
 <html>
   <head>
-    <title>goose - xAI Authorization Failed</title>
+    <title>Obelus - xAI authorization failed</title>
     <style>
       body {{
         font-family: system-ui, -apple-system, sans-serif;
@@ -573,7 +573,7 @@ async fn perform_loopback_oauth_flow(auth_state: &XaiAuthState) -> Result<TokenD
 
     if webbrowser::open(&auth_url).is_err() {
         tracing::info!(
-            "Please open this URL in your browser to authorize goose with xAI:\n{}",
+            "Please open this URL in your browser to authorize Obelus with xAI:\n{}",
             auth_url
         );
     }
@@ -598,7 +598,7 @@ async fn perform_device_code_flow() -> Result<TokenData> {
         device.user_code
     );
     eprintln!(
-        "\nTo authorize goose with xAI, open this URL in any browser:\n  {}\nand enter code: {}\n",
+        "\nTo authorize Obelus with xAI, open this URL in any browser:\n  {}\nand enter code: {}\n",
         url, device.user_code
     );
     let tokens = poll_device_code_token(&device).await?;

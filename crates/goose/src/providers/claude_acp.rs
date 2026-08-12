@@ -23,7 +23,7 @@ impl goose_providers::base::ProviderDescriptor for ClaudeAcpProvider {
         ProviderMetadata::new(
             CLAUDE_ACP_PROVIDER_NAME,
             "Claude Code",
-            "Use goose with your Claude Code subscription via the claude-agent-acp adapter.",
+            "Use Obelus with your Claude Code subscription via the claude-agent-acp adapter.",
             ACP_CURRENT_MODEL,
             vec![],
             CLAUDE_ACP_DOC_URL,
@@ -32,8 +32,8 @@ impl goose_providers::base::ProviderDescriptor for ClaudeAcpProvider {
         .with_setup_steps(vec![
             "Install the ACP adapter: `npm install -g @agentclientprotocol/claude-agent-acp`",
             "Ensure your Claude CLI is authenticated (run `claude` to verify)",
-            "Add to your goose config file (`~/.config/goose/config.yaml` on macOS/Linux):\n  GOOSE_PROVIDER: claude-acp\n  GOOSE_MODEL: current\n  claude-acp_configured: true",
-            "Restart goose for changes to take effect",
+            "Add these compatibility settings to `~/.config/goose/config.yaml` on macOS/Linux:\n  GOOSE_PROVIDER: claude-acp\n  GOOSE_MODEL: current\n  claude-acp_configured: true",
+            "Restart Obelus for changes to take effect",
         ])
     }
 }

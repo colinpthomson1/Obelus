@@ -1,12 +1,13 @@
 [package]
 name = "goose-sdk-types"
 version = "0.1.0-alpha.5"
+publish = false
 edition.workspace = true
 rust-version.workspace = true
 authors.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Shared types for the Goose SDK"
+description = "Shared types for the Goose-compatible Obelus SDK"
 
 [dependencies]
 agent-client-protocol = { workspace = true, features = ["unstable"] }

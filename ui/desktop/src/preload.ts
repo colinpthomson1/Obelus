@@ -3,6 +3,9 @@ import { Recipe } from './recipe';
 import type { GooseApp } from './types/apps';
 import type { Settings, SettingKey } from './utils/settings';
 import { defaultSettings } from './utils/settings';
+import { LIVE_IPC_CHANNELS } from './live/ipcTypes';
+import type { LiveAudioFrame, LiveElectronApi } from './live/ipcTypes';
+import { createLiveAudioTransport } from './live/preloadAudioTransport';
 
 // Mapping from settings keys to their old localStorage keys for lazy migration
 const localStorageKeyMap: Partial<Record<SettingKey, string>> = {
@@ -99,6 +102,7 @@ export interface CreateChatWindowOptions {
 type ElectronAPI = {
   platform: string;
   arch: string;
+  live: LiveElectronApi;
   reactReady: () => void;
   getConfig: () => Record<string, unknown>;
   hideWindow: () => void;
@@ -185,9 +189,114 @@ type AppConfigAPI = {
   getAll: () => Record<string, unknown>;
 };
 
+const liveAudioTransport = createLiveAudioTransport({
+  createChannel: () => new globalThis.MessageChannel(),
+  transferPort: (port) => ipcRenderer.postMessage(LIVE_IPC_CHANNELS.audioPort, null, [port]),
+});
+
+function appendLiveAudio(frame: LiveAudioFrame) {
+  return liveAudioTransport.append(frame);
+}
+
+const LIVE_ERROR_PREFIX = 'OBELUS_LIVE_ERROR:';
+
+async function invokeLive<T>(channel: string, ...args: unknown[]): Promise<T> {
+  try {
+    return (await ipcRenderer.invoke(channel, ...args)) as T;
+  } catch (cause) {
+    const message = cause instanceof Error ? cause.message : String(cause);
+    const marker = message.indexOf(LIVE_ERROR_PREFIX);
+    if (marker >= 0) {
+      try {
+        const payload = JSON.parse(
+          message.slice(marker + LIVE_ERROR_PREFIX.length).trim()
+        ) as Record<string, unknown>;
+        if (
+          typeof payload.code === 'string' &&
+          typeof payload.message === 'string' &&
+          typeof payload.retryable === 'boolean'
+        ) {
+          throw Object.assign(new Error(payload.message), {
+            code: payload.code,
+            retryable: payload.retryable,
+          });
+        }
+      } catch (decoded) {
+        if (decoded instanceof Error && 'code' in decoded && 'retryable' in decoded) throw decoded;
+      }
+    }
+    throw cause instanceof Error ? cause : new Error('Live operation failed');
+  }
+}
+
 const electronAPI: ElectronAPI = {
   platform: process.platform,
   arch: process.arch,
+  live: {
+    getSnapshot: () => invokeLive(LIVE_IPC_CHANNELS.getSnapshot),
+    getSupportStatus: () => invokeLive(LIVE_IPC_CHANNELS.getSupportStatus),
+    start: async (config) => {
+      const snapshot = await invokeLive<Awaited<ReturnType<LiveElectronApi['start']>>>(
+        LIVE_IPC_CHANNELS.start,
+        config
+      );
+      liveAudioTransport.connect();
+      return snapshot;
+    },
+    appendAudio: appendLiveAudio,
+    pause: () => invokeLive(LIVE_IPC_CHANNELS.pause),
+    resume: () => invokeLive(LIVE_IPC_CHANNELS.resume),
+    stop: () => invokeLive(LIVE_IPC_CHANNELS.stop),
+    acknowledgeAudioAssetsPersisted: (acknowledgement) =>
+      invokeLive(LIVE_IPC_CHANNELS.acknowledgeAudioAssetsPersisted, acknowledgement),
+    getSttSession: (request) => invokeLive(LIVE_IPC_CHANNELS.getSttSession, request),
+    completeSttSession: (sessionId, request) =>
+      invokeLive(LIVE_IPC_CHANNELS.completeSttSession, sessionId, request),
+    getLocalSttSupport: () => invokeLive(LIVE_IPC_CHANNELS.getLocalSttSupport),
+    startLocalStt: (request) => invokeLive(LIVE_IPC_CHANNELS.startLocalStt, request),
+    appendLocalSttAudio: (request) => invokeLive(LIVE_IPC_CHANNELS.appendLocalSttAudio, request),
+    stopLocalStt: (request) => invokeLive(LIVE_IPC_CHANNELS.stopLocalStt, request),
+    submitClaimDetection: (request) => invokeLive(LIVE_IPC_CHANNELS.submitClaimDetection, request),
+    submitFactCheck: (stage, request) =>
+      invokeLive(LIVE_IPC_CHANNELS.submitFactCheck, stage, request),
+    pollFactCheck: (meetingId, jobId, stage) =>
+      invokeLive(LIVE_IPC_CHANNELS.pollFactCheck, meetingId, jobId, stage),
+    escalateFactCheck: (meetingId, checkId, idempotencyKey, reason, unresolvedSubquestions) =>
+      invokeLive(
+        LIVE_IPC_CHANNELS.escalateFactCheck,
+        meetingId,
+        checkId,
+        idempotencyKey,
+        reason,
+        unresolvedSubquestions
+      ),
+    submitRefinement: (request) => invokeLive(LIVE_IPC_CHANNELS.submitRefinement, request),
+    pollRefinement: (meetingId, jobId) =>
+      invokeLive(LIVE_IPC_CHANNELS.pollRefinement, meetingId, jobId),
+    deleteRemoteMeeting: (meetingId) =>
+      invokeLive(LIVE_IPC_CHANNELS.deleteRemoteMeeting, meetingId),
+    deleteLocalMeetingAssets: (meetingId) =>
+      invokeLive(LIVE_IPC_CHANNELS.deleteLocalMeetingAssets, meetingId),
+    getAudioPlaybackUrl: (meetingId, assetId) =>
+      invokeLive(LIVE_IPC_CHANNELS.getAudioPlaybackUrl, meetingId, assetId),
+    openSource: (url) => invokeLive(LIVE_IPC_CHANNELS.openSource, url),
+    subscribeSnapshot: (callback) => {
+      const listener = (
+        _event: Electron.IpcRendererEvent,
+        snapshot: Parameters<typeof callback>[0]
+      ) => callback(snapshot);
+      ipcRenderer.on(LIVE_IPC_CHANNELS.snapshot, listener);
+      return () => ipcRenderer.removeListener(LIVE_IPC_CHANNELS.snapshot, listener);
+    },
+    subscribeSelection: (callback) => {
+      const listener = (
+        _event: Electron.IpcRendererEvent,
+        selection: Parameters<typeof callback>[0]
+      ) => callback(selection);
+      ipcRenderer.on(LIVE_IPC_CHANNELS.selection, listener);
+      return () => ipcRenderer.removeListener(LIVE_IPC_CHANNELS.selection, listener);
+    },
+  },
   reactReady: () => ipcRenderer.send('react-ready'),
   getConfig: () => {
     if (!config || Object.keys(config).length === 0) {

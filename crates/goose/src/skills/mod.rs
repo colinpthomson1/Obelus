@@ -12,7 +12,7 @@ use crate::config::{paths::Paths, Config};
 use crate::plugins::installed_plugin_skill_dirs;
 use crate::sources::parse_frontmatter;
 use agent_client_protocol::Error;
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use arguments::apply_skill_arguments;
 use goose_sdk_types::custom_requests::{SourceEntry, SourceType};
 use serde::Deserialize;
@@ -99,15 +99,22 @@ pub(crate) fn validate_skill_name(name: &str) -> Result<(), Error> {
     Ok(())
 }
 
-const DEFAULT_GOOSE_DOCS_ROOT: &str = "https://goose-docs.ai";
 const GOOSE_DOCS_ROOT_PLACEHOLDER: &str = "{{GOOSE_DOCS_ROOT}}";
+const UPSTREAM_GOOSE_DOC_SKILL_NAME: &str = "goose-doc-guide";
+
+fn is_upstream_goose_doc_skill(skill: &SourceEntry) -> bool {
+    skill.name == UPSTREAM_GOOSE_DOC_SKILL_NAME && skill.source_type == SourceType::BuiltinSkill
+}
+
+fn runtime_builtin_skill_enabled(skill: &SourceEntry, goose_docs_root: Option<&str>) -> bool {
+    !is_upstream_goose_doc_skill(skill)
+        || goose_docs_root.is_some_and(|root| !root.trim().is_empty())
+}
 
 /// Substitute the `{{GOOSE_DOCS_ROOT}}` placeholder in the builtin
-/// `goose-doc-guide` skill with the resolved docs root. Resolution is
-/// deterministic: the configured `GOOSE_DOCS_ROOT` if set, otherwise the
-/// canonical online docs root.
+/// `goose-doc-guide` skill with an explicitly configured docs root.
 fn resolve_docs_root_placeholder(skill: &SourceEntry, content: &str, docs_root: &str) -> String {
-    if skill.name != "goose-doc-guide" || skill.source_type != SourceType::BuiltinSkill {
+    if !is_upstream_goose_doc_skill(skill) {
         return content.to_string();
     }
 
@@ -115,10 +122,17 @@ fn resolve_docs_root_placeholder(skill: &SourceEntry, content: &str, docs_root: 
 }
 
 fn loaded_skill_context(skill: &SourceEntry, content: &str) -> Result<String> {
-    let docs_root = Config::global()
-        .get_goose_docs_root()?
-        .unwrap_or_else(|| DEFAULT_GOOSE_DOCS_ROOT.to_string());
-    let content = resolve_docs_root_placeholder(skill, content, &docs_root);
+    let content = if is_upstream_goose_doc_skill(skill) {
+        let docs_root = Config::global().get_goose_docs_root()?.ok_or_else(|| {
+            anyhow!(
+                "The upstream Goose documentation compatibility skill is disabled. Set \
+                 GOOSE_DOCS_ROOT explicitly to a trusted documentation root to opt in."
+            )
+        })?;
+        resolve_docs_root_placeholder(skill, content, &docs_root)
+    } else {
+        content.to_string()
+    };
 
     let title = format!("{} ({})", skill.name, skill.source_type);
     let mut output = format!(
@@ -475,6 +489,8 @@ fn scan_skills_from_dir(dir: &Path, global: bool, seen: &mut HashSet<String>) ->
 }
 
 /// Discover skills from all configured filesystem locations and built-ins.
+/// This is an inventory API; use [`discover_runtime_skills`] before exposing
+/// skill instructions to an agent or executable command surface.
 /// Each returned entry has `global` set according to the directory it was
 /// found in (or `true` for built-ins).
 pub fn discover_skills(working_dir: Option<&Path>) -> Vec<SourceEntry> {
@@ -489,19 +505,31 @@ pub fn discover_skills(working_dir: Option<&Path>) -> Vec<SourceEntry> {
 
     for content in builtin::get_all() {
         if let Some(source) = parse_skill_content(content, &PathBuf::new(), true) {
+            let path = format!("builtin://skills/{}", source.name);
+            let source = SourceEntry {
+                source_type: SourceType::BuiltinSkill,
+                path,
+                ..source
+            };
             if !seen.contains(&source.name) {
                 seen.insert(source.name.clone());
-                let path = format!("builtin://skills/{}", source.name);
-                sources.push(SourceEntry {
-                    source_type: SourceType::BuiltinSkill,
-                    path,
-                    ..source
-                });
+                sources.push(source);
             }
         }
     }
 
     sources
+}
+
+/// Discover skills eligible for runtime use. The upstream Goose documentation
+/// compatibility skill is disabled unless `GOOSE_DOCS_ROOT` has been explicitly
+/// configured to a nonblank value.
+pub fn discover_runtime_skills(working_dir: Option<&Path>) -> Vec<SourceEntry> {
+    let goose_docs_root = Config::global().get_goose_docs_root().ok().flatten();
+    discover_skills(working_dir)
+        .into_iter()
+        .filter(|skill| runtime_builtin_skill_enabled(skill, goose_docs_root.as_deref()))
+        .collect()
 }
 
 pub fn list_installed_skills(working_dir: Option<&Path>) -> Vec<SourceEntry> {
@@ -513,7 +541,7 @@ pub fn list_installed_skills(working_dir: Option<&Path>) -> Vec<SourceEntry> {
             fallback.as_deref()
         }
     };
-    discover_skills(wd)
+    discover_runtime_skills(wd)
 }
 
 #[cfg(test)]
@@ -606,5 +634,17 @@ mod tests {
         let rendered = resolve_docs_root_placeholder(&skill, &skill.content, "/tmp/goose-docs");
 
         assert_eq!(rendered, skill.content);
+    }
+
+    #[test]
+    fn builtin_goose_doc_guide_requires_an_explicit_nonblank_root() {
+        let skill = builtin_goose_doc_guide_skill();
+
+        assert!(!runtime_builtin_skill_enabled(&skill, None));
+        assert!(!runtime_builtin_skill_enabled(&skill, Some("   ")));
+        assert!(runtime_builtin_skill_enabled(
+            &skill,
+            Some("https://goose-docs.ai")
+        ));
     }
 }

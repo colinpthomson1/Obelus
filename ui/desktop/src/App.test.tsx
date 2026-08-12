@@ -132,6 +132,14 @@ vi.mock('./components/AnnouncementModal', () => ({
   default: () => null,
 }));
 
+vi.mock('./components/live/LiveFactCheckView', () => ({
+  default: () => <div>Live Fact Check</div>,
+}));
+
+vi.mock('./components/live/GlobalRecordingIndicator', () => ({
+  GlobalRecordingIndicator: () => null,
+}));
+
 // Create mocks that we can track and configure per test
 const mockNavigate = vi.fn();
 const mockSearchParams = new URLSearchParams();
@@ -262,7 +270,7 @@ describe('App Component - Brand New State', () => {
       expect(mockElectron.reactReady).toHaveBeenCalled();
     });
 
-    expect(screen.getByText(/^Welcome to goose/)).toBeInTheDocument();
+    expect(screen.getByText(/^Welcome to Obelus/)).toBeInTheDocument();
   });
 
   it('should not redirect when provider is configured', async () => {

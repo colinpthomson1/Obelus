@@ -1,4 +1,11 @@
-import type { OpenDialogOptions, OpenDialogReturnValue } from 'electron';
+import 'dotenv/config';
+import {
+  IS_LOCAL_ADHOC_BUILD,
+  PRODUCT_DEEP_LINK_PREFIX,
+  PRODUCT_NAME,
+  PRODUCT_PROTOCOL,
+} from './productIdentity';
+import type { OpenDialogOptions, OpenDialogReturnValue, WebContents, WebFrameMain } from 'electron';
 import {
   app,
   App,
@@ -12,6 +19,7 @@ import {
   Notification,
   powerMonitor,
   powerSaveBlocker,
+  protocol,
   screen,
   session,
   shell,
@@ -25,9 +33,8 @@ import started from 'electron-squirrel-startup';
 import path from 'node:path';
 import os from 'node:os';
 import { execFileSync, spawn, execFile } from 'child_process';
-import 'dotenv/config';
 import { checkBackendStatus } from './backendStatus';
-import { startGooseServe } from './gooseServe';
+import { findGooseBinaryPath, startGooseServe } from './gooseServe';
 import { getLoginShellPath } from './loginShellPath';
 import { GooseServeLeaseRegistry, type GooseServeLease } from './gooseServeLeaseRegistry';
 import { acpWebSocketUrlFromHttpBase, normalizeAcpHttpBaseUrl } from './acp/url';
@@ -56,6 +63,50 @@ import type { GooseApp } from './types/apps';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { BLOCKED_PROTOCOLS, WEB_PROTOCOLS } from './utils/urlSecurity';
 import { buildCSP } from './utils/csp';
+import { LIVE_IPC_CHANNELS } from './live/ipcTypes';
+import type { FactCheckBackend, LiveCaptureSnapshot, LiveFactCheckMode } from './live/ipcTypes';
+import { manualFactCheckContextMenuLabel } from './live/manualFactCheckPrivacy';
+import { AudioAssetWriter } from './live/main/AudioAssetWriter';
+import { AudioPlaybackProtocol, LIVE_AUDIO_SCHEME } from './live/main/AudioPlaybackProtocol';
+import { GatewayClient } from './live/main/GatewayClient';
+import {
+  GatewaySessionProvider,
+  resolveGatewayIdentityAdapter,
+} from './live/main/GatewaySessionProvider';
+import { LiveCaptureCoordinator } from './live/main/LiveCaptureCoordinator';
+import { LocalSttService, resolveLocalSttWorkerPath } from './live/main/LocalSttService';
+import { LocalFactCheckService } from './live/main/LocalFactCheckService';
+import { ChatGptSubscriptionFactCheckClient } from './live/main/ChatGptSubscriptionFactCheckClient';
+import { WebEvidenceRetriever } from './live/main/WebEvidenceRetriever';
+import {
+  createLiveSelectionRequest,
+  registerLiveIpc,
+  type LiveIpcRegistration,
+} from './live/main/registerLiveIpc';
+import {
+  configureObelusSession,
+  createTrustedRendererUrlPredicate,
+  isRecoverableDisplayMediaError,
+  OBELUS_SESSION_PARTITION,
+} from './live/main/sessionSecurity';
+import { getLiveSupportStatus } from './live/main/support';
+import { configureSystemAudioCompatibility } from './live/main/systemAudioCompatibility';
+
+configureSystemAudioCompatibility(app.commandLine);
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: LIVE_AUDIO_SCHEME,
+    privileges: {
+      standard: true,
+      secure: true,
+      stream: true,
+      supportFetchAPI: false,
+      corsEnabled: false,
+      bypassCSP: false,
+    },
+  },
+]);
 
 function shouldSetupUpdater(): boolean {
   // Setup updater if either the flag is enabled OR dev updates are enabled
@@ -81,10 +132,12 @@ const MENU_TRANSLATIONS_ZH_CN: Record<string, string> = {
   Help: '帮助',
   // Context menu
   'Add to dictionary': '添加到词典',
+  'Fact-check selection': '核查所选内容',
+  'Fact-check with Wikipedia/Wikidata…': '使用维基百科/维基数据核查…',
   Cut: '剪切',
   Copy: '复制',
   Paste: '粘贴',
-  // Goose-added items
+  // Product-added items
   'New Window': '新建窗口',
   Settings: '设置',
   'Find…': '查找…',
@@ -96,11 +149,11 @@ const MENU_TRANSLATIONS_ZH_CN: Record<string, string> = {
   'New Chat Window': '新建聊天窗口',
   'Open Directory...': '打开目录…',
   'Recent Directories': '最近的目录',
-  'Focus Goose Window': '聚焦 Goose 窗口',
+  'Focus Obelus Window': '聚焦 Obelus 窗口',
   'Quick Launcher': '快速启动器',
   'Always on Top': '窗口置顶',
   'Toggle Navigation': '切换导航',
-  'About Goose': '关于 Goose',
+  'About Obelus': '关于 Obelus',
   // Electron's default role-based labels we want to translate as well.
   // (The menu role itself still provides the correct behaviour; only the
   // display string is overridden.)
@@ -126,7 +179,7 @@ const MENU_TRANSLATIONS_ZH_CN: Record<string, string> = {
   'Bring All to Front': '全部置于最前',
   'Emoji & Symbols': '表情符号',
   'Start Dictation…': '开始听写…',
-  'Hide Goose': '隐藏 Goose',
+  'Hide Obelus': '隐藏 Obelus',
   'Hide Others': '隐藏其他',
   'Show All': '全部显示',
   Services: '服务',
@@ -284,7 +337,7 @@ function listGitWorktreeDirs(dir: string): Promise<string[]> {
   });
 }
 
-async function configureProxy() {
+async function configureProxy(targetSessions = [session.defaultSession]) {
   const httpsProxy = process.env.HTTPS_PROXY || process.env.https_proxy;
   const httpProxy = process.env.HTTP_PROXY || process.env.http_proxy;
   const noProxy = process.env.NO_PROXY || process.env.no_proxy || '';
@@ -293,10 +346,14 @@ async function configureProxy() {
 
   if (proxyUrl) {
     console.log('[Main] Configuring proxy');
-    await session.defaultSession.setProxy({
-      proxyRules: proxyUrl,
-      proxyBypassRules: noProxy,
-    });
+    await Promise.all(
+      targetSessions.map((targetSession) =>
+        targetSession.setProxy({
+          proxyRules: proxyUrl,
+          proxyBypassRules: noProxy,
+        })
+      )
+    );
     console.log('[Main] Proxy configured successfully');
   }
 }
@@ -420,23 +477,29 @@ if (process.env.ENABLE_PLAYWRIGHT) {
 // In production, register normally
 if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
   // Development mode - force registration
-  console.log('[Main] Development mode: Forcing protocol registration for goose://');
-  app.setAsDefaultProtocolClient('goose');
+  console.log(
+    `[Main] Development mode: Forcing protocol registration for ${PRODUCT_DEEP_LINK_PREFIX}`
+  );
+  app.setAsDefaultProtocolClient(PRODUCT_PROTOCOL);
 
   if (process.platform === 'darwin') {
     try {
       // Reset the default handler to ensure dev version takes precedence
-      spawn('open', ['-a', process.execPath, '--args', '--reset-protocol-handler', 'goose'], {
-        detached: true,
-        stdio: 'ignore',
-      });
+      spawn(
+        'open',
+        ['-a', process.execPath, '--args', '--reset-protocol-handler', PRODUCT_PROTOCOL],
+        {
+          detached: true,
+          stdio: 'ignore',
+        }
+      );
     } catch {
       console.warn('[Main] Could not reset protocol handler');
     }
   }
 } else {
   // Production mode - normal registration
-  app.setAsDefaultProtocolClient('goose');
+  app.setAsDefaultProtocolClient(PRODUCT_PROTOCOL);
 }
 
 // Apply single instance lock on Windows and Linux where it's needed for deep links
@@ -450,7 +513,7 @@ if (process.platform !== 'darwin') {
     app.quit();
   } else {
     app.on('second-instance', (_event, commandLine) => {
-      const protocolUrl = commandLine.find((arg) => arg.startsWith('goose://'));
+      const protocolUrl = commandLine.find((arg) => arg.startsWith(PRODUCT_DEEP_LINK_PREFIX));
       if (protocolUrl) {
         const parsedUrl = new URL(protocolUrl);
         // If it's a bot/recipe URL, handle it directly by creating a new window
@@ -513,7 +576,7 @@ if (process.platform !== 'darwin') {
   }
 
   // Handle protocol URLs on Windows and Linux startup
-  const protocolUrl = process.argv.find((arg) => arg.startsWith('goose://'));
+  const protocolUrl = process.argv.find((arg) => arg.startsWith(PRODUCT_DEEP_LINK_PREFIX));
   if (protocolUrl) {
     app.whenReady().then(async () => {
       let parsedUrl: URL;
@@ -611,7 +674,7 @@ function getResumeSessionId(parsedUrl: URL): string | null {
 async function createResumeChatWindow(parsedUrl: URL, dir?: string): Promise<boolean> {
   const resumeSessionId = getResumeSessionId(parsedUrl);
   if (!resumeSessionId) {
-    log.warn('[Main] Ignoring goose://resume URL without a session id');
+    log.warn(`[Main] Ignoring ${PRODUCT_DEEP_LINK_PREFIX}resume URL without a session id`);
     return false;
   }
 
@@ -690,9 +753,20 @@ async function processProtocolUrl(url: string, parsedUrl: URL, window: BrowserWi
 
 let windowDeeplinkURL: string | null = null;
 
-app.on('open-url', async (_event, url) => {
+app.on('open-url', async (event, url) => {
+  event.preventDefault();
   if (process.platform !== 'win32') {
-    const parsedUrl = new URL(url);
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(url);
+    } catch (error) {
+      log.warn('[Main] Ignoring invalid deep link:', errorMessage(error));
+      return;
+    }
+    if (parsedUrl.protocol !== `${PRODUCT_PROTOCOL}:`) {
+      log.warn(`[Main] Ignoring unsupported deep-link protocol: ${parsedUrl.protocol}`);
+      return;
+    }
 
     log.info(
       '[Main] Received open-url event:',
@@ -765,7 +839,7 @@ app.on('open-url', async (_event, url) => {
 app.on('will-finish-launching', () => {
   if (process.platform === 'darwin') {
     app.setAboutPanelOptions({
-      applicationName: 'Goose',
+      applicationName: PRODUCT_NAME,
       applicationVersion: app.getVersion(),
     });
   }
@@ -820,7 +894,7 @@ async function handleFileOpen(filePath: string) {
 
     // Show user-friendly error notification
     new Notification({
-      title: 'Goose',
+      title: PRODUCT_NAME,
       body: `Could not open directory: ${path.basename(filePath)}`,
     }).show();
   }
@@ -980,6 +1054,43 @@ let appConfig = {
 
 const windowMap = new Map<number, BrowserWindow>();
 const appWindows = new Map<string, BrowserWindow>();
+
+function isLiveWindowWebContents(webContents: WebContents): boolean {
+  const window = BrowserWindow.fromWebContents(webContents);
+  return window !== null && windowMap.get(window.id) === window;
+}
+
+function isLiveWindowFrame(frame: WebFrameMain): boolean {
+  return [...windowMap.values()].some(
+    (window) => !window.isDestroyed() && window.webContents.mainFrame === frame
+  );
+}
+
+let liveCaptureCoordinator: LiveCaptureCoordinator | null = null;
+let liveAudioStore: AudioAssetWriter | null = null;
+let liveIpcRegistration: LiveIpcRegistration | null = null;
+let liveLocalSttService: LocalSttService | null = null;
+let liveLocalFactCheckService: LocalFactCheckService | null = null;
+let liveFactCheckMode: LiveFactCheckMode = 'hosted';
+let livePowerSaveBlockerId: number | null = null;
+
+function broadcastLiveSnapshot(snapshot: LiveCaptureSnapshot): void {
+  for (const window of windowMap.values()) {
+    if (!window.isDestroyed()) window.webContents.send(LIVE_IPC_CHANNELS.snapshot, snapshot);
+  }
+
+  const preventsSuspension = ['starting', 'recording', 'paused', 'stopping'].includes(
+    snapshot.lifecycle
+  );
+  if (preventsSuspension && livePowerSaveBlockerId === null) {
+    livePowerSaveBlockerId = powerSaveBlocker.start('prevent-app-suspension');
+  } else if (!preventsSuspension && livePowerSaveBlockerId !== null) {
+    if (powerSaveBlocker.isStarted(livePowerSaveBlockerId)) {
+      powerSaveBlocker.stop(livePowerSaveBlockerId);
+    }
+    livePowerSaveBlockerId = null;
+  }
+}
 
 const gooseServeLeases = new GooseServeLeaseRegistry(log);
 
@@ -1177,7 +1288,7 @@ const createChat = async (
       if (!gooseServeResult.certFingerprint) {
         await gooseServeResult.cleanup();
         throw new Error(
-          'goose serve started with TLS but did not return a certificate fingerprint'
+          'Obelus backend started with TLS but did not return a certificate fingerprint'
         );
       }
 
@@ -1187,18 +1298,18 @@ const createChat = async (
         localCertificateTrust.trust.fingerprint !== localCertFingerprint
       ) {
         await gooseServeResult.cleanup();
-        throw new Error('goose serve TLS certificate fingerprint did not match readiness probe');
+        throw new Error('Obelus backend TLS certificate fingerprint did not match readiness probe');
       }
       localCertificateTrust.trust.fingerprint = localCertFingerprint;
     } catch (error) {
       localCertificateTrust.release();
-      log.error('goose serve failed to start', error);
+      log.error('Obelus backend failed to start', error);
       dialog.showMessageBoxSync({
         type: 'error',
-        title: 'Goose Failed to Start',
+        title: 'Obelus failed to start',
         message: 'The backend server failed to start.',
         detail: [
-          'Backend: goose serve',
+          'Backend: Obelus local backend',
           'Readiness check: HTTPS GET /status',
           `Startup error:\n${errorMessage(error)}`,
         ].join('\n\n'),
@@ -1279,7 +1390,7 @@ const createChat = async (
               process.env.SECURITY_COMMAND_CLASSIFIER_ENABLED_OVERRIDE,
           }),
         ],
-        partition: 'persist:goose',
+        partition: OBELUS_SESSION_PARTITION,
       },
     });
   } catch (error) {
@@ -1352,6 +1463,24 @@ const createChat = async (
           role: 'copy',
         })
       );
+      const selection = createLiveSelectionRequest(params.selectionText, Date.now, {
+        x: params.x,
+        y: params.y,
+      });
+      if (selection) {
+        const factCheckMode = liveFactCheckMode;
+        const selectionRequest = {
+          ...selection,
+          factCheckMode,
+        };
+        menu.append(new MenuItem({ type: 'separator' }));
+        menu.append(
+          new MenuItem({
+            label: menuT(manualFactCheckContextMenuLabel(factCheckMode)),
+            click: () => mainWindow.webContents.send(LIVE_IPC_CHANNELS.selection, selectionRequest),
+          })
+        );
+      }
     }
 
     // Only show paste in editable fields (text inputs)
@@ -1414,6 +1543,7 @@ const createChat = async (
     recipes: '/recipes',
     skills: '/skills',
     permission: '/permission',
+    live: '/live',
     ConfigureProviders: '/configure-providers',
   };
 
@@ -1435,7 +1565,7 @@ const createChat = async (
     }
   }
 
-  // Goose's react app uses HashRouter, so the path + search params follow a #/
+  // The renderer uses HashRouter, so the path + search params follow a #/
   url.hash = `${appPath}?${searchParams.toString()}`;
   let formattedUrl = formatUrl(url);
   log.info('Opening URL: ', formattedUrl);
@@ -1444,6 +1574,7 @@ const createChat = async (
       mainWindow.show();
     }
   });
+  windowMap.set(windowId, mainWindow);
   mainWindow.loadURL(formattedUrl);
 
   // If we have an initial message, store it to send after React is ready
@@ -1492,10 +1623,22 @@ const createChat = async (
     }
   });
 
-  windowMap.set(windowId, mainWindow);
+  const liveOwnerWebContentsId = mainWindow.webContents.id;
+  let liveOwnerRelease: Promise<void> | undefined;
+  const releaseLiveOwner = () => {
+    liveOwnerRelease ??= (async () => {
+      await liveIpcRegistration?.releaseSender(liveOwnerWebContentsId);
+      await liveCaptureCoordinator?.ownerDestroyed(liveOwnerWebContentsId);
+    })();
+    return liveOwnerRelease;
+  };
+  mainWindow.webContents.on('did-start-navigation', (_event, _url, isInPlace, isMainFrame) => {
+    if (isMainFrame && !isInPlace) void releaseLiveOwner();
+  });
 
   // Handle window closure
   mainWindow.on('closed', () => {
+    void releaseLiveOwner();
     windowMap.delete(windowId);
 
     pendingInitialMessages.delete(windowId);
@@ -1545,7 +1688,7 @@ const createLauncher = () => {
           GOOSE_LOCALE: getConfiguredGooseLocale(),
         }),
       ],
-      partition: 'persist:goose',
+      partition: OBELUS_SESSION_PARTITION,
     },
     skipTaskbar: true,
     alwaysOnTop: true,
@@ -1846,11 +1989,19 @@ const handleFatalError = (error: Error) => {
 
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', formatErrorForLogging(error));
+  if (isRecoverableDisplayMediaError(error)) {
+    log.warn('System Audio source discovery failed; continuing with microphone-only capture');
+    return;
+  }
   handleFatalError(error);
 });
 
 process.on('unhandledRejection', (error) => {
   console.error('Unhandled Rejection:', formatErrorForLogging(error));
+  if (isRecoverableDisplayMediaError(error)) {
+    log.warn('System Audio source discovery failed; continuing with microphone-only capture');
+    return;
+  }
   handleFatalError(error instanceof Error ? error : new Error(String(error)));
 });
 
@@ -2426,44 +2577,130 @@ const registerGlobalShortcuts = () => {
 };
 
 async function appMain() {
+  const obelusSession = session.fromPartition(OBELUS_SESSION_PARTITION);
+  const appEntryUrl = getAppUrl();
+  const isTrustedRendererUrl = createTrustedRendererUrlPredicate(appEntryUrl);
+
+  liveAudioStore = new AudioAssetWriter(
+    path.join(app.getPath('userData'), 'live-meetings', 'audio')
+  );
+  const recoveredAssets = await liveAudioStore.initialize();
+  if (recoveredAssets.length > 0) {
+    log.warn(`Recovered ${recoveredAssets.length} interrupted live audio asset(s)`);
+  }
+  const gatewaySessionProvider = new GatewaySessionProvider({
+    mode: process.env.OBELUS_GATEWAY_AUTH_MODE === 'dev-static' ? 'dev-static' : 'jwt',
+    devToken: process.env.OBELUS_GATEWAY_DEV_TOKEN,
+    isPackaged: app.isPackaged && !IS_LOCAL_ADHOC_BUILD,
+    isProduction: process.env.NODE_ENV === 'production',
+    identityAdapter: resolveGatewayIdentityAdapter(),
+  });
+  const gateway = new GatewayClient({
+    baseUrl: process.env.OBELUS_GATEWAY_URL,
+    sessionProvider: gatewaySessionProvider,
+    resolveAudioAsset: (meetingId, assetId, sourceKind) =>
+      liveAudioStore!.resolveFinalizedAsset(meetingId, assetId, sourceKind),
+  });
+  liveLocalSttService = new LocalSttService({
+    workerPath: resolveLocalSttWorkerPath({
+      isPackaged: app.isPackaged,
+      appPath: app.getAppPath(),
+      resourcesPath: process.resourcesPath,
+    }),
+  });
+  const configuredFactCheckBackend = process.env.OBELUS_FACT_CHECK_BACKEND?.trim();
+  const preferredFactCheckBackend: FactCheckBackend =
+    configuredFactCheckBackend === 'direct' ? 'direct' : 'hosted';
+  const allowDirectFallback =
+    preferredFactCheckBackend === 'hosted' &&
+    process.env.OBELUS_FACT_CHECK_DIRECT_FALLBACK === 'true';
+  liveLocalFactCheckService =
+    preferredFactCheckBackend === 'direct' || allowDirectFallback
+      ? new LocalFactCheckService({
+          mode: 'subscription_web',
+          storeDirectory: path.join(
+            app.getPath('userData'),
+            'live-meetings',
+            'local-research-jobs'
+          ),
+          modelClient: new ChatGptSubscriptionFactCheckClient({
+            gooseBinaryPath: findGooseBinaryPath({
+              isPackaged: app.isPackaged,
+              resourcesPath: process.resourcesPath,
+            }),
+          }),
+          evidenceRetriever: new WebEvidenceRetriever(),
+        })
+      : null;
+  liveFactCheckMode =
+    preferredFactCheckBackend === 'direct' || allowDirectFallback
+      ? (liveLocalFactCheckService?.factCheckMode ?? 'subscription_web')
+      : 'hosted';
+  liveCaptureCoordinator = new LiveCaptureCoordinator({
+    audioStore: liveAudioStore,
+    onSnapshot: broadcastLiveSnapshot,
+    recoveredAssets,
+  });
+  const audioPlayback = new AudioPlaybackProtocol((meetingId, assetId) =>
+    liveAudioStore!.resolveFinalizedAsset(meetingId, assetId, 'mixed')
+  );
+  audioPlayback.register(obelusSession);
+
+  configureObelusSession(obelusSession, {
+    appEntryUrl,
+    isKnownWebContents: isLiveWindowWebContents,
+    isKnownFrame: isLiveWindowFrame,
+    getCsp: () => buildCSP(getExternalBackendForCsp(getSettings())),
+    getExternalBackendUrl: () => {
+      const external = getExternalBackendForCsp(getSettings());
+      return external?.enabled ? external.url : undefined;
+    },
+    gatewayBaseUrl: process.env.OBELUS_GATEWAY_URL,
+  });
+  liveIpcRegistration = registerLiveIpc({
+    ipcMain,
+    coordinator: liveCaptureCoordinator,
+    gateway,
+    localStt: liveLocalSttService,
+    localFactCheck: liveLocalFactCheckService ?? undefined,
+    factCheckRouting: {
+      preferred: preferredFactCheckBackend,
+      allowDirectFallback,
+    },
+    audioStore: liveAudioStore,
+    sender: {
+      isKnownWebContents: isLiveWindowWebContents,
+      isTrustedUrl: isTrustedRendererUrl,
+    },
+    getSupportStatus: () =>
+      getLiveSupportStatus(
+        gateway,
+        liveLocalSttService ?? undefined,
+        liveLocalFactCheckService ?? undefined,
+        allowDirectFallback
+      ),
+    openExternalSource: (url) => shell.openExternal(url),
+    getAudioPlaybackUrl: (meetingId, assetId) => audioPlayback.getPlaybackUrl(meetingId, assetId),
+  });
+
+  powerMonitor.on('suspend', () => liveCaptureCoordinator?.markSystemSleep());
   powerMonitor.on('resume', () => {
-    for (const window of BrowserWindow.getAllWindows()) {
+    liveCaptureCoordinator?.markSystemResume();
+    for (const window of windowMap.values()) {
       if (!window.isDestroyed()) {
         window.webContents.send('system-resume');
       }
     }
   });
 
-  await configureProxy();
+  await configureProxy([session.defaultSession, obelusSession]);
 
   // Ensure Windows shims are available before any MCP processes are spawned
   await ensureWinShims();
 
-  registerUpdateIpcHandlers();
-
-  // Handle microphone permission requests
-  session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
-    console.log('Permission requested:', permission);
-    // Allow microphone and media access
-    if (permission === 'media') {
-      callback(true);
-    } else {
-      // Default behavior for other permissions
-      callback(true);
-    }
-  });
-
-  // Add CSP headers to all sessions, recomputed on every response so external
-  // backend settings take effect without restarting the app.
-  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    const currentSettings = getSettings();
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Content-Security-Policy': buildCSP(getExternalBackendForCsp(currentSettings)),
-      },
-    });
-  });
+  if (shouldSetupUpdater()) {
+    registerUpdateIpcHandlers();
+  }
 
   // Migrate old settings format if needed (one-time migration)
   const settings = getSettings();
@@ -2476,11 +2713,6 @@ async function appMain() {
 
   // Register global shortcuts based on settings
   registerGlobalShortcuts();
-
-  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    details.requestHeaders['Origin'] = 'http://localhost:5173';
-    callback({ cancel: false, requestHeaders: details.requestHeaders });
-  });
 
   if (settings.showMenuBarIcon) {
     createTray();
@@ -2530,7 +2762,7 @@ async function appMain() {
 
   const shortcuts = getKeyboardShortcuts(settings);
 
-  const appMenu = menu?.items.find((item) => item.label === 'Goose');
+  const appMenu = menu?.items.find((item) => item.label === PRODUCT_NAME);
   if (appMenu?.submenu) {
     appMenu.submenu.insert(1, new MenuItem({ type: 'separator' }));
     if (shortcuts.settings) {
@@ -2658,7 +2890,7 @@ async function appMain() {
     if (shortcuts.focusWindow) {
       fileMenu.submenu.append(
         new MenuItem({
-          label: menuT('Focus Goose Window'),
+          label: menuT('Focus Obelus Window'),
           accelerator: shortcuts.focusWindow,
           click() {
             focusWindow();
@@ -2765,15 +2997,13 @@ async function appMain() {
         helpMenu.submenu.append(new MenuItem({ type: 'separator' }));
       }
 
-      // Create the About Goose menu item with a submenu
-      const aboutGooseMenuItem = new MenuItem({
-        label: menuT('About Goose'),
+      const aboutObelusMenuItem = new MenuItem({
+        label: menuT('About Obelus'),
         submenu: Menu.buildFromTemplate([]), // Start with an empty submenu for About
       });
 
-      // Add the Version menu item (display only) to the About Goose submenu
-      if (aboutGooseMenuItem.submenu) {
-        aboutGooseMenuItem.submenu.append(
+      if (aboutObelusMenuItem.submenu) {
+        aboutObelusMenuItem.submenu.append(
           new MenuItem({
             label: `Version ${version || app.getVersion()}`,
             enabled: false,
@@ -2781,7 +3011,7 @@ async function appMain() {
         );
       }
 
-      helpMenu.submenu.append(aboutGooseMenuItem);
+      helpMenu.submenu.append(aboutObelusMenuItem);
     }
   }
 
@@ -3023,7 +3253,7 @@ async function appMain() {
               GOOSE_VERSION: version,
             }),
           ],
-          partition: 'persist:goose',
+          partition: OBELUS_SESSION_PARTITION,
         },
       });
 
@@ -3098,7 +3328,7 @@ app.whenReady().then(async () => {
   try {
     await appMain();
   } catch (error) {
-    dialog.showErrorBox('Goose Error', `Failed to create main window: ${error}`);
+    dialog.showErrorBox('Obelus error', `Failed to create main window: ${error}`);
     app.quit();
   }
 });
@@ -3134,6 +3364,11 @@ async function getAllowList(): Promise<string[]> {
 }
 
 app.on('will-quit', async () => {
+  liveLocalFactCheckService?.dispose();
+  await liveLocalSttService?.close();
+  liveLocalSttService = null;
+  liveLocalFactCheckService = null;
+  liveFactCheckMode = 'hosted';
   const gooseServeLeaseCount = gooseServeLeases.activeLeaseCount();
   if (gooseServeLeaseCount > 0) {
     log.info(`App quitting, cleaning up ${gooseServeLeaseCount} backend lease(s)`);
@@ -3154,6 +3389,13 @@ app.on('will-quit', async () => {
     }
   }
   windowPowerSaveBlockers.clear();
+
+  if (livePowerSaveBlockerId !== null) {
+    if (powerSaveBlocker.isStarted(livePowerSaveBlockerId)) {
+      powerSaveBlocker.stop(livePowerSaveBlockerId);
+    }
+    livePowerSaveBlockerId = null;
+  }
 
   globalShortcut.unregisterAll();
 });

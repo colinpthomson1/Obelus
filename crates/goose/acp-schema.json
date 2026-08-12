@@ -5729,6 +5729,3705 @@
       "x-side": "agent",
       "x-method": "_goose/unstable/dictation/models/select"
     },
+    "MeetingCreateRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "artifactType": {
+          "$ref": "#/$defs/MeetingArtifactType"
+        },
+        "mode": {
+          "$ref": "#/$defs/MeetingMode"
+        },
+        "startedAtMs": {
+          "type": "integer"
+        },
+        "captureConfig": {
+          "$ref": "#/$defs/MeetingCaptureConfigDto"
+        },
+        "initialSpeakers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSpeakerInputDto"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "artifactType",
+        "mode",
+        "startedAtMs",
+        "captureConfig"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/create"
+    },
+    "MeetingArtifactType": {
+      "type": "string",
+      "enum": [
+        "meeting",
+        "text_check"
+      ]
+    },
+    "MeetingMode": {
+      "type": "string",
+      "enum": [
+        "call",
+        "in_person",
+        "text"
+      ]
+    },
+    "MeetingCaptureConfigDto": {
+      "type": "object",
+      "properties": {
+        "liveStrategy": {
+          "$ref": "#/$defs/MeetingLiveStrategy"
+        },
+        "microphoneDeviceId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "systemAudioEnabled": {
+          "type": "boolean"
+        },
+        "exactSpeakerCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "required": [
+        "liveStrategy",
+        "systemAudioEnabled"
+      ]
+    },
+    "MeetingLiveStrategy": {
+      "type": "string",
+      "enum": [
+        "mixed_diarized",
+        "source_separated"
+      ]
+    },
+    "MeetingSpeakerInputDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "defaultLabel": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "displayNameSource": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manualAssignmentLock": {
+          "type": "boolean"
+        },
+        "sourceHint": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingAudioSourceKind"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "defaultLabel",
+        "manualAssignmentLock"
+      ]
+    },
+    "MeetingAudioSourceKind": {
+      "type": "string",
+      "enum": [
+        "mixed",
+        "microphone",
+        "system",
+        "text"
+      ]
+    },
+    "MeetingCreateResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "meeting": {
+          "$ref": "#/$defs/MeetingDto"
+        },
+        "liveTranscriptVersion": {
+          "$ref": "#/$defs/MeetingTranscriptVersionDto"
+        },
+        "speakers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSpeakerDto"
+          }
+        }
+      },
+      "required": [
+        "meeting",
+        "liveTranscriptVersion",
+        "speakers"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/create"
+    },
+    "MeetingDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "artifactType": {
+          "$ref": "#/$defs/MeetingArtifactType"
+        },
+        "mode": {
+          "$ref": "#/$defs/MeetingMode"
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingLifecycleStatus"
+        },
+        "startedAtMs": {
+          "type": "integer"
+        },
+        "endedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "captureConfig": {
+          "$ref": "#/$defs/MeetingCaptureConfigDto"
+        },
+        "canonicalTranscriptVersionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "captureStatus": {
+          "$ref": "#/$defs/MeetingCaptureStatus"
+        },
+        "refinementStatus": {
+          "$ref": "#/$defs/MeetingRefinementStatus"
+        },
+        "researchStatus": {
+          "$ref": "#/$defs/MeetingResearchStatus"
+        },
+        "lastError": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "artifactType",
+        "mode",
+        "status",
+        "startedAtMs",
+        "captureConfig",
+        "captureStatus",
+        "refinementStatus",
+        "researchStatus",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingLifecycleStatus": {
+      "type": "string",
+      "enum": [
+        "setup",
+        "starting",
+        "recording",
+        "paused",
+        "stopping",
+        "finalizing",
+        "complete",
+        "interrupted",
+        "error"
+      ]
+    },
+    "MeetingCaptureStatus": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "active",
+        "paused",
+        "finalizing",
+        "complete",
+        "interrupted",
+        "error"
+      ]
+    },
+    "MeetingRefinementStatus": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "queued",
+        "uploading",
+        "processing",
+        "reconciling",
+        "complete",
+        "retry_wait",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "MeetingResearchStatus": {
+      "type": "string",
+      "enum": [
+        "not_started",
+        "queued",
+        "running",
+        "partial",
+        "complete",
+        "retry_wait",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "MeetingTypedErrorDto": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ]
+    },
+    "MeetingTranscriptVersionDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/MeetingTranscriptVersionKind"
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingTranscriptVersionStatus"
+        },
+        "revisionNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "provider": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "gatewayJobId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parentVersionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "inputAudioChecksum": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "detectedLanguage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reconciliationMetadata": {},
+        "startedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "completedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "kind",
+        "status",
+        "revisionNumber",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingTranscriptVersionKind": {
+      "type": "string",
+      "enum": [
+        "live",
+        "refined"
+      ]
+    },
+    "MeetingTranscriptVersionStatus": {
+      "type": "string",
+      "enum": [
+        "active",
+        "processing",
+        "complete",
+        "failed",
+        "superseded"
+      ]
+    },
+    "MeetingSpeakerDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "defaultLabel": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "displayNameSource": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manualAssignmentLock": {
+          "type": "boolean"
+        },
+        "sourceHint": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingAudioSourceKind"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "defaultLabel",
+        "manualAssignmentLock",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingUpdateRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingLifecycleStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "endedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "captureStatus": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingCaptureStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "refinementStatus": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingRefinementStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "researchStatus": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingResearchStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "clearError": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "meetingId",
+        "clearError"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/update"
+    },
+    "MeetingUpdateResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "meeting": {
+          "$ref": "#/$defs/MeetingDto"
+        }
+      },
+      "required": [
+        "meeting"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/update"
+    },
+    "MeetingListRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "artifactType": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingArtifactType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "statuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingLifecycleStatus"
+          },
+          "default": []
+        },
+        "query": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cursor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingListCursorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limit": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/list"
+    },
+    "MeetingListCursorDto": {
+      "type": "object",
+      "properties": {
+        "updatedAtMs": {
+          "type": "integer"
+        },
+        "meetingId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "updatedAtMs",
+        "meetingId"
+      ]
+    },
+    "MeetingListResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingListItemDto"
+          }
+        },
+        "nextCursor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingListCursorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/list"
+    },
+    "MeetingListItemDto": {
+      "type": "object",
+      "properties": {
+        "meeting": {
+          "$ref": "#/$defs/MeetingDto"
+        },
+        "durationMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "speakerNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "claimCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "completedResearchCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "totalResearchCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "meeting",
+        "speakerNames",
+        "claimCount",
+        "completedResearchCount",
+        "totalResearchCount"
+      ]
+    },
+    "MeetingGetRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "meetingId"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/get"
+    },
+    "MeetingGetResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "artifact": {
+          "$ref": "#/$defs/MeetingArtifactDto"
+        }
+      },
+      "required": [
+        "artifact"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/get"
+    },
+    "MeetingArtifactDto": {
+      "type": "object",
+      "properties": {
+        "meeting": {
+          "$ref": "#/$defs/MeetingDto"
+        },
+        "speakers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSpeakerDto"
+          }
+        },
+        "speakerObservations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSpeakerObservationDto"
+          }
+        },
+        "transcriptVersions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingTranscriptVersionDto"
+          }
+        },
+        "transcriptSegments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingTranscriptSegmentDto"
+          }
+        },
+        "timelineEvents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingTimelineEventDto"
+          }
+        },
+        "audioAssets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingAudioAssetDto"
+          }
+        },
+        "refinementInputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingRefinementInputDto"
+          }
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimDto"
+          }
+        },
+        "claimVersions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimVersionDto"
+          }
+        },
+        "manualFactCheckRequests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingManualFactCheckRequestDto"
+          }
+        },
+        "pendingClaimGateSegmentIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pendingClaimGateBatches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimGateBatchDto"
+          }
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingAssessmentDto"
+          }
+        },
+        "researchJobs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingResearchJobDto"
+          }
+        },
+        "refinementJobs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingRefinementJobDto"
+          }
+        }
+      },
+      "required": [
+        "meeting",
+        "speakers",
+        "speakerObservations",
+        "transcriptVersions",
+        "transcriptSegments",
+        "timelineEvents",
+        "audioAssets",
+        "refinementInputs",
+        "claims",
+        "claimVersions",
+        "manualFactCheckRequests",
+        "pendingClaimGateSegmentIds",
+        "pendingClaimGateBatches",
+        "assessments",
+        "researchJobs",
+        "refinementJobs"
+      ]
+    },
+    "MeetingSpeakerObservationDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "transcriptVersionId": {
+          "type": "string"
+        },
+        "speakerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "provider": {
+          "type": "string"
+        },
+        "providerNamespace": {
+          "type": "string"
+        },
+        "providerSpeakerLabel": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "ambiguous": {
+          "type": "boolean"
+        },
+        "revisionNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sourceHint": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingAudioSourceKind"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "transcriptVersionId",
+        "provider",
+        "providerNamespace",
+        "providerSpeakerLabel",
+        "ambiguous",
+        "revisionNumber",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingTranscriptSegmentDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "transcriptVersionId": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "providerNamespace": {
+          "type": "string"
+        },
+        "providerSessionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "providerTurnId": {
+          "type": "string"
+        },
+        "providerTurnOrder": {
+          "type": "integer"
+        },
+        "revisionNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "state": {
+          "$ref": "#/$defs/MeetingTranscriptSegmentState"
+        },
+        "speakerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceKind": {
+          "$ref": "#/$defs/MeetingAudioSourceKind"
+        },
+        "startMs": {
+          "type": "integer"
+        },
+        "endMs": {
+          "type": "integer"
+        },
+        "text": {
+          "type": "string"
+        },
+        "words": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingTimedWordDto"
+          }
+        },
+        "replacedLiveSegmentIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contentHash": {
+          "type": "string"
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "transcriptVersionId",
+        "provider",
+        "providerNamespace",
+        "providerTurnId",
+        "providerTurnOrder",
+        "revisionNumber",
+        "state",
+        "sourceKind",
+        "startMs",
+        "endMs",
+        "text",
+        "words",
+        "replacedLiveSegmentIds",
+        "contentHash",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingTranscriptSegmentState": {
+      "type": "string",
+      "enum": [
+        "partial",
+        "final",
+        "revised",
+        "superseded"
+      ]
+    },
+    "MeetingTimedWordDto": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "startMs": {
+          "type": "integer"
+        },
+        "endMs": {
+          "type": "integer"
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "providerSpeakerLabel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "text",
+        "startMs",
+        "endMs"
+      ]
+    },
+    "MeetingTimelineEventDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/MeetingTimelineEventKind"
+        },
+        "startMs": {
+          "type": "integer"
+        },
+        "endMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sourceKind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingAudioSourceKind"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "providerNamespace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "metadata": {},
+        "createdAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "kind",
+        "startMs",
+        "createdAtMs"
+      ]
+    },
+    "MeetingTimelineEventKind": {
+      "type": "string",
+      "enum": [
+        "pause",
+        "resume",
+        "sleep",
+        "wake",
+        "capture_gap",
+        "device_change",
+        "stt_reconnect_gap"
+      ]
+    },
+    "MeetingAudioAssetDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "sourceKind": {
+          "$ref": "#/$defs/MeetingAudioSourceKind"
+        },
+        "timelinePart": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "relativePath": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "sampleRate": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "channels": {
+          "type": "integer",
+          "maximum": 65535,
+          "minimum": 0
+        },
+        "timelineStartMs": {
+          "type": "integer"
+        },
+        "timelineEndMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "durationMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "checksum": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingAudioAssetStatus"
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "sourceKind",
+        "timelinePart",
+        "relativePath",
+        "format",
+        "sampleRate",
+        "channels",
+        "timelineStartMs",
+        "status",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingAudioAssetStatus": {
+      "type": "string",
+      "enum": [
+        "recording",
+        "finalized",
+        "interrupted",
+        "missing",
+        "deleted"
+      ]
+    },
+    "MeetingRefinementInputDto": {
+      "type": "object",
+      "properties": {
+        "refinementJobId": {
+          "type": "string"
+        },
+        "partIndex": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "audioAssetId": {
+          "type": "string"
+        },
+        "sourceKind": {
+          "$ref": "#/$defs/MeetingAudioSourceKind"
+        },
+        "checksum": {
+          "type": "string"
+        },
+        "meetingStartMs": {
+          "type": "integer"
+        },
+        "meetingEndMs": {
+          "type": "integer"
+        },
+        "providerStartMs": {
+          "type": "integer"
+        },
+        "providerEndMs": {
+          "type": "integer"
+        },
+        "manifestChecksum": {
+          "type": "string"
+        },
+        "createdAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "refinementJobId",
+        "partIndex",
+        "audioAssetId",
+        "sourceKind",
+        "checksum",
+        "meetingStartMs",
+        "meetingEndMs",
+        "providerStartMs",
+        "providerEndMs",
+        "manifestChecksum",
+        "createdAtMs"
+      ]
+    },
+    "MeetingClaimDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "manualRequestId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "origin": {
+          "$ref": "#/$defs/MeetingClaimOrigin"
+        },
+        "duplicateKey": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingClaimStatus"
+        },
+        "currentClaimVersionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "origin",
+        "status",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingClaimOrigin": {
+      "type": "string",
+      "enum": [
+        "automatic",
+        "manual"
+      ]
+    },
+    "MeetingClaimStatus": {
+      "type": "string",
+      "enum": [
+        "detected",
+        "queued",
+        "quick_running",
+        "preliminary",
+        "deep_running",
+        "complete",
+        "stale",
+        "rechecking",
+        "failed",
+        "cancelled",
+        "superseded"
+      ]
+    },
+    "MeetingClaimVersionDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "claimId": {
+          "type": "string"
+        },
+        "versionNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "predecessorId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supersededById": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceTranscriptVersionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exactQuote": {
+          "type": "string"
+        },
+        "normalizedClaim": {
+          "type": "string"
+        },
+        "speakerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "startMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "endMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "segmentIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selectionRationale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "consequenceScore": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "disputeScore": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "specificityScore": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "timeSensitive": {
+          "type": "boolean"
+        },
+        "lifecycle": {
+          "$ref": "#/$defs/MeetingClaimVersionLifecycle"
+        },
+        "contentHash": {
+          "type": "string"
+        },
+        "createdAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "claimId",
+        "versionNumber",
+        "exactQuote",
+        "normalizedClaim",
+        "segmentIds",
+        "timeSensitive",
+        "lifecycle",
+        "contentHash",
+        "createdAtMs"
+      ]
+    },
+    "MeetingClaimVersionLifecycle": {
+      "type": "string",
+      "enum": [
+        "active",
+        "stale",
+        "rechecking",
+        "superseded"
+      ]
+    },
+    "MeetingManualFactCheckRequestDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "exactSelection": {
+          "type": "string"
+        },
+        "contextTurns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimGateTurnDto"
+          }
+        },
+        "sourceSegmentIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "speakerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "startMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "endMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingManualFactCheckRequestStatus"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "contentHash": {
+          "type": "string"
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "exactSelection",
+        "contextTurns",
+        "sourceSegmentIds",
+        "status",
+        "contentHash",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingClaimGateTurnDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "speakerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "startMs": {
+          "type": "integer"
+        },
+        "endMs": {
+          "type": "integer"
+        },
+        "text": {
+          "type": "string"
+        },
+        "revisionNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sourceKind": {
+          "$ref": "#/$defs/MeetingAudioSourceKind"
+        }
+      },
+      "required": [
+        "id",
+        "startMs",
+        "endMs",
+        "text",
+        "revisionNumber",
+        "sourceKind"
+      ]
+    },
+    "MeetingManualFactCheckRequestStatus": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "processing",
+        "retry_wait",
+        "complete",
+        "failed"
+      ]
+    },
+    "MeetingClaimGateBatchDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "idempotencyKey": {
+          "type": "string"
+        },
+        "segmentIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "turns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimGateTurnDto"
+          }
+        },
+        "createdAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "idempotencyKey",
+        "segmentIds",
+        "turns",
+        "createdAtMs"
+      ]
+    },
+    "MeetingAssessmentDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "claimVersionId": {
+          "type": "string"
+        },
+        "stage": {
+          "$ref": "#/$defs/MeetingAssessmentStage"
+        },
+        "attemptNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingAssessmentStatus"
+        },
+        "current": {
+          "type": "boolean"
+        },
+        "supersedesId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verdict": {
+          "$ref": "#/$defs/MeetingVerdict"
+        },
+        "confidence": {
+          "$ref": "#/$defs/MeetingConfidence"
+        },
+        "conclusion": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCitedStatementDto"
+          }
+        },
+        "support": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCitedStatementDto"
+          }
+        },
+        "contradiction": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCitedStatementDto"
+          }
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCitedStatementDto"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCitedStatementDto"
+          }
+        },
+        "modelProvider": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "modelVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "usage": {},
+        "latencyMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "startedAtMs": {
+          "type": "integer"
+        },
+        "completedAtMs": {
+          "type": "integer"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSourceDto"
+          }
+        },
+        "createdAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "claimVersionId",
+        "stage",
+        "attemptNumber",
+        "status",
+        "current",
+        "verdict",
+        "confidence",
+        "conclusion",
+        "support",
+        "contradiction",
+        "caveats",
+        "limitations",
+        "modelProvider",
+        "model",
+        "startedAtMs",
+        "completedAtMs",
+        "sources",
+        "createdAtMs"
+      ]
+    },
+    "MeetingAssessmentStage": {
+      "type": "string",
+      "enum": [
+        "preliminary",
+        "deep"
+      ]
+    },
+    "MeetingAssessmentStatus": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "failed"
+      ]
+    },
+    "MeetingVerdict": {
+      "type": "string",
+      "enum": [
+        "supported",
+        "mostly_supported",
+        "mixed",
+        "unsupported",
+        "unverifiable"
+      ]
+    },
+    "MeetingConfidence": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "MeetingCitedStatementDto": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "citationKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "text",
+        "citationKeys"
+      ]
+    },
+    "MeetingSourceDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "assessmentId": {
+          "type": "string"
+        },
+        "citationKey": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "canonicalUrl": {
+          "type": "string"
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "publicationDate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "accessedAtMs": {
+          "type": "integer"
+        },
+        "evidenceExcerpt": {
+          "type": "string"
+        },
+        "stance": {
+          "$ref": "#/$defs/MeetingEvidenceStance"
+        },
+        "qualityScore": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "qualityRationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "assessmentId",
+        "citationKey",
+        "url",
+        "canonicalUrl",
+        "publisher",
+        "title",
+        "accessedAtMs",
+        "evidenceExcerpt",
+        "stance",
+        "qualityRationale"
+      ]
+    },
+    "MeetingEvidenceStance": {
+      "type": "string",
+      "enum": [
+        "supports",
+        "contradicts",
+        "context"
+      ]
+    },
+    "MeetingResearchJobDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "claimVersionId": {
+          "type": "string"
+        },
+        "stage": {
+          "$ref": "#/$defs/MeetingAssessmentStage"
+        },
+        "gatewayJobId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "idempotencyKey": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingJobStatus"
+        },
+        "attemptCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nextRetryAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "startedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "completedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "claimVersionId",
+        "stage",
+        "idempotencyKey",
+        "status",
+        "attemptCount",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingJobStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "running",
+        "retry_wait",
+        "complete",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "MeetingRefinementJobDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "sourceTranscriptVersionId": {
+          "type": "string"
+        },
+        "inputManifestChecksum": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "gatewayJobId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "idempotencyKey": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingRefinementJobStatus"
+        },
+        "attemptCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nextRetryAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "usage": {},
+        "latencyMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "startedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "completedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "sourceTranscriptVersionId",
+        "inputManifestChecksum",
+        "provider",
+        "model",
+        "idempotencyKey",
+        "status",
+        "attemptCount",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingRefinementJobStatus": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "uploading",
+        "processing",
+        "reconciling",
+        "complete",
+        "retry_wait",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "MeetingTranscriptApplyRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        },
+        "version": {
+          "$ref": "#/$defs/MeetingTranscriptVersionUpsertDto"
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingTranscriptSegmentUpsertDto"
+          },
+          "default": []
+        },
+        "speakerObservations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSpeakerObservationUpsertDto"
+          },
+          "default": []
+        },
+        "promoteCanonical": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "meetingId",
+        "version",
+        "promoteCanonical"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/transcript/apply"
+    },
+    "MeetingTranscriptVersionUpsertDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/MeetingTranscriptVersionKind"
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingTranscriptVersionStatus"
+        },
+        "revisionNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "provider": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "gatewayJobId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parentVersionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "inputAudioChecksum": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "detectedLanguage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reconciliationMetadata": {},
+        "startedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "completedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "status",
+        "revisionNumber"
+      ]
+    },
+    "MeetingTranscriptSegmentUpsertDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "transcriptVersionId": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "providerNamespace": {
+          "type": "string"
+        },
+        "providerSessionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "providerTurnId": {
+          "type": "string"
+        },
+        "providerTurnOrder": {
+          "type": "integer"
+        },
+        "revisionNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "state": {
+          "$ref": "#/$defs/MeetingTranscriptSegmentState"
+        },
+        "speakerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceKind": {
+          "$ref": "#/$defs/MeetingAudioSourceKind"
+        },
+        "startMs": {
+          "type": "integer"
+        },
+        "endMs": {
+          "type": "integer"
+        },
+        "text": {
+          "type": "string"
+        },
+        "words": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingTimedWordDto"
+          }
+        },
+        "replacedLiveSegmentIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "transcriptVersionId",
+        "provider",
+        "providerNamespace",
+        "providerTurnId",
+        "providerTurnOrder",
+        "revisionNumber",
+        "state",
+        "sourceKind",
+        "startMs",
+        "endMs",
+        "text",
+        "words",
+        "replacedLiveSegmentIds"
+      ]
+    },
+    "MeetingSpeakerObservationUpsertDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "transcriptVersionId": {
+          "type": "string"
+        },
+        "speakerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "provider": {
+          "type": "string"
+        },
+        "providerNamespace": {
+          "type": "string"
+        },
+        "providerSpeakerLabel": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "ambiguous": {
+          "type": "boolean"
+        },
+        "revisionNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sourceHint": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingAudioSourceKind"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "transcriptVersionId",
+        "provider",
+        "providerNamespace",
+        "providerSpeakerLabel",
+        "ambiguous",
+        "revisionNumber"
+      ]
+    },
+    "MeetingTranscriptApplyResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/MeetingTranscriptVersionDto"
+        },
+        "segmentOutcomes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingUpsertOutcomeDto"
+          }
+        }
+      },
+      "required": [
+        "version",
+        "segmentOutcomes"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/transcript/apply"
+    },
+    "MeetingUpsertOutcomeDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "outcome": {
+          "$ref": "#/$defs/MeetingUpsertOutcomeKind"
+        }
+      },
+      "required": [
+        "id",
+        "outcome"
+      ]
+    },
+    "MeetingUpsertOutcomeKind": {
+      "type": "string",
+      "enum": [
+        "inserted",
+        "revised",
+        "duplicate",
+        "stale_ignored"
+      ]
+    },
+    "MeetingSpeakersApplyRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        },
+        "speakers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSpeakerInputDto"
+          },
+          "default": []
+        },
+        "swaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSpeakerSwapDto"
+          },
+          "default": []
+        },
+        "segmentUpdates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSegmentSpeakerUpdateDto"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "meetingId"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/speakers/apply"
+    },
+    "MeetingSpeakerSwapDto": {
+      "type": "object",
+      "properties": {
+        "firstSpeakerId": {
+          "type": "string"
+        },
+        "secondSpeakerId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "firstSpeakerId",
+        "secondSpeakerId"
+      ]
+    },
+    "MeetingSegmentSpeakerUpdateDto": {
+      "type": "object",
+      "properties": {
+        "segmentId": {
+          "type": "string"
+        },
+        "speakerId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "segmentId",
+        "speakerId"
+      ]
+    },
+    "MeetingSpeakersApplyResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "speakers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSpeakerDto"
+          }
+        }
+      },
+      "required": [
+        "speakers"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/speakers/apply"
+    },
+    "MeetingTimelineApplyRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingTimelineEventUpsertDto"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "meetingId"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/timeline/apply"
+    },
+    "MeetingTimelineEventUpsertDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/MeetingTimelineEventKind"
+        },
+        "startMs": {
+          "type": "integer"
+        },
+        "endMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "sourceKind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingAudioSourceKind"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "providerNamespace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "metadata": {}
+      },
+      "required": [
+        "id",
+        "kind",
+        "startMs"
+      ]
+    },
+    "MeetingTimelineApplyResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingTimelineEventDto"
+          }
+        }
+      },
+      "required": [
+        "events"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/timeline/apply"
+    },
+    "MeetingAudioApplyRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingAudioAssetUpsertDto"
+          },
+          "default": []
+        },
+        "replaceRefinementManifestForJobId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "refinementInputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingRefinementInputUpsertDto"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "meetingId"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/audio/apply"
+    },
+    "MeetingAudioAssetUpsertDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sourceKind": {
+          "$ref": "#/$defs/MeetingAudioSourceKind"
+        },
+        "timelinePart": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "sampleRate": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "channels": {
+          "type": "integer",
+          "maximum": 65535,
+          "minimum": 0
+        },
+        "timelineStartMs": {
+          "type": "integer"
+        },
+        "timelineEndMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "durationMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "checksum": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingAudioAssetStatus"
+        }
+      },
+      "required": [
+        "id",
+        "sourceKind",
+        "timelinePart",
+        "fileName",
+        "format",
+        "sampleRate",
+        "channels",
+        "timelineStartMs",
+        "status"
+      ]
+    },
+    "MeetingRefinementInputUpsertDto": {
+      "type": "object",
+      "properties": {
+        "refinementJobId": {
+          "type": "string"
+        },
+        "partIndex": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "audioAssetId": {
+          "type": "string"
+        },
+        "sourceKind": {
+          "$ref": "#/$defs/MeetingAudioSourceKind"
+        },
+        "checksum": {
+          "type": "string"
+        },
+        "meetingStartMs": {
+          "type": "integer"
+        },
+        "meetingEndMs": {
+          "type": "integer"
+        },
+        "providerStartMs": {
+          "type": "integer"
+        },
+        "providerEndMs": {
+          "type": "integer"
+        },
+        "manifestChecksum": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "refinementJobId",
+        "partIndex",
+        "audioAssetId",
+        "sourceKind",
+        "checksum",
+        "meetingStartMs",
+        "meetingEndMs",
+        "providerStartMs",
+        "providerEndMs",
+        "manifestChecksum"
+      ]
+    },
+    "MeetingAudioApplyResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingAudioAssetDto"
+          }
+        },
+        "refinementInputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingRefinementInputDto"
+          }
+        }
+      },
+      "required": [
+        "assets",
+        "refinementInputs"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/audio/apply"
+    },
+    "MeetingClaimsApplyRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        },
+        "manualFactCheckRequests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingManualFactCheckRequestUpsertDto"
+          },
+          "default": []
+        },
+        "claimVersions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimVersionUpsertDto"
+          },
+          "default": []
+        },
+        "markStaleClaimVersionIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "beginClaimGateBatches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimGateBatchBeginDto"
+          },
+          "default": []
+        },
+        "completeClaimGateBatchIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "meetingId"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/claims/apply"
+    },
+    "MeetingManualFactCheckRequestUpsertDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "exactSelection": {
+          "type": "string"
+        },
+        "contextTurns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimGateTurnDto"
+          }
+        },
+        "sourceSegmentIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "speakerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "startMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "endMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingManualFactCheckRequestStatus"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "exactSelection",
+        "contextTurns",
+        "sourceSegmentIds",
+        "status"
+      ]
+    },
+    "MeetingClaimVersionUpsertDto": {
+      "type": "object",
+      "properties": {
+        "claimId": {
+          "type": "string"
+        },
+        "claimVersionId": {
+          "type": "string"
+        },
+        "manualRequestId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "origin": {
+          "$ref": "#/$defs/MeetingClaimOrigin"
+        },
+        "duplicateKey": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingClaimStatus"
+        },
+        "versionNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "predecessorId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supersededById": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceTranscriptVersionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exactQuote": {
+          "type": "string"
+        },
+        "normalizedClaim": {
+          "type": "string"
+        },
+        "speakerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "startMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "endMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "segmentIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selectionRationale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "consequenceScore": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "disputeScore": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "specificityScore": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "timeSensitive": {
+          "type": "boolean"
+        },
+        "lifecycle": {
+          "$ref": "#/$defs/MeetingClaimVersionLifecycle"
+        },
+        "setCurrent": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "claimId",
+        "claimVersionId",
+        "origin",
+        "status",
+        "versionNumber",
+        "exactQuote",
+        "normalizedClaim",
+        "segmentIds",
+        "timeSensitive",
+        "lifecycle",
+        "setCurrent"
+      ]
+    },
+    "MeetingClaimGateBatchBeginDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "idempotencyKey": {
+          "type": "string"
+        },
+        "turns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimGateTurnDto"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "idempotencyKey",
+        "turns"
+      ]
+    },
+    "MeetingClaimsApplyResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimDto"
+          }
+        },
+        "claimVersions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimVersionDto"
+          }
+        }
+      },
+      "required": [
+        "claims",
+        "claimVersions"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/claims/apply"
+    },
+    "MeetingResearchApplyRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        },
+        "job": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingResearchJobUpsertDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assessment": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingAssessmentApplyDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "meetingId"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/research/apply"
+    },
+    "MeetingResearchJobUpsertDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "claimVersionId": {
+          "type": "string"
+        },
+        "stage": {
+          "$ref": "#/$defs/MeetingAssessmentStage"
+        },
+        "gatewayJobId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "idempotencyKey": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingJobStatus"
+        },
+        "attemptCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nextRetryAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "startedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "completedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "claimVersionId",
+        "stage",
+        "idempotencyKey",
+        "status",
+        "attemptCount"
+      ]
+    },
+    "MeetingAssessmentApplyDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "claimVersionId": {
+          "type": "string"
+        },
+        "stage": {
+          "$ref": "#/$defs/MeetingAssessmentStage"
+        },
+        "attemptNumber": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingAssessmentStatus"
+        },
+        "supersedesId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verdict": {
+          "$ref": "#/$defs/MeetingVerdict"
+        },
+        "confidence": {
+          "$ref": "#/$defs/MeetingConfidence"
+        },
+        "conclusion": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCitedStatementDto"
+          }
+        },
+        "support": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCitedStatementDto"
+          }
+        },
+        "contradiction": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCitedStatementDto"
+          }
+        },
+        "caveats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCitedStatementDto"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCitedStatementDto"
+          }
+        },
+        "modelProvider": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "modelVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "usage": {},
+        "latencyMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "startedAtMs": {
+          "type": "integer"
+        },
+        "completedAtMs": {
+          "type": "integer"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSourceInputDto"
+          }
+        },
+        "setCurrent": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "claimVersionId",
+        "stage",
+        "attemptNumber",
+        "status",
+        "verdict",
+        "confidence",
+        "conclusion",
+        "support",
+        "contradiction",
+        "caveats",
+        "limitations",
+        "modelProvider",
+        "model",
+        "startedAtMs",
+        "completedAtMs",
+        "sources",
+        "setCurrent"
+      ]
+    },
+    "MeetingSourceInputDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "citationKey": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "canonicalUrl": {
+          "type": "string"
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "publicationDate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "accessedAtMs": {
+          "type": "integer"
+        },
+        "evidenceExcerpt": {
+          "type": "string"
+        },
+        "stance": {
+          "$ref": "#/$defs/MeetingEvidenceStance"
+        },
+        "qualityScore": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "float"
+        },
+        "qualityRationale": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "citationKey",
+        "url",
+        "canonicalUrl",
+        "publisher",
+        "title",
+        "accessedAtMs",
+        "evidenceExcerpt",
+        "stance",
+        "qualityRationale"
+      ]
+    },
+    "MeetingResearchApplyResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "job": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingResearchJobDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assessment": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingAssessmentDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/research/apply"
+    },
+    "MeetingRefinementJobApplyRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        },
+        "job": {
+          "$ref": "#/$defs/MeetingRefinementJobUpsertDto"
+        }
+      },
+      "required": [
+        "meetingId",
+        "job"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/refinement/job/apply"
+    },
+    "MeetingRefinementJobUpsertDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sourceTranscriptVersionId": {
+          "type": "string"
+        },
+        "inputManifestChecksum": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "gatewayJobId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "idempotencyKey": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/MeetingRefinementJobStatus"
+        },
+        "attemptCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nextRetryAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "usage": {},
+        "latencyMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "startedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "completedAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "sourceTranscriptVersionId",
+        "inputManifestChecksum",
+        "provider",
+        "model",
+        "idempotencyKey",
+        "status",
+        "attemptCount"
+      ]
+    },
+    "MeetingRefinementJobApplyResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "job": {
+          "$ref": "#/$defs/MeetingRefinementJobDto"
+        }
+      },
+      "required": [
+        "job"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/refinement/job/apply"
+    },
+    "MeetingRefinementResultApplyRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        },
+        "refinementJobId": {
+          "type": "string"
+        },
+        "version": {
+          "$ref": "#/$defs/MeetingTranscriptVersionUpsertDto"
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingTranscriptSegmentUpsertDto"
+          },
+          "default": []
+        },
+        "speakerObservations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingSpeakerObservationUpsertDto"
+          },
+          "default": []
+        },
+        "markStaleClaimVersionIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "replacementClaimVersions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingClaimVersionUpsertDto"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "meetingId",
+        "refinementJobId",
+        "version"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/refinement/result/apply"
+    },
+    "MeetingRefinementResultApplyResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "canonicalVersion": {
+          "$ref": "#/$defs/MeetingTranscriptVersionDto"
+        },
+        "segmentOutcomes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingUpsertOutcomeDto"
+          }
+        }
+      },
+      "required": [
+        "canonicalVersion",
+        "segmentOutcomes"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/refinement/result/apply"
+    },
+    "MeetingDeleteRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "meetingId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "meetingId"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/delete"
+    },
+    "MeetingDeleteResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "cleanupJob": {
+          "$ref": "#/$defs/MeetingCleanupJobDto"
+        }
+      },
+      "required": [
+        "cleanupJob"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/delete"
+    },
+    "MeetingCleanupJobDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingId": {
+          "type": "string"
+        },
+        "localStatus": {
+          "$ref": "#/$defs/MeetingCleanupStatus"
+        },
+        "gatewayStatus": {
+          "$ref": "#/$defs/MeetingCleanupStatus"
+        },
+        "providerStatus": {
+          "$ref": "#/$defs/MeetingCleanupStatus"
+        },
+        "relativeAudioPaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attemptCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nextRetryAtMs": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "lastError": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAtMs": {
+          "type": "integer"
+        },
+        "updatedAtMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "meetingId",
+        "localStatus",
+        "gatewayStatus",
+        "providerStatus",
+        "relativeAudioPaths",
+        "attemptCount",
+        "createdAtMs",
+        "updatedAtMs"
+      ]
+    },
+    "MeetingCleanupStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "running",
+        "complete",
+        "retry_wait",
+        "failed",
+        "unavailable"
+      ]
+    },
+    "MeetingCleanupConfirmRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "cleanupJobId": {
+          "type": "string"
+        },
+        "localStatus": {
+          "$ref": "#/$defs/MeetingCleanupStatus"
+        },
+        "gatewayStatus": {
+          "$ref": "#/$defs/MeetingCleanupStatus"
+        },
+        "providerStatus": {
+          "$ref": "#/$defs/MeetingCleanupStatus"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingTypedErrorDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "cleanupJobId",
+        "localStatus",
+        "gatewayStatus",
+        "providerStatus"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/cleanup/confirm"
+    },
+    "MeetingCleanupConfirmResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "cleanupJob": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MeetingCleanupJobDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recordsRemoved": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "recordsRemoved"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/cleanup/confirm"
+    },
+    "MeetingRecoverRequest_unstable": {
+      "type": "object",
+      "properties": {
+        "reconcileActiveWork": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/recover"
+    },
+    "MeetingRecoverResponse_unstable": {
+      "type": "object",
+      "properties": {
+        "interruptedMeetingIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "refinementJobIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "researchJobIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cleanupJobIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "refinementJobs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingRefinementJobDto"
+          }
+        },
+        "researchJobs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingResearchJobDto"
+          }
+        },
+        "cleanupJobs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeetingCleanupJobDto"
+          }
+        }
+      },
+      "required": [
+        "interruptedMeetingIds",
+        "refinementJobIds",
+        "researchJobIds",
+        "cleanupJobIds",
+        "refinementJobs",
+        "researchJobs",
+        "cleanupJobs"
+      ],
+      "x-side": "agent",
+      "x-method": "_goose/unstable/meetings/recover"
+    },
     "LocalInferenceModelsListRequest_unstable": {
       "type": "object",
       "x-side": "agent",
@@ -7814,6 +11513,141 @@
                 {
                   "allOf": [
                     {
+                      "$ref": "#/$defs/MeetingCreateRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/create",
+                  "title": "MeetingCreateRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingUpdateRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/update",
+                  "title": "MeetingUpdateRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingListRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/list",
+                  "title": "MeetingListRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingGetRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/get",
+                  "title": "MeetingGetRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingTranscriptApplyRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/transcript/apply",
+                  "title": "MeetingTranscriptApplyRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingSpeakersApplyRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/speakers/apply",
+                  "title": "MeetingSpeakersApplyRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingTimelineApplyRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/timeline/apply",
+                  "title": "MeetingTimelineApplyRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingAudioApplyRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/audio/apply",
+                  "title": "MeetingAudioApplyRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingClaimsApplyRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/claims/apply",
+                  "title": "MeetingClaimsApplyRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingResearchApplyRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/research/apply",
+                  "title": "MeetingResearchApplyRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingRefinementJobApplyRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/refinement/job/apply",
+                  "title": "MeetingRefinementJobApplyRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingRefinementResultApplyRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/refinement/result/apply",
+                  "title": "MeetingRefinementResultApplyRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingDeleteRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/delete",
+                  "title": "MeetingDeleteRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingCleanupConfirmRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/cleanup/confirm",
+                  "title": "MeetingCleanupConfirmRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
+                      "$ref": "#/$defs/MeetingRecoverRequest_unstable"
+                    }
+                  ],
+                  "description": "Params for _goose/unstable/meetings/recover",
+                  "title": "MeetingRecoverRequest_unstable"
+                },
+                {
+                  "allOf": [
+                    {
                       "$ref": "#/$defs/LocalInferenceModelsListRequest_unstable"
                     }
                   ],
@@ -8475,6 +12309,126 @@
                         }
                       ],
                       "title": "DictationModelDownloadProgressResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingCreateResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingCreateResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingUpdateResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingUpdateResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingListResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingListResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingGetResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingGetResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingTranscriptApplyResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingTranscriptApplyResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingSpeakersApplyResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingSpeakersApplyResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingTimelineApplyResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingTimelineApplyResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingAudioApplyResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingAudioApplyResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingClaimsApplyResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingClaimsApplyResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingResearchApplyResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingResearchApplyResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingRefinementJobApplyResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingRefinementJobApplyResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingRefinementResultApplyResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingRefinementResultApplyResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingDeleteResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingDeleteResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingCleanupConfirmResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingCleanupConfirmResponse_unstable"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/MeetingRecoverResponse_unstable"
+                        }
+                      ],
+                      "title": "MeetingRecoverResponse_unstable"
                     },
                     {
                       "allOf": [

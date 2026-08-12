@@ -3,12 +3,10 @@ use once_cell::sync::Lazy;
 use rmcp::{ServerHandler, ServiceExt};
 use std::collections::HashMap;
 
-// NOTE: "Block" is kept here for backwards compatibility with existing
-// user config/data directories. Changing this would orphan existing installations.
 pub static APP_STRATEGY: Lazy<AppStrategyArgs> = Lazy::new(|| AppStrategyArgs {
-    top_level_domain: "Block".to_string(),
-    author: "Block".to_string(),
-    app_name: "goose".to_string(),
+    top_level_domain: "com.colinpthomson".to_string(),
+    author: "Obelus".to_string(),
+    app_name: "obelus".to_string(),
 });
 
 pub mod autovisualiser;

@@ -24,8 +24,10 @@ pub mod goose_apps;
 pub mod hints;
 pub mod hooks;
 pub mod instance_id;
+pub mod live_fact_check_model;
 pub mod logging;
 pub mod mcp_utils;
+pub mod meetings;
 pub mod model_config;
 pub mod oauth;
 #[cfg(feature = "otel")]

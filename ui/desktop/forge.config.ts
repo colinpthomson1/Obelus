@@ -3,24 +3,28 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 const { resolve } = require('path');
 
 const isLinuxVulkanBuild = process.env.GOOSE_DESKTOP_LINUX_VARIANT === 'vulkan';
+const isLocalMacAdHocBuild = process.platform === 'darwin';
 
 let cfg = {
   asar: true,
-  extraResource: ['src/bin', 'src/images', 'src/app-update.yml'],
+  appBundleId: 'com.colinpthomson.obelus',
+  appCategoryType: 'public.app-category.productivity',
+  extraResource: [
+    'src/bin',
+    'src/images',
+    'src/app-update.yml',
+    ...(isLocalMacAdHocBuild ? ['resources/local-adhoc-build'] : []),
+  ],
   icon: 'src/images/icon',
   // Windows specific configuration
   win32: {
     icon: 'src/images/icon.ico',
-    certificateFile: process.env.WINDOWS_CERTIFICATE_FILE,
-    signingRole: process.env.WINDOW_SIGNING_ROLE,
-    rfc3161TimeStampServer: 'http://timestamp.digicert.com',
-    signWithParams: '/fd sha256 /tr http://timestamp.digicert.com /td sha256',
   },
   // Protocol registration
   protocols: [
     {
-      name: 'GooseProtocol',
-      schemes: ['goose'],
+      name: 'ObelusProtocol',
+      schemes: ['obelus'],
     },
   ],
   // macOS Info.plist extensions for drag-and-drop support
@@ -36,43 +40,36 @@ let cfg = {
     ],
     // Usage descriptions for macOS TCC (Transparency, Consent, and Control)
     NSMicrophoneUsageDescription:
-      'Goose needs access to your microphone for voice dictation.',
+      'Obelus uses the microphone only when you start dictation or a live meeting. Live meeting audio is recorded locally and may be sent for transcription when you choose that workflow.',
+    NSAudioCaptureUsageDescription:
+      'Obelus captures system audio only after you start Call mode for a live meeting. Video frames are not inspected, stored, or transmitted.',
+    NSCameraUsageDescription:
+      'Obelus uses the camera only when you choose a feature or approve a tool that captures video.',
+    NSBluetoothAlwaysUsageDescription:
+      'Obelus accesses Bluetooth only when a tool you approve needs to communicate with a nearby device.',
+    NSBluetoothPeripheralUsageDescription:
+      'Obelus accesses Bluetooth only when a tool you approve needs to communicate with a nearby device.',
     NSAppleEventsUsageDescription:
-      'Goose needs access to send Apple Events to control other apps on your behalf.',
+      'Obelus uses Apple Events only when you approve an action that controls another app.',
   },
 };
 
-// macOS code signing and notarization via Electron Forge
-// Activated when APPLE_TEAM_ID is set (CI signing builds)
-if (process.env.APPLE_TEAM_ID) {
+if (isLocalMacAdHocBuild) {
   cfg.osxSign = {
-    keychain: process.env.KEYCHAIN_PATH || undefined,
-    entitlements: 'entitlements.plist',
-    'entitlements-inherit': 'entitlements.plist',
-  };
-  cfg.osxNotarize = {
-    appleId: process.env.APPLE_ID,
-    appleIdPassword: process.env.APPLE_ID_PASSWORD,
-    teamId: process.env.APPLE_TEAM_ID,
+    identity: '-',
+    identityValidation: false,
+    optionsForFile: () => ({
+      hardenedRuntime: false,
+      timestamp: 'none',
+    }),
+    preAutoEntitlements: false,
+    preEmbedProvisioningProfile: false,
   };
 }
 
 module.exports = {
   packagerConfig: cfg,
   rebuildConfig: {},
-  publishers: [
-    {
-      name: '@electron-forge/publisher-github',
-      config: {
-        repository: {
-          owner: process.env.GITHUB_OWNER || 'aaif-goose',
-          name: process.env.GITHUB_REPO || 'goose',
-        },
-        prerelease: false,
-        draft: true,
-      },
-    },
-  ],
   makers: [
     {
       name: '@electron-forge/maker-zip',
@@ -87,11 +84,11 @@ module.exports = {
     {
       name: '@electron-forge/maker-deb',
       config: {
-        name: 'Goose',
-        bin: 'Goose',
-        maintainer: 'AAIF (Agentic AI Foundation)',
-        homepage: 'https://goose-docs.ai/',
-        categories: ['Development'],
+        name: 'obelus',
+        bin: 'Obelus',
+        maintainer: 'Obelus contributors',
+        homepage: 'https://github.com/colinpthomson1/Obelus',
+        categories: ['Utility', 'Development'],
         desktopTemplate: './forge.deb.desktop',
         options: {
           icon: 'src/images/icon.png',
@@ -103,11 +100,11 @@ module.exports = {
     {
       name: '@electron-forge/maker-rpm',
       config: {
-        name: 'Goose',
-        bin: 'Goose',
-        maintainer: 'AAIF (Agentic AI Foundation)',
-        homepage: 'https://goose-docs.ai/',
-        categories: ['Development'],
+        name: 'obelus',
+        bin: 'Obelus',
+        maintainer: 'Obelus contributors',
+        homepage: 'https://github.com/colinpthomson1/Obelus',
+        categories: ['Utility', 'Development'],
         desktopTemplate: './forge.rpm.desktop',
         options: {
           icon: 'src/images/icon.png',
@@ -120,17 +117,17 @@ module.exports = {
       name: '@electron-forge/maker-flatpak',
       config: {
         options: {
-          id: 'io.github.block.Goose', // NOTE: kept for backwards compat with existing installs
-          categories: ['Development'],
-          mimeType: ['x-scheme-handler/goose'],
+          id: 'com.colinpthomson.obelus',
+          categories: ['Utility', 'Development'],
+          mimeType: ['x-scheme-handler/obelus'],
           icon: {
             scalable: 'src/images/icon.svg',
             '512x512': 'src/images/icon-512.png',
           },
-          homepage: 'https://goose-docs.ai/',
+          homepage: 'https://github.com/colinpthomson1/Obelus',
           runtimeVersion: '25.08',
           baseVersion: '25.08',
-          bin: 'Goose',
+          bin: 'Obelus',
           modules: [
             {
               name: 'libbz2-shim',
