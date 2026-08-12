@@ -165,15 +165,15 @@ pub fn configure_telemetry_consent_dialog() -> anyhow::Result<bool> {
     let config = Config::global();
 
     println!();
-    println!("{}", style("Help improve goose").bold());
+    println!("{}", style("Help improve Obelus").bold());
     println!();
     println!(
         "{}",
-        style("Would you like to help improve goose by sharing anonymous usage data?").dim()
+        style("Would you like to help improve Obelus by sharing anonymous usage data?").dim()
     );
     println!(
         "{}",
-        style("This helps us understand how goose is used and identify areas for improvement.")
+        style("This helps us understand how Obelus is used and identify areas for improvement.")
             .dim()
     );
     println!();
@@ -182,7 +182,7 @@ pub fn configure_telemetry_consent_dialog() -> anyhow::Result<bool> {
         "{}",
         style("  • Operating system, version, and architecture").dim()
     );
-    println!("{}", style("  • goose version and install method").dim());
+    println!("{}", style("  • Obelus version and install method").dim());
     println!("{}", style("  • Provider and model used").dim());
     println!(
         "{}",
@@ -207,14 +207,14 @@ pub fn configure_telemetry_consent_dialog() -> anyhow::Result<bool> {
     );
     println!();
 
-    let enabled = cliclack::confirm("Share anonymous usage data to help improve goose?")
+    let enabled = cliclack::confirm("Share anonymous usage data to help improve Obelus?")
         .initial_value(true)
         .interact()?;
 
     config.set_param(TELEMETRY_ENABLED_KEY, enabled)?;
 
     if enabled {
-        let _ = cliclack::log::success("Thank you for helping improve goose!");
+        let _ = cliclack::log::success("Thank you for helping improve Obelus!");
     } else {
         let _ = cliclack::log::info("Telemetry disabled. You can enable it anytime in settings.");
     }
@@ -224,7 +224,10 @@ pub fn configure_telemetry_consent_dialog() -> anyhow::Result<bool> {
 
 async fn handle_first_time_setup(config: &Config) -> anyhow::Result<()> {
     println!();
-    println!("{}", style("Welcome to goose! Let's get you set up.").dim());
+    println!(
+        "{}",
+        style("Welcome to Obelus! Let's get you set up.").dim()
+    );
     println!(
         "{}",
         style("  you can rerun this command later to update your configuration").dim()
@@ -235,7 +238,7 @@ async fn handle_first_time_setup(config: &Config) -> anyhow::Result<()> {
     configure_telemetry_consent_dialog()?;
 
     println!();
-    cliclack::intro(style(" goose-configure ").on_cyan().black())?;
+    cliclack::intro(style(" Obelus configure ").on_cyan().black())?;
 
     let setup_method = cliclack::select("How would you like to set up your provider?")
         .item(

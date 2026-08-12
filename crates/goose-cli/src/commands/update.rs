@@ -312,11 +312,11 @@ pub async fn update(canary: bool, reconfigure: bool) -> Result<()> {
         #[cfg(target_os = "windows")]
         copy_dlls(&extracted_binary, &current_exe)?;
 
-        println!("goose updated successfully (verified with Sigstore SLSA provenance).");
+        println!("Obelus updated successfully (verified with Sigstore SLSA provenance).");
 
         // --- Reconfigure if requested -------------------------------------------
         if reconfigure {
-            println!("Running goose configure...");
+            println!("Running goose configure for Obelus...");
             let status = Command::new(current_exe)
                 .arg("configure")
                 .status()
@@ -494,7 +494,7 @@ fn replace_binary(new_binary: &Path, current_exe: &Path) -> Result<()> {
         // Rename the running binary out of the way
         fs::rename(current_exe, &old_exe).with_context(|| {
             format!(
-                "Failed to rename running binary to {}. Try closing Goose Desktop if it's open.",
+                "Failed to rename running binary to {}. Try closing Obelus Desktop if it's open.",
                 old_exe.display()
             )
         })?;

@@ -802,12 +802,12 @@ enum Command {
     #[command(name = "live-fact-check-model", hide = true)]
     LiveFactCheckModel {},
 
-    /// Configure goose settings
-    #[command(about = "Configure goose settings")]
+    /// Configure Obelus settings
+    #[command(about = "Configure Obelus settings")]
     Configure {},
 
-    /// Display goose configuration information
-    #[command(about = "Display goose information")]
+    /// Display Obelus configuration information
+    #[command(about = "Display Obelus information")]
     Info {
         /// Show verbose information including current configuration
         #[arg(short, long, help = "Show verbose information including config.yaml")]
@@ -816,18 +816,18 @@ enum Command {
         check: bool,
     },
 
-    #[command(about = "Check that your Goose setup is working")]
+    #[command(about = "Check that your Obelus setup is working")]
     Doctor {},
 
     /// Manage system prompts and behaviors
-    #[command(about = "Run one of the mcp servers bundled with goose")]
+    #[command(about = "Run one of the MCP servers bundled with Obelus")]
     Mcp {
         #[arg(value_parser = clap::value_parser!(McpCommand))]
         server: McpCommand,
     },
 
-    /// Run goose as an ACP (Agent Client Protocol) agent
-    #[command(about = "Run goose as an ACP agent server on stdio")]
+    /// Run Obelus as an ACP (Agent Client Protocol) agent
+    #[command(about = "Run Obelus as an ACP agent server on stdio")]
     Acp {
         /// Add builtin extensions by name
         #[arg(
