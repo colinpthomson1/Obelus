@@ -1,6 +1,9 @@
 export const LIVE_IPC_CHANNELS = {
   getSnapshot: 'obelus-live:get-snapshot',
   getSupportStatus: 'obelus-live:get-support-status',
+  getGatewayAuthenticationStatus: 'obelus-live:get-gateway-authentication-status',
+  signInGateway: 'obelus-live:sign-in-gateway',
+  signOutGateway: 'obelus-live:sign-out-gateway',
   start: 'obelus-live:start',
   audioPort: 'obelus-live:audio-port',
   pause: 'obelus-live:pause',
@@ -176,6 +179,13 @@ export type MediaPermissionState =
 
 export type LiveFactCheckMode = 'subscription_web' | 'local_wikimedia' | 'hosted';
 
+export interface GatewayAuthenticationStatus {
+  configured: boolean;
+  authenticated: boolean;
+  expiresAtEpochMs?: number;
+  reason?: string;
+}
+
 export interface LiveSupportStatus {
   platform: string;
   systemVersion: string;
@@ -348,6 +358,9 @@ export interface LiveSelectionRequest {
 export interface LiveElectronApi {
   getSnapshot: () => Promise<LiveCaptureSnapshot>;
   getSupportStatus: () => Promise<LiveSupportStatus>;
+  getGatewayAuthenticationStatus: () => Promise<GatewayAuthenticationStatus>;
+  signInGateway: () => Promise<GatewayAuthenticationStatus>;
+  signOutGateway: () => Promise<GatewayAuthenticationStatus>;
   start: (config: LiveCaptureStartConfig) => Promise<LiveCaptureSnapshot>;
   appendAudio: (frame: LiveAudioFrame) => Promise<LiveAppendAudioResult>;
   pause: () => Promise<LiveCaptureSnapshot>;

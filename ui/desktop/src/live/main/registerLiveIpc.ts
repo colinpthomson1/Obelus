@@ -4,6 +4,7 @@ import type {
   FactCheckBackend,
   FactCheckSubmitRequest,
   GatewayJobResponse,
+  GatewayAuthenticationStatus,
   LiveAudioAssetAcknowledgement,
   LiveAudioPortRequest,
   LiveAudioPortResponse,
@@ -79,6 +80,11 @@ export interface RegisterLiveIpcOptions {
   ipcMain: IpcMain;
   coordinator: LiveCaptureCoordinator;
   gateway: GatewayClient;
+  gatewayIdentity?: {
+    getAuthenticationStatus(): GatewayAuthenticationStatus;
+    signIn(): Promise<GatewayAuthenticationStatus>;
+    signOut(): Promise<GatewayAuthenticationStatus>;
+  };
   localStt?: LocalSttServiceBoundary;
   localFactCheck?: LocalFactCheckServiceBoundary;
   factCheckRouting?: {
@@ -145,6 +151,23 @@ export function registerLiveIpc(options: RegisterLiveIpcOptions): LiveIpcRegistr
 
   handle(LIVE_IPC_CHANNELS.getSnapshot, () => options.coordinator.getSnapshot());
   handle(LIVE_IPC_CHANNELS.getSupportStatus, () => options.getSupportStatus());
+  handle(LIVE_IPC_CHANNELS.getGatewayAuthenticationStatus, () =>
+    options.gatewayIdentity
+      ? options.gatewayIdentity.getAuthenticationStatus()
+      : {
+          configured: false,
+          authenticated: false,
+          reason: 'Hosted research sign-in is not configured.',
+        }
+  );
+  handle(LIVE_IPC_CHANNELS.signInGateway, () => {
+    if (!options.gatewayIdentity) throw new Error('Hosted research sign-in is not configured');
+    return options.gatewayIdentity.signIn();
+  });
+  handle(LIVE_IPC_CHANNELS.signOutGateway, () => {
+    if (!options.gatewayIdentity) throw new Error('Hosted research sign-in is not configured');
+    return options.gatewayIdentity.signOut();
+  });
   handle(LIVE_IPC_CHANNELS.getLocalSttSupport, () =>
     options.localStt
       ? options.localStt.checkSupport()

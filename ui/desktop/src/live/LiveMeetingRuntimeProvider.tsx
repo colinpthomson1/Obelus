@@ -114,6 +114,7 @@ interface LiveSupportView {
   microphonePermission: LiveSupportStatus['microphonePermission'];
   gatewayState: GatewayState;
   gatewayUnavailableReason?: string;
+  gatewayAuthentication: import('./ipcTypes').GatewayAuthenticationStatus;
   localSttAvailable: boolean;
   localSttModel?: string;
   localSttUnavailableReason?: string;
@@ -166,6 +167,8 @@ interface LiveMeetingRuntimeValue {
   setClaimRailOpen: (open: boolean) => void;
   refreshDevices: () => Promise<void>;
   testMicrophone: (deviceId?: string) => Promise<void>;
+  signInGateway: () => Promise<void>;
+  signOutGateway: () => Promise<void>;
 }
 
 interface GatewayAssessmentResult {
@@ -222,6 +225,8 @@ interface GatewayAssessmentResult {
   policyVersion?: string;
   contractVersion?: string;
 }
+
+const GATEWAY_AUTH_STATUS_TIMER_MAX_DELAY_MS = 60_000;
 
 interface GatewayCitedStatement {
   text: string;
@@ -519,6 +524,11 @@ const defaultSupport: LiveSupportView = {
   systemAudioPermission: 'unknown',
   microphonePermission: 'unknown',
   gatewayState: 'unavailable',
+  gatewayAuthentication: {
+    configured: false,
+    authenticated: false,
+    reason: 'Hosted research sign-in is not configured.',
+  },
   localSttAvailable: false,
   localFactCheckMode: 'hosted',
   localFactCheckAvailable: false,
@@ -1567,6 +1577,7 @@ export function LiveMeetingRuntimeProvider({ children }: { children: ReactNode }
   const artifactNavigationEpochRef = useRef(0);
   const sttStateRef = useRef<SttState>('disconnected');
   const gatewayStateRef = useRef<GatewayState>('unavailable');
+  const gatewayAuthenticationRef = useRef(defaultSupport.gatewayAuthentication);
   const refinementStateRef = useRef<RefinementState>('not_started');
   const activeSttSessionsRef = useRef(new Map<LiveAudioSourceKind, ActiveSttSession>());
   const desiredSttSourcesRef = useRef<LiveAudioSourceKind[]>([]);
@@ -1715,17 +1726,18 @@ export function LiveMeetingRuntimeProvider({ children }: { children: ReactNode }
     const api = liveApi();
     if (!api || location.pathname !== '/live') return;
     let cancelled = false;
-    void api
-      .getSupportStatus()
-      .then((status) => {
+    void Promise.all([api.getSupportStatus(), api.getGatewayAuthenticationStatus()])
+      .then(([status, authentication]) => {
         if (cancelled) return;
         gatewayStateRef.current = status.gatewayAvailable ? 'ready' : 'unavailable';
+        gatewayAuthenticationRef.current = authentication;
         setSupport({
           checkingPermissions: false,
           systemAudioSupported: status.systemAudioRequiresHealthCheck,
           systemAudioPermission: status.systemAudioPermission,
           microphonePermission: status.microphonePermission,
           gatewayState: gatewayStateRef.current,
+          gatewayAuthentication: authentication,
           localSttAvailable: status.localSttAvailable,
           localSttModel: status.localSttModel,
           localSttUnavailableReason: status.localSttUnavailableReason,
@@ -1745,6 +1757,130 @@ export function LiveMeetingRuntimeProvider({ children }: { children: ReactNode }
       cancelled = true;
     };
   }, [location.pathname, updateRuntime]);
+
+  const applyGatewaySupport = useCallback(async () => {
+    const api = liveApi();
+    if (!api) return;
+    const [status, authentication] = await Promise.all([
+      api.getSupportStatus(),
+      api.getGatewayAuthenticationStatus(),
+    ]);
+    gatewayStateRef.current = status.gatewayAvailable ? 'ready' : 'unavailable';
+    gatewayAuthenticationRef.current = authentication;
+    setSupport((current) => ({
+      ...current,
+      gatewayState: gatewayStateRef.current,
+      gatewayAuthentication: authentication,
+      gatewayUnavailableReason: status.gatewayUnavailableReason,
+    }));
+    updateRuntime({ gateway: gatewayStateRef.current });
+  }, [updateRuntime]);
+
+  const signInGateway = useCallback(async () => {
+    const api = liveApi();
+    if (!api) throw new Error('Hosted research sign-in is unavailable');
+    await api.signInGateway();
+    await applyGatewaySupport();
+  }, [applyGatewaySupport]);
+
+  const signOutGateway = useCallback(async () => {
+    const api = liveApi();
+    if (!api) throw new Error('Hosted research sign-in is unavailable');
+    let signOutFailed = false;
+    let signOutError: unknown;
+    try {
+      await api.signOutGateway();
+    } catch (error) {
+      signOutFailed = true;
+      signOutError = error;
+    }
+    try {
+      await applyGatewaySupport();
+    } catch (error) {
+      if (!signOutFailed) throw error;
+    }
+    if (signOutFailed) throw signOutError;
+  }, [applyGatewaySupport]);
+
+  useEffect(() => {
+    const authentication = support.gatewayAuthentication;
+    const expiresAtEpochMs = authentication.expiresAtEpochMs;
+    if (
+      location.pathname !== '/live' ||
+      !authentication.authenticated ||
+      !Number.isSafeInteger(expiresAtEpochMs) ||
+      !expiresAtEpochMs
+    ) {
+      return;
+    }
+
+    let cancelled = false;
+    let timer: number | undefined;
+    const markExpired = (reason: string) => {
+      if (cancelled || gatewayAuthenticationRef.current.expiresAtEpochMs !== expiresAtEpochMs) {
+        return;
+      }
+      const expiredAuthentication = {
+        configured: gatewayAuthenticationRef.current.configured,
+        authenticated: false,
+        reason,
+      };
+      gatewayAuthenticationRef.current = expiredAuthentication;
+      gatewayStateRef.current = 'unavailable';
+      setSupport((current) => ({
+        ...current,
+        gatewayState: 'unavailable',
+        gatewayAuthentication: expiredAuthentication,
+        gatewayUnavailableReason: reason,
+      }));
+      updateRuntime({ gateway: 'unavailable' });
+    };
+    const refreshAtExpiry = () => {
+      const remainingMs = expiresAtEpochMs - Date.now();
+      if (remainingMs > 0) {
+        timer = window.setTimeout(
+          refreshAtExpiry,
+          Math.min(remainingMs, GATEWAY_AUTH_STATUS_TIMER_MAX_DELAY_MS)
+        );
+        return;
+      }
+      const api = liveApi();
+      if (!api) {
+        markExpired('Your hosted research session expired. Sign in again.');
+        return;
+      }
+      void api
+        .getGatewayAuthenticationStatus()
+        .then((currentAuthentication) => {
+          if (cancelled || gatewayAuthenticationRef.current.expiresAtEpochMs !== expiresAtEpochMs) {
+            return;
+          }
+          if (
+            !currentAuthentication.authenticated ||
+            !Number.isSafeInteger(currentAuthentication.expiresAtEpochMs) ||
+            !currentAuthentication.expiresAtEpochMs ||
+            currentAuthentication.expiresAtEpochMs <= Date.now()
+          ) {
+            markExpired(
+              currentAuthentication.reason ?? 'Your hosted research session expired. Sign in again.'
+            );
+            return;
+          }
+          gatewayAuthenticationRef.current = currentAuthentication;
+          setSupport((current) => ({
+            ...current,
+            gatewayAuthentication: currentAuthentication,
+          }));
+        })
+        .catch(() => markExpired('Your hosted research session expired. Sign in again.'));
+    };
+
+    refreshAtExpiry();
+    return () => {
+      cancelled = true;
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }, [location.pathname, support.gatewayAuthentication, updateRuntime]);
 
   const startTurnWriteDrain = useCallback((turnId: string) => {
     if (activeTurnWriteIdsRef.current.has(turnId)) return;
@@ -4259,6 +4395,8 @@ export function LiveMeetingRuntimeProvider({ children }: { children: ReactNode }
       setClaimRailOpen: (open) => dispatch({ type: 'claim_rail_changed', open }),
       refreshDevices: capture.refreshDevices,
       testMicrophone: capture.testMicrophone,
+      signInGateway,
+      signOutGateway,
     }),
     [
       capture.devices,
@@ -4281,6 +4419,8 @@ export function LiveMeetingRuntimeProvider({ children }: { children: ReactNode }
       startMeeting,
       state,
       setSetup,
+      signInGateway,
+      signOutGateway,
       stopMeeting,
       support,
       swapSpeakers,

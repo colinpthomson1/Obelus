@@ -3,7 +3,7 @@
  */
 import { act, render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { LiveAudioAsset, LiveCaptureSnapshot, LiveSupportStatus } from './ipcTypes';
 import type { MeetingArtifact, TranscriptTurn } from './types';
 
@@ -284,6 +284,13 @@ beforeEach(() => {
   api = {
     getSnapshot: vi.fn(async () => snapshot),
     getSupportStatus: vi.fn(async () => support),
+    getGatewayAuthenticationStatus: vi.fn(async () => ({
+      configured: false,
+      authenticated: false,
+      reason: 'Hosted research sign-in is not configured.',
+    })),
+    signInGateway: vi.fn(),
+    signOutGateway: vi.fn(),
     start: vi.fn(async (config: { meetingId: string }) => {
       snapshot = captureSnapshot({
         lifecycle: 'recording',
@@ -321,6 +328,10 @@ beforeEach(() => {
   Object.assign(window.electron, { live: api });
 });
 
+afterEach(() => {
+  vi.useRealTimers();
+});
+
 async function renderRuntime() {
   render(
     <MemoryRouter initialEntries={['/live']}>
@@ -339,6 +350,108 @@ async function openBackAndStartFresh() {
   await act(async () => runtime.startMeeting(true));
   await waitFor(() => expect(runtime.state.artifact?.id).toBe('meeting-b'));
 }
+
+describe('gateway authentication lifecycle', () => {
+  it('expires renderer authentication state and permits immediate interactive sign-in', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(Date.UTC(2026, 7, 12, 15, 0, 0));
+    let authenticated = true;
+    let expiresAtEpochMs = Date.now() + 1_000;
+    api.getGatewayAuthenticationStatus.mockImplementation(async () =>
+      authenticated
+        ? { configured: true, authenticated: true, expiresAtEpochMs }
+        : {
+            configured: true,
+            authenticated: false,
+            reason: 'Sign in to use hosted live research.',
+          }
+    );
+    api.getSupportStatus.mockImplementation(async () => ({
+      ...support,
+      gatewayAvailable: authenticated,
+      gatewayUnavailableReason: authenticated ? undefined : 'Sign in to use hosted live research.',
+    }));
+    api.signInGateway.mockImplementation(async () => {
+      authenticated = true;
+      expiresAtEpochMs = Date.now() + 1_000;
+      return { configured: true, authenticated: true, expiresAtEpochMs };
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/live']}>
+        <LiveMeetingRuntimeProvider>
+          <Harness />
+        </LiveMeetingRuntimeProvider>
+      </MemoryRouter>
+    );
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    expect(runtime.support.gatewayAuthentication).toMatchObject({
+      authenticated: true,
+      expiresAtEpochMs,
+    });
+
+    authenticated = false;
+    await act(async () => {
+      vi.advanceTimersByTime(1_000);
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    expect(runtime.support.gatewayAuthentication).toMatchObject({ authenticated: false });
+    expect(runtime.support.gatewayState).toBe('unavailable');
+
+    await act(async () => runtime.signInGateway());
+    expect(api.signInGateway).toHaveBeenCalledTimes(1);
+    expect(runtime.support.gatewayAuthentication).toMatchObject({
+      authenticated: true,
+      expiresAtEpochMs,
+    });
+    expect(runtime.support.gatewayState).toBe('ready');
+  });
+
+  it('refreshes local authentication state when external logout launch fails', async () => {
+    let authenticated = true;
+    const expiresAtEpochMs = Date.now() + 600_000;
+    const logoutError = new Error('The system browser could not be opened');
+    api.getGatewayAuthenticationStatus.mockImplementation(async () =>
+      authenticated
+        ? { configured: true, authenticated: true, expiresAtEpochMs }
+        : {
+            configured: true,
+            authenticated: false,
+            reason: 'Sign in to use hosted live research.',
+          }
+    );
+    api.getSupportStatus.mockImplementation(async () => ({
+      ...support,
+      gatewayAvailable: authenticated,
+      gatewayUnavailableReason: authenticated ? undefined : 'Sign in to use hosted live research.',
+    }));
+    api.signOutGateway.mockImplementation(async () => {
+      authenticated = false;
+      throw logoutError;
+    });
+
+    await renderRuntime();
+    await waitFor(() =>
+      expect(runtime.support.gatewayAuthentication).toMatchObject({ authenticated: true })
+    );
+    let observedError: unknown;
+    await act(async () => {
+      try {
+        await runtime.signOutGateway();
+      } catch (error) {
+        observedError = error;
+      }
+    });
+
+    expect(observedError).toBe(logoutError);
+    expect(runtime.support.gatewayAuthentication).toMatchObject({ authenticated: false });
+    expect(runtime.support.gatewayState).toBe('unavailable');
+  });
+});
 
 describe('fresh meeting lifecycle ownership', () => {
   it('sends bounded split-turn context and new-turn IDs for automatic subscription detection', async () => {

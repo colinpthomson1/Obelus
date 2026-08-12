@@ -1,4 +1,5 @@
 import { AlertCircle, AudioLines, Check, Info, Mic, MonitorUp, Users } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { cn } from '../../utils';
@@ -68,6 +69,8 @@ export function LiveSetupView() {
     startMeeting,
     refreshDevices,
     testMicrophone,
+    signInGateway,
+    signOutGateway,
   } = useLiveMeetingRuntime();
   const { setup, runtime } = state;
   const starting = runtime.lifecycle === 'starting';
@@ -78,6 +81,22 @@ export function LiveSetupView() {
     (!support.systemAudioSupported ||
       support.systemAudioPermission === 'denied' ||
       support.systemAudioPermission === 'restricted');
+  const [identityBusy, setIdentityBusy] = useState(false);
+  const [identityError, setIdentityError] = useState<string | null>(null);
+
+  const changeGatewayAuthentication = async (operation: 'sign-in' | 'sign-out') => {
+    setIdentityBusy(true);
+    setIdentityError(null);
+    try {
+      await (operation === 'sign-in' ? signInGateway() : signOutGateway());
+    } catch (error) {
+      setIdentityError(
+        error instanceof Error ? error.message : 'Hosted research sign-in could not be completed.'
+      );
+    } finally {
+      setIdentityBusy(false);
+    }
+  };
 
   return (
     <section
@@ -360,7 +379,32 @@ export function LiveSetupView() {
                   )}
                 </span>
               )}
+              {support.gatewayAuthentication?.configured &&
+                (support.gatewayAuthentication.authenticated ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={identityBusy}
+                    onClick={() => void changeGatewayAuthentication('sign-out')}
+                  >
+                    {identityBusy ? 'Signing out…' : 'Sign out of hosted research'}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={identityBusy}
+                    onClick={() => void changeGatewayAuthentication('sign-in')}
+                  >
+                    {identityBusy ? 'Waiting for browser…' : 'Sign in for hosted research'}
+                  </Button>
+                ))}
             </div>
+            {identityError && (
+              <p role="alert" className="mt-3 text-sm text-status-disputed">
+                {identityError}
+              </p>
+            )}
           </div>
         </div>
       </div>
