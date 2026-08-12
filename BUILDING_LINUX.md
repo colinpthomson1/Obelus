@@ -1,39 +1,45 @@
-# Building goose Desktop on Linux
+# Building Obelus desktop on Linux
 
-This guide covers building the goose Desktop application from source on various Linux distributions.
+This guide covers building the Obelus desktop application from source on various Linux distributions. The embedded compatibility executable remains named `goose`.
 
 ## Prerequisites
 
 ### System Dependencies
 
 **Debian/Ubuntu:**
+
 ```bash
 sudo apt update
 sudo apt install -y dpkg fakeroot build-essential clang libxcb1-dev libxcb-util-dev protobuf-compiler libvulkan-dev libvulkan1 glslc
 ```
 
 **Arch/Manjaro:**
+
 ```bash
 sudo pacman -S --needed dpkg fakeroot base-devel vulkan-headers vulkan-icd-loader shaderc
 ```
 
 **Fedora/RHEL/CentOS:**
+
 ```bash
 sudo dnf install dpkg-dev fakeroot gcc gcc-c++ make libxcb-devel vulkan-headers vulkan-loader glslc
 ```
 
 **openSUSE:**
+
 ```bash
 sudo zypper install dpkg fakeroot gcc gcc-c++ make vulkan-headers vulkan-loader glslc
 ```
 
 **Android / Termux:**
 
-The `download_cli.sh` installer detects Termux and automatically selects the
-musl portable build (`GOOSE_LINUX_VARIANT=musl`). To install:
+The `download_cli.sh` installer detects Termux and selects the musl portable
+build (`GOOSE_LINUX_VARIANT=musl`). Review the installer before running it:
 
 ```bash
-curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
+curl -fsSLO https://github.com/colinpthomson1/Obelus/releases/download/vX.Y.Z/download_cli.sh
+less download_cli.sh
+GOOSE_VERSION=vX.Y.Z bash download_cli.sh
 ```
 
 To build from source in Termux:
@@ -57,15 +63,16 @@ Original PR: https://github.com/aaif-goose/goose/pull/3890
 
 ## Build Process
 
-### 1. Clone and Setup
+### 1. Clone and set up
+
 ```bash
-git clone https://github.com/aaif-goose/goose.git
-cd goose
+git clone https://github.com/colinpthomson1/Obelus.git
+cd Obelus
 ```
 
 ### 2. Build
 
-Build Goose CLI:
+Build the Obelus compatibility CLI:
 
 ```bash
 cargo build --release -p goose-cli --bin goose
@@ -79,6 +86,7 @@ cargo test -p
 ```
 
 ### 3. Prepare the Desktop Application
+
 ```bash
 cd ui/desktop
 pnpm install
@@ -91,7 +99,9 @@ cp ../../target/release/goose src/bin/
 ### 4. Build the Application
 
 #### Option A: ZIP Distribution (Recommended)
+
 Works on all Linux distributions:
+
 ```bash
 pnpm run make --targets=@electron-forge/maker-zip
 ```
@@ -99,7 +109,9 @@ pnpm run make --targets=@electron-forge/maker-zip
 Output: `out/make/zip/linux/x64/goose-linux-x64-{version}.zip`
 
 #### Option B: DEB Package
+
 For Debian/Ubuntu systems:
+
 ```bash
 pnpm run make --targets=@electron-forge/maker-deb
 ```
@@ -107,6 +119,7 @@ pnpm run make --targets=@electron-forge/maker-deb
 Output: `out/make/deb/x64/goose_{version}_amd64.deb`
 
 #### Option C: Both Formats
+
 ```bash
 pnpm run make
 ```
@@ -114,11 +127,13 @@ pnpm run make
 ### 5. Run the Application
 
 #### From Build Directory
+
 ```bash
 ./out/goose-linux-x64/goose
 ```
 
 #### Install DEB Package (if built)
+
 ```bash
 sudo dpkg -i out/make/deb/x64/goose_*.deb
 ```
@@ -128,16 +143,21 @@ sudo dpkg -i out/make/deb/x64/goose_*.deb
 ### Common Issues
 
 #### Missing System Dependencies
+
 If you see errors about missing `dpkg`, `fakeroot`, Vulkan headers, or `glslc`:
+
 ```bash
 # Install the missing packages for your distribution (see Prerequisites above)
 ```
 
 #### GLib Warnings
+
 You may see warnings like:
+
 ```
 GLib-GObject: instance has no handler with id
 ```
+
 These are harmless and don't affect functionality. To suppress them, create a launcher script:
 
 ```bash
@@ -147,7 +167,9 @@ cd /path/to/goose/ui/desktop/out/goose-linux-x64
 ```
 
 #### Goose Binary Not Found
+
 If you see "Goose binary not found", ensure you've:
+
 1. Built the Rust binary: `cargo build --release -p goose-cli --bin goose`
 2. Copied it to the right location: `cp ../../target/release/goose src/bin/`
 3. Rebuilt the application: `pnpm run make`
@@ -155,11 +177,14 @@ If you see "Goose binary not found", ensure you've:
 ### Distribution-Specific Notes
 
 #### Arch/Manjaro
+
 - The RPM maker is disabled by default as it's not compatible with Arch-based systems
 - Use the ZIP distribution method for maximum compatibility
 
 #### Flatpak
+
 Flatpak builds are supported via CI. To build locally:
+
 ```bash
 # Install flatpak and flatpak-builder
 sudo apt install flatpak flatpak-builder
@@ -174,6 +199,7 @@ pnpm run make --targets=@electron-forge/maker-flatpak
 Output: `out/make/flatpak/x86_64/*.flatpak`
 
 #### Snap
+
 Building as Snap packages is not currently supported but may be added in the future.
 
 ## Development Workflow
@@ -187,7 +213,9 @@ For active development:
 ## Creating System Integration
 
 ### Desktop Entry
+
 Create `~/.local/share/applications/goose.desktop`:
+
 ```ini
 [Desktop Entry]
 Name=goose AI Agent
@@ -202,7 +230,9 @@ MimeType=x-scheme-handler/goose
 ```
 
 ### System-wide Installation
+
 To install system-wide:
+
 ```bash
 sudo cp -r out/goose-linux-x64 /opt/goose
 sudo ln -s /opt/goose/goose /usr/local/bin/goose-gui

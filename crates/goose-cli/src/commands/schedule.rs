@@ -105,7 +105,7 @@ pub async fn handle_schedule_add(
             // The scheduler has copied the recipe to its internal directory.
             // We can reconstruct the likely path for display if needed, or adjust success message.
             let scheduled_recipes_dir = get_default_scheduled_recipes_dir()
-                .unwrap_or_else(|_| Path::new("./.goose_scheduled_recipes").to_path_buf()); // Fallback for display
+                .unwrap_or_else(|_| Path::new("./.obelus_scheduled_recipes").to_path_buf()); // Fallback for display
             let extension = Path::new(&recipe_source_arg)
                 .extension()
                 .and_then(|ext| ext.to_str())
@@ -268,7 +268,7 @@ pub async fn handle_schedule_run_now(schedule_id: String) -> Result<()> {
 pub async fn handle_schedule_services_status() -> Result<()> {
     println!("Service management has been removed as Temporal scheduler is no longer supported.");
     println!(
-        "The built-in scheduler runs within the goose process and requires no external services."
+        "The built-in scheduler runs within the Obelus process and requires no external services."
     );
     Ok(())
 }
@@ -276,7 +276,7 @@ pub async fn handle_schedule_services_status() -> Result<()> {
 pub async fn handle_schedule_services_stop() -> Result<()> {
     println!("Service management has been removed as Temporal scheduler is no longer supported.");
     println!(
-        "The built-in scheduler runs within the goose process and requires no external services."
+        "The built-in scheduler runs within the Obelus process and requires no external services."
     );
     Ok(())
 }

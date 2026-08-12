@@ -369,7 +369,7 @@
     "defaultMessage": "딥링크 생성 중..."
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Upstream recipe guide"
+    "defaultMessage": "Upstream Goose recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "레시피가 저장되고 성공적으로 실행되었습니다."
@@ -1148,9 +1148,6 @@
   "extensionsSection.addExtension": {
     "defaultMessage": "익스텐션 추가"
   },
-  "extensionsSection.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
-  },
   "extensionsSection.saveChanges": {
     "defaultMessage": "변경 사항 저장"
   },
@@ -1162,9 +1159,6 @@
   },
   "extensionsView.addExtension": {
     "defaultMessage": "익스텐션 추가"
-  },
-  "extensionsView.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
   },
   "extensionsView.defaultNote": {
     "defaultMessage": "여기에서 켠 익스텐션은 새 채팅의 기본값으로 사용됩니다. 채팅 중에도 익스텐션을 켜거나 끌 수 있습니다."
@@ -1266,7 +1260,7 @@
     "defaultMessage": "자세한 내용은 {link}를 참조하세요."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "the upstream .goosehints guide"
+    "defaultMessage": "the upstream Goose .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "여기에 프로젝트 힌트를 입력하세요..."
@@ -4372,9 +4366,6 @@
   },
   "switchModelModal.providerPlaceholder": {
     "defaultMessage": "제공업체 검색"
-  },
-  "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Upstream Goose quick start guide"
   },
   "switchModelModal.recommended": {
     "defaultMessage": "추천"

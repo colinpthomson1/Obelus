@@ -30,7 +30,7 @@ impl goose_providers::base::ProviderDescriptor for AmpAcpProvider {
             vec![],
         )
         .with_setup_steps(vec![
-            "Install the Amp CLI: `curl -fsSL https://ampcode.com/install.sh | bash`",
+            "Install a reviewed, version-pinned Amp CLI release using the instructions at https://ampcode.com; do not pipe a remote installer directly into a shell",
             "Install the ACP adapter: `npm install -g amp-acp`",
             "Ensure your Amp CLI is authenticated (run `amp` to verify)",
             "Add these compatibility settings to `~/.config/goose/config.yaml` on macOS/Linux:\n  GOOSE_PROVIDER: amp-acp\n  GOOSE_MODEL: current\n  amp-acp_configured: true",

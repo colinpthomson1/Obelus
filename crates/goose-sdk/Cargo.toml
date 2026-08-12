@@ -1,12 +1,13 @@
 [package]
 name = "goose-sdk"
 version = "0.1.0-alpha.5"
+publish = false
 edition.workspace = true
 rust-version.workspace = true
 authors.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Rust SDK for Goose with optional uniffi bindings for Python/Kotlin"
+description = "Goose-compatible Rust SDK for Obelus with optional UniFFI bindings for Python and Kotlin"
 
 [lib]
 name = "goose_sdk"

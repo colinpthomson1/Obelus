@@ -1,55 +1,76 @@
 ##############################################################################
-# goose CLI Install Script for Windows PowerShell
+# Obelus CLI Install Script for Windows PowerShell
 #
-# This script downloads the latest stable 'goose' CLI binary from GitHub releases
-# and installs it to your system.
+# This script downloads the Obelus CLI binary (the compatibility binary remains
+# named 'goose.exe') from verified Obelus GitHub releases and installs it.
 #
 # Supported OS: Windows
 # Supported Architectures: x86_64
 #
 # Usage:
-#   Invoke-WebRequest -Uri "https://github.com/aaif-goose/goose/releases/download/stable/download_cli.ps1" -OutFile "download_cli.ps1"; .\download_cli.ps1
-#   Or simply: .\download_cli.ps1
+#   Download this script from the exact Obelus release you intend to install,
+#   review it, then run: .\download_cli.ps1
 #
 # Environment variables:
 #   $env:GOOSE_BIN_DIR  - Directory to which goose will be installed (default: $env:USERPROFILE\.local\bin)
-#   $env:GOOSE_VERSION  - Optional: specific version to install (e.g., "v1.0.25"). Can be in the format vX.Y.Z, vX.Y.Z-suffix, or X.Y.Z
+#   $env:GOOSE_VERSION  - Required first-party release version (e.g., "v1.0.25"). Can be in the format vX.Y.Z, vX.Y.Z-suffix, or X.Y.Z
 #   $env:GOOSE_PROVIDER - Optional: provider for goose
 #   $env:GOOSE_MODEL    - Optional: model for goose
 #   $env:GOOSE_WINDOWS_VARIANT - Optional: Windows package variant to install ("standard" or "cuda")
-#   $env:CANARY         - Optional: if set to "true", downloads from canary release instead of stable
 #   $env:CONFIGURE      - Optional: if set to "false", disables running goose configure interactively
+#   $env:OBELUS_RELEASE_SHA256 - Optional: expected SHA-256 for the selected archive. When omitted,
+#                                the installer requires a matching `<archive>.sha256` release asset.
+#   $env:OBELUS_GITHUB_REPO - Optional: alternate owner/repository. Non-first-party repositories also
+#                             require $env:OBELUS_ALLOW_COMPATIBILITY_REPO="true".
 ##############################################################################
 
 # Set error action preference to stop on errors
 $ErrorActionPreference = "Stop"
 
 # --- 1) Variables ---
-$REPO = "aaif-goose/goose"
+$FIRST_PARTY_REPO = "colinpthomson1/Obelus"
+$REPO = if ($env:OBELUS_GITHUB_REPO) {
+    $env:OBELUS_GITHUB_REPO
+} elseif ($env:GOOSE_GITHUB_REPO) {
+    $env:GOOSE_GITHUB_REPO
+} else {
+    $FIRST_PARTY_REPO
+}
 $OUT_FILE = "goose.exe"
+
+if ($REPO -notmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$') {
+    Write-Error "Invalid GitHub repository '$REPO'. Expected owner/repository."
+    exit 1
+}
+
+if ($REPO -ne $FIRST_PARTY_REPO) {
+    if ($env:OBELUS_ALLOW_COMPATIBILITY_REPO -ne "true") {
+        Write-Error "Refusing non-first-party release repository '$REPO'. Set OBELUS_ALLOW_COMPATIBILITY_REPO=true only for an explicit compatibility install."
+        exit 1
+    }
+    Write-Warning "Compatibility mode enabled; installing from non-first-party repository '$REPO'."
+}
 
 # Set default bin directory if not specified
 if (-not $env:GOOSE_BIN_DIR) {
     $env:GOOSE_BIN_DIR = Join-Path $env:USERPROFILE ".local\bin"
 }
 
-# Determine release type
-$RELEASE = if ($env:CANARY -eq "true") { "true" } else { "false" }
 $CONFIGURE = if ($env:CONFIGURE -eq "false") { "false" } else { "true" }
 $WINDOWS_VARIANT = if ($env:GOOSE_WINDOWS_VARIANT) { $env:GOOSE_WINDOWS_VARIANT.ToLowerInvariant() } else { "standard" }
 
 # Determine release tag
 if ($env:GOOSE_VERSION) {
     # Validate version format
-    if ($env:GOOSE_VERSION -notmatch '^v?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$') {
+    if ($env:GOOSE_VERSION -notmatch '^v?[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?$') {
         Write-Error "Invalid version '$env:GOOSE_VERSION'. Expected: semver format vX.Y.Z, vX.Y.Z-suffix, or X.Y.Z"
         exit 1
     }
     # Ensure version starts with 'v'
     $RELEASE_TAG = if ($env:GOOSE_VERSION.StartsWith("v")) { $env:GOOSE_VERSION } else { "v$env:GOOSE_VERSION" }
 } else {
-    # Use canary or stable based on RELEASE variable
-    $RELEASE_TAG = if ($RELEASE -eq "true") { "canary" } else { "stable" }
+    Write-Error "GOOSE_VERSION is required; Obelus installers do not follow mutable stable or canary aliases."
+    exit 1
 }
 
 # --- 2) Detect Architecture ---
@@ -72,32 +93,63 @@ if ($WINDOWS_VARIANT -ne "standard" -and $WINDOWS_VARIANT -ne "cuda") {
 # --- 3) Build download URL ---
 $FILE = if ($WINDOWS_VARIANT -eq "cuda") { "goose-$ARCH-pc-windows-msvc-cuda.zip" } else { "goose-$ARCH-pc-windows-msvc.zip" }
 $DOWNLOAD_URL = "https://github.com/$REPO/releases/download/$RELEASE_TAG/$FILE"
+$TMP_DIR = Join-Path $env:TEMP "obelus_install_$(Get-Random)"
+try {
+    New-Item -ItemType Directory -Path $TMP_DIR -Force | Out-Null
+    Write-Host "Created temporary directory: $TMP_DIR" -ForegroundColor Yellow
+} catch {
+    Write-Error "Could not create temporary installation directory: $TMP_DIR"
+    exit 1
+}
+$ARCHIVE_PATH = Join-Path $TMP_DIR $FILE
+$CHECKSUM_FILE = "$ARCHIVE_PATH.sha256"
 
 Write-Host "Downloading $RELEASE_TAG release: $FILE..." -ForegroundColor Green
 
 # --- 4) Download the file ---
 try {
-    Invoke-WebRequest -Uri $DOWNLOAD_URL -OutFile $FILE -UseBasicParsing
+    Invoke-WebRequest -Uri $DOWNLOAD_URL -OutFile $ARCHIVE_PATH -UseBasicParsing
     Write-Host "Download completed successfully." -ForegroundColor Green
 } catch {
-    Write-Error "Failed to download $DOWNLOAD_URL. Error: $($_.Exception.Message)"
+    Remove-Item -Path $TMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Error "Failed to download $DOWNLOAD_URL. No upstream or unverified fallback will be used. Error: $($_.Exception.Message)"
     exit 1
 }
 
-# --- 5) Create temporary directory for extraction ---
-$TMP_DIR = Join-Path $env:TEMP "goose_install_$(Get-Random)"
-try {
-    New-Item -ItemType Directory -Path $TMP_DIR -Force | Out-Null
-    Write-Host "Created temporary directory: $TMP_DIR" -ForegroundColor Yellow
-} catch {
-    Write-Error "Could not create temporary extraction directory: $TMP_DIR"
+# --- 5) Verify the archive before extraction ---
+$EXPECTED_SHA256 = $env:OBELUS_RELEASE_SHA256
+if (-not $EXPECTED_SHA256) {
+    $CHECKSUM_URL = "$DOWNLOAD_URL.sha256"
+    Write-Host "Downloading release checksum: $CHECKSUM_FILE..." -ForegroundColor Green
+    try {
+        Invoke-WebRequest -Uri $CHECKSUM_URL -OutFile $CHECKSUM_FILE -UseBasicParsing
+        $EXPECTED_SHA256 = ((Get-Content -Path $CHECKSUM_FILE -Raw).Trim() -split '\s+')[0]
+    } catch {
+        Remove-Item -Path $TMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
+        Write-Error "Failed to download required checksum $CHECKSUM_URL. Set OBELUS_RELEASE_SHA256 to an independently verified digest to install explicitly."
+        exit 1
+    }
+}
+
+if ($EXPECTED_SHA256 -notmatch '^[A-Fa-f0-9]{64}$') {
+    Remove-Item -Path $TMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Error "Release checksum must be exactly 64 hexadecimal characters."
     exit 1
 }
+
+$ACTUAL_SHA256 = (Get-FileHash -Path $ARCHIVE_PATH -Algorithm SHA256).Hash
+if ($ACTUAL_SHA256 -ne $EXPECTED_SHA256) {
+    Remove-Item -Path $TMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Error "SHA-256 verification failed for $FILE."
+    exit 1
+}
+Remove-Item -Path $CHECKSUM_FILE -Force -ErrorAction SilentlyContinue
+Write-Host "Verified SHA-256 for $FILE." -ForegroundColor Green
 
 # --- 6) Extract the archive ---
 Write-Host "Extracting $FILE to temporary directory..." -ForegroundColor Green
 try {
-    Expand-Archive -Path $FILE -DestinationPath $TMP_DIR -Force
+    Expand-Archive -Path $ARCHIVE_PATH -DestinationPath $TMP_DIR -Force
     Write-Host "Extraction completed successfully." -ForegroundColor Green
 } catch {
     Write-Error "Failed to extract $FILE. Error: $($_.Exception.Message)"
@@ -106,7 +158,7 @@ try {
 }
 
 # Clean up the downloaded archive
-Remove-Item -Path $FILE -Force
+Remove-Item -Path $ARCHIVE_PATH -Force
 
 # --- 7) Determine extraction directory ---
 $EXTRACT_DIR = $TMP_DIR
@@ -133,13 +185,21 @@ $DEST_GOOSE = Join-Path $env:GOOSE_BIN_DIR $OUT_FILE
 
 if (Test-Path $SOURCE_GOOSE) {
     Write-Host "Moving goose to $DEST_GOOSE" -ForegroundColor Green
+    $BACKUP_GOOSE = "$DEST_GOOSE.obelus-backup-$([guid]::NewGuid().ToString('N'))"
+    $MOVED_EXISTING = $false
     try {
-        # Remove existing file if it exists to avoid conflicts
         if (Test-Path $DEST_GOOSE) {
-            Remove-Item -Path $DEST_GOOSE -Force
+            Move-Item -Path $DEST_GOOSE -Destination $BACKUP_GOOSE
+            $MOVED_EXISTING = $true
         }
-        Move-Item -Path $SOURCE_GOOSE -Destination $DEST_GOOSE -Force
+        Move-Item -Path $SOURCE_GOOSE -Destination $DEST_GOOSE
+        if ($MOVED_EXISTING) {
+            Remove-Item -Path $BACKUP_GOOSE -Force
+        }
     } catch {
+        if ($MOVED_EXISTING -and -not (Test-Path $DEST_GOOSE) -and (Test-Path $BACKUP_GOOSE)) {
+            Move-Item -Path $BACKUP_GOOSE -Destination $DEST_GOOSE
+        }
         Write-Error "Failed to move goose.exe to $DEST_GOOSE. Error: $($_.Exception.Message)"
         Remove-Item -Path $TMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
         exit 1

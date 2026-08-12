@@ -369,7 +369,7 @@
     "defaultMessage": "正在產生深層連結…"
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Upstream recipe guide"
+    "defaultMessage": "Upstream Goose recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "食譜已成功儲存並啟動"
@@ -1148,9 +1148,6 @@
   "extensionsSection.addExtension": {
     "defaultMessage": "新增擴充功能"
   },
-  "extensionsSection.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
-  },
   "extensionsSection.saveChanges": {
     "defaultMessage": "儲存變更"
   },
@@ -1162,9 +1159,6 @@
   },
   "extensionsView.addExtension": {
     "defaultMessage": "新增擴充功能"
-  },
-  "extensionsView.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
   },
   "extensionsView.defaultNote": {
     "defaultMessage": "在此啟用的擴充功能會作為新聊天的預設值。您也可以在聊天期間切換使用中的擴充功能。"
@@ -1266,7 +1260,7 @@
     "defaultMessage": "如需更多資訊，請參閱 {link}。"
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "the upstream .goosehints guide"
+    "defaultMessage": "the upstream Goose .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "在此輸入專案提示…"
@@ -4372,9 +4366,6 @@
   },
   "switchModelModal.providerPlaceholder": {
     "defaultMessage": "提供者，輸入以搜尋"
-  },
-  "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Upstream Goose quick start guide"
   },
   "switchModelModal.recommended": {
     "defaultMessage": "建議"

@@ -369,7 +369,7 @@
     "defaultMessage": "Génération du lien profond..."
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Upstream recipe guide"
+    "defaultMessage": "Upstream Goose recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Recette enregistrée et lancée avec succès"
@@ -1148,9 +1148,6 @@
   "extensionsSection.addExtension": {
     "defaultMessage": "Ajouter une extension"
   },
-  "extensionsSection.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
-  },
   "extensionsSection.saveChanges": {
     "defaultMessage": "Enregistrer les modifications"
   },
@@ -1162,9 +1159,6 @@
   },
   "extensionsView.addExtension": {
     "defaultMessage": "Ajouter une extension"
-  },
-  "extensionsView.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
   },
   "extensionsView.defaultNote": {
     "defaultMessage": "Les extensions activées ici sont utilisées par défaut pour les nouvelles discussions. Vous pouvez également activer ou désactiver les extensions actives pendant une discussion."
@@ -1266,7 +1260,7 @@
     "defaultMessage": "Consultez {link} pour plus d'informations."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "the upstream .goosehints guide"
+    "defaultMessage": "the upstream Goose .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Saisissez les indices du projet ici..."
@@ -4372,9 +4366,6 @@
   },
   "switchModelModal.providerPlaceholder": {
     "defaultMessage": "Fournisseur, saisissez pour rechercher"
-  },
-  "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Upstream Goose quick start guide"
   },
   "switchModelModal.recommended": {
     "defaultMessage": "Recommandé"

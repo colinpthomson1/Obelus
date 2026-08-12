@@ -369,7 +369,7 @@
     "defaultMessage": "Generando deeplink..."
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Upstream recipe guide"
+    "defaultMessage": "Upstream Goose recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Receta guardada y abierta con éxito"
@@ -1148,9 +1148,6 @@
   "extensionsSection.addExtension": {
     "defaultMessage": "Añadir extensión"
   },
-  "extensionsSection.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
-  },
   "extensionsSection.saveChanges": {
     "defaultMessage": "Guardar cambios"
   },
@@ -1162,9 +1159,6 @@
   },
   "extensionsView.addExtension": {
     "defaultMessage": "Añadir extensión"
-  },
-  "extensionsView.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
   },
   "extensionsView.defaultNote": {
     "defaultMessage": "Las extensiones habilitadas aquí se usan por defecto en los chats nuevos. También puedes activar extensiones durante el chat."
@@ -1266,7 +1260,7 @@
     "defaultMessage": "Consulta {link} para más información."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "the upstream .goosehints guide"
+    "defaultMessage": "the upstream Goose .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Introduce aquí las pistas del proyecto..."
@@ -4372,9 +4366,6 @@
   },
   "switchModelModal.providerPlaceholder": {
     "defaultMessage": "Proveedor, escribe para buscar"
-  },
-  "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Upstream Goose quick start guide"
   },
   "switchModelModal.recommended": {
     "defaultMessage": "Recomendado"

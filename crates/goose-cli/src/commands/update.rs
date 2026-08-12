@@ -485,7 +485,7 @@ fn replace_binary(new_binary: &Path, current_exe: &Path) -> Result<()> {
         if old_exe.exists() {
             fs::remove_file(&old_exe).with_context(|| {
                 format!(
-                    "Failed to remove old backup {}. Is another goose process running?",
+                    "Failed to remove old backup {}. Is another Obelus process running?",
                     old_exe.display()
                 )
             })?;

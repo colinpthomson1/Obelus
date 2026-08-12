@@ -1,13 +1,15 @@
 {
   "name": "@aaif/goose-sdk",
   "version": "0.20.2",
-  "description": "Agent Client Protocol (ACP) SDK for Goose AI agent",
+  "private": true,
+  "description": "Goose-compatible Agent Client Protocol SDK used by Obelus",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aaif-goose/goose.git"
+    "url": "git+https://github.com/colinpthomson1/Obelus.git"
   },
   "keywords": [
+    "obelus",
     "goose",
     "ai",
     "agent",

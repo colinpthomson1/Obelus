@@ -1,203 +1,212 @@
 #!/bin/bash
 
-# Common setup script for node and npx
-# This script sets up hermit and node.js environment
-
-# Enable strict mode to exit on errors and unset variables
 set -euo pipefail
 
-# Set log file
-LOG_FILE="/tmp/mcp.log"
-
-# Clear the log file at the start
-> "${LOG_FILE}"
-
-# Function for logging
-log() {
-    local MESSAGE="${1}"
-    echo "$(date +'%Y-%m-%d %H:%M:%S') - ${MESSAGE}" | tee -a "${LOG_FILE}" >&2
+runtime_log() {
+    local message="$1"
+    printf '[Obelus] %s\n' "${message}" >&2
 }
 
-# Trap errors and log them before exiting
-trap 'log "An error occurred. Exiting with status $?."' ERR
-
-log "Starting node setup (common)."
-
-# GUI-launched macOS apps inherit a minimal PATH that omits the system sbin
-# directories, so Hermit's bootstrap cannot find tools like `chown` (which lives
-# in /usr/sbin on macOS) and aborts with exit 127. Ensure they are reachable;
-# this is harmless on Linux, where these paths are typically already present.
-export PATH="/usr/sbin:/sbin:${PATH}"
-
-if [ -n "${GOOSE_PATH_ROOT:-}" ]; then
-    RESOLVED_GOOSE_CONFIG_DIR="${GOOSE_PATH_ROOT}/config"
-elif [ -n "${GOOSE_CONFIG_DIR:-}" ]; then
-    log "GOOSE_CONFIG_DIR is deprecated for desktop shims; prefer GOOSE_PATH_ROOT."
-    RESOLVED_GOOSE_CONFIG_DIR="${GOOSE_CONFIG_DIR}"
-else
-    RESOLVED_GOOSE_CONFIG_DIR="${HOME}/.config/goose"
-fi
-MCP_HERMIT_DIR="${RESOLVED_GOOSE_CONFIG_DIR}/mcp-hermit"
-mkdir -p "${RESOLVED_GOOSE_CONFIG_DIR}"
-HERMIT_SETUP_LOCK_DIR="${RESOLVED_GOOSE_CONFIG_DIR}/.mcp-hermit-setup.lock"
-HERMIT_SETUP_LOCK_TIMEOUT=300
-HERMIT_SETUP_LOCK_STARTED_AT=$(date +%s)
-while ! mkdir "${HERMIT_SETUP_LOCK_DIR}" 2>/dev/null; do
-    if [ $(( $(date +%s) - HERMIT_SETUP_LOCK_STARTED_AT )) -ge "${HERMIT_SETUP_LOCK_TIMEOUT}" ]; then
-        log "Timed out waiting for ${HERMIT_SETUP_LOCK_DIR}; removing stale lock."
-        rm -rf "${HERMIT_SETUP_LOCK_DIR}"
-        HERMIT_SETUP_LOCK_STARTED_AT=$(date +%s)
-    fi
-    sleep 0.1
-done
-trap 'rm -rf "${HERMIT_SETUP_LOCK_DIR}"; log "An error occurred. Exiting with status $?."' ERR
-trap 'rm -rf "${HERMIT_SETUP_LOCK_DIR}"' EXIT
-
-# One-time cleanup for existing Linux users to fix locking issues
-CLEANUP_MARKER="${RESOLVED_GOOSE_CONFIG_DIR}/.mcp-hermit-cleanup-v1"
-if [[ "$(uname -s)" == "Linux" ]] && [ ! -f "${CLEANUP_MARKER}" ]; then
-    log "Performing one-time cleanup of old mcp-hermit directory to fix locking issues."
-    if [ -d "${MCP_HERMIT_DIR}" ]; then
-        STALE_MCP_HERMIT_DIR="${MCP_HERMIT_DIR}.stale.$$"
-        mv "${MCP_HERMIT_DIR}" "${STALE_MCP_HERMIT_DIR}"
-        rm -rf "${STALE_MCP_HERMIT_DIR}"
-        log "Removed old mcp-hermit directory."
-    fi
-    touch "${CLEANUP_MARKER}"
-    log "Cleanup completed. Marker file created."
-fi
-
-# Ensure mcp-hermit/bin exists
-log "Creating directory ${MCP_HERMIT_DIR}/bin if it does not exist."
-mkdir -p "${MCP_HERMIT_DIR}/bin"
-
-# Change to the mcp-hermit directory
-log "Changing to directory ${MCP_HERMIT_DIR}."
-cd "${MCP_HERMIT_DIR}"
-
-
-download_hermit_binary() {
-    local HERMIT_TMP
-    HERMIT_TMP=$(mktemp "${MCP_HERMIT_DIR}/bin/hermit.XXXXXX")
-    if curl -fsSL "https://github.com/cashapp/hermit/releases/download/stable/hermit-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/').gz" \
-        | gzip -dc > "${HERMIT_TMP}" && chmod +x "${HERMIT_TMP}"; then
-        mv "${HERMIT_TMP}" "${MCP_HERMIT_DIR}/bin/hermit"
-    else
-        rm -f "${HERMIT_TMP}"
-        return 1
-    fi
+runtime_error() {
+    runtime_log "ERROR: $1"
+    exit 127
 }
 
-activate_hermit_environment() {
-    if ! HERMIT_ENV=$(hermit env --shell=bash --activate 2>> "${LOG_FILE}"); then
-        log "Hermit does not support bash activation. Updating hermit binary."
-        download_hermit_binary
-        HERMIT_ENV=$(hermit env --shell=bash --activate 2>> "${LOG_FILE}")
-    fi
-    eval "${HERMIT_ENV}" >> "${LOG_FILE}" 2>&1
-}
+runtime_canonicalize_existing_path() {
+    local target="$1"
+    local link_target
+    local link_count=0
+    local target_directory
 
-# Check if hermit binary exists and download if not
-if [ ! -f "${MCP_HERMIT_DIR}/bin/hermit" ]; then
-    log "Hermit binary not found. Downloading hermit binary."
-    download_hermit_binary
-    log "Hermit binary downloaded and made executable."
-else
-    log "Hermit binary already exists. Skipping download."
-fi
-
-
-log "setting hermit cache to be local for MCP servers"
-mkdir -p "${MCP_HERMIT_DIR}/cache"
-export HERMIT_STATE_DIR="${MCP_HERMIT_DIR}/cache"
-
-
-# Update PATH
-export PATH="${MCP_HERMIT_DIR}/bin:${PATH}"
-log "Updated PATH to include ${MCP_HERMIT_DIR}/bin."
-
-
-# Verify hermit installation
-log "Checking for hermit in PATH."
-which hermit >> "${LOG_FILE}"
-
-# Check if hermit environment is already initialized (only run init on first setup)
-if [ ! -f "bin/activate-hermit" ]; then
-    log "Hermit environment not yet initialized. Setting up hermit."
-
-    # Fix hermit self-update lock issues on Linux by using temp binary for init only
-    if [[ "$(uname -s)" == "Linux" ]]; then
-        log "Creating temp dir with bin subdirectory for hermit copy to avoid self-update locks."
-        HERMIT_TMP_DIR="/tmp/hermit_tmp_$$/bin"
-        mkdir -p "${HERMIT_TMP_DIR}"
-        cp "${MCP_HERMIT_DIR}/bin/hermit" "${HERMIT_TMP_DIR}/hermit"
-        chmod +x "${HERMIT_TMP_DIR}/hermit"
-        HERMIT_ORIGINAL_PATH="${PATH}"
-        export PATH="${HERMIT_TMP_DIR}:${PATH}"
-        HERMIT_CLEANUP_DIR="/tmp/hermit_tmp_$$"
-    fi
-
-    # Initialize hermit
-    log "Initializing hermit."
-    hermit init >> "${LOG_FILE}"
-
-    # Clean up temp dir if it was created
-    if [[ -n "${HERMIT_CLEANUP_DIR:-}" ]]; then
-        log "Cleaning up temporary hermit binary directory."
-        export PATH="${HERMIT_ORIGINAL_PATH}"
-        rm -rf "${HERMIT_CLEANUP_DIR}"
-    fi
-else
-    log "Hermit environment already initialized. Skipping init."
-fi
-
-# Activate the environment with output redirected to log.
-# Activation must run on every platform: macOS GUI apps otherwise never get the
-# hermit-managed node/npx onto PATH, so STDIO extensions fail with
-# "env: node: No such file or directory".
-log "Activating hermit environment."
-activate_hermit_environment
-
-# Install Node.js using hermit
-log "Installing Node.js with hermit."
-hermit install node >> "${LOG_FILE}"
-activate_hermit_environment
-
-# Verify installations
-log "Verifying installation locations:"
-log "hermit: $(which hermit)"
-log "node: $(which node)"
-log "npx: $(which npx)"
-
-rm -rf "${HERMIT_SETUP_LOCK_DIR}"
-trap 'log "An error occurred. Exiting with status $?."' ERR
-trap - EXIT
-
-
-log "Checking for GOOSE_NPM_REGISTRY and GOOSE_NPM_CERT environment variables for custom npm registry setup..."
-# Check if GOOSE_NPM_REGISTRY is set and accessible
-if [ -n "${GOOSE_NPM_REGISTRY:-}" ] && curl -s --head --fail "${GOOSE_NPM_REGISTRY}" > /dev/null; then
-    log "Checking custom goose registry availability: ${GOOSE_NPM_REGISTRY}"
-    log "${GOOSE_NPM_REGISTRY} is accessible. Using it for npm registry."
-    export NPM_CONFIG_REGISTRY="${GOOSE_NPM_REGISTRY}"
-
-    # Check if GOOSE_NPM_CERT is set and accessible
-    if [ -n "${GOOSE_NPM_CERT:-}" ] && curl -s --head --fail "${GOOSE_NPM_CERT}" > /dev/null; then
-        log "Downloading certificate from: ${GOOSE_NPM_CERT}"
-        curl -sSL -o "${MCP_HERMIT_DIR}/cert.pem" "${GOOSE_NPM_CERT}"
-        if [ $? -eq 0 ]; then
-            log "Certificate downloaded successfully."
-            export NODE_EXTRA_CA_CERTS="${MCP_HERMIT_DIR}/cert.pem"
-        else
-            log "Unable to download the certificate. Skipping certificate setup."
+    while [ -L "${target}" ]; do
+        link_count=$((link_count + 1))
+        if [ "${link_count}" -gt 40 ]; then
+            return 1
         fi
-    else
-        log "GOOSE_NPM_CERT is either not set or not accessible. Skipping certificate setup."
+
+        link_target="$(readlink "${target}")" || return 1
+        case "${link_target}" in
+            /*) target="${link_target}" ;;
+            *) target="$(dirname "${target}")/${link_target}" ;;
+        esac
+    done
+
+    [ -e "${target}" ] || return 1
+    target_directory="$(cd -P "$(dirname "${target}")" 2>/dev/null && pwd)" || return 1
+    printf '%s/%s\n' "${target_directory}" "$(basename "${target}")"
+}
+
+runtime_path_without_shim() {
+    local remaining="${PATH:-}"
+    local entry
+    local resolved_entry
+    local result=""
+    local final_entry=false
+
+    while :; do
+        case "${remaining}" in
+            *:*)
+                entry="${remaining%%:*}"
+                remaining="${remaining#*:}"
+                ;;
+            *)
+                entry="${remaining}"
+                final_entry=true
+                ;;
+        esac
+
+        case "${entry}" in
+            /*)
+                if resolved_entry="$(cd -P "${entry}" 2>/dev/null && pwd)"; then
+                    if [ "${resolved_entry}" != "${RUNTIME_SHIM_DIRECTORY}" ]; then
+                        if [ -n "${result}" ]; then
+                            result="${result}:${resolved_entry}"
+                        else
+                            result="${resolved_entry}"
+                        fi
+                    fi
+                fi
+                ;;
+        esac
+
+        if [ "${final_entry}" = true ]; then
+            break
+        fi
+    done
+
+    printf '%s' "${result}"
+}
+
+runtime_resolve_candidate() {
+    local runtime_name="$1"
+    local candidate_spec="$2"
+    local candidate
+    local candidate_directory
+    local candidate_absolute
+    local candidate_canonical
+
+    case "${candidate_spec}" in
+        */*) candidate="${candidate_spec}" ;;
+        *)
+            [ -n "${RUNTIME_SAFE_PATH}" ] || return 1
+            candidate="$(PATH="${RUNTIME_SAFE_PATH}" type -P -- "${candidate_spec}" 2>/dev/null)" || return 1
+            ;;
+    esac
+
+    [ -f "${candidate}" ] && [ -x "${candidate}" ] || return 1
+    candidate_directory="$(cd -P "$(dirname "${candidate}")" 2>/dev/null && pwd)" || return 1
+    candidate_absolute="${candidate_directory}/$(basename "${candidate}")"
+    candidate_canonical="$(runtime_canonicalize_existing_path "${candidate_absolute}")" || return 1
+
+    if [ "${candidate_canonical}" = "${RUNTIME_SHIM_CANONICAL}" ]; then
+        runtime_error "${runtime_name} resolves to the Obelus shim itself. Configure a different installed binary."
     fi
 
-else
-    log "GOOSE_NPM_REGISTRY is either not set or not accessible. Falling back to default npm registry."
-    export NPM_CONFIG_REGISTRY="https://registry.npmjs.org/"
-fi
+    printf '%s\n' "${candidate_absolute}"
+}
 
-log "Node setup (common) completed successfully."
+runtime_resolve_binary() {
+    local runtime_name="$1"
+    local obelus_variable="$2"
+    local legacy_variable="$3"
+    local recursion_guard="$4"
+    local candidate_spec
+    local candidate_source
+    local resolved_candidate
+    local resolve_status
+
+    if [ -n "${!recursion_guard:-}" ]; then
+        runtime_error "Recursive ${runtime_name} shim invocation detected."
+    fi
+
+    if [ -n "${!obelus_variable:-}" ]; then
+        candidate_spec="${!obelus_variable}"
+        candidate_source="${obelus_variable}"
+    elif [ -n "${!legacy_variable:-}" ]; then
+        candidate_spec="${!legacy_variable}"
+        candidate_source="${legacy_variable}"
+        runtime_log "${legacy_variable} is a compatibility alias; prefer ${obelus_variable}."
+    else
+        candidate_spec="${runtime_name}"
+        candidate_source="PATH"
+    fi
+
+    if resolved_candidate="$(runtime_resolve_candidate "${runtime_name}" "${candidate_spec}")"; then
+        :
+    else
+        resolve_status=$?
+        if [ "${resolve_status}" -eq 127 ]; then
+            return 127
+        fi
+        runtime_error "No safe ${runtime_name} executable was found via ${candidate_source}. Install it and set ${obelus_variable} to its executable path. Obelus does not download runtimes at launch."
+    fi
+
+    runtime_log "Using installed ${runtime_name} executable resolved via ${candidate_source}."
+    printf '%s\n' "${resolved_candidate}"
+}
+
+runtime_configure_node_environment() {
+    local registry=""
+    local certificate=""
+    local certificate_canonical
+
+    if [ -n "${OBELUS_NPM_REGISTRY:-}" ]; then
+        registry="${OBELUS_NPM_REGISTRY}"
+    elif [ -n "${GOOSE_NPM_REGISTRY:-}" ]; then
+        registry="${GOOSE_NPM_REGISTRY}"
+        runtime_log "GOOSE_NPM_REGISTRY is a compatibility alias; prefer OBELUS_NPM_REGISTRY."
+    fi
+
+    if [ -n "${registry}" ]; then
+        export NPM_CONFIG_REGISTRY="${registry}"
+        runtime_log "Using the explicitly configured npm registry."
+    fi
+
+    if [ -n "${OBELUS_NPM_CERT_PATH:-}" ]; then
+        certificate="${OBELUS_NPM_CERT_PATH}"
+    elif [ -n "${OBELUS_NPM_CERT:-}" ]; then
+        certificate="${OBELUS_NPM_CERT}"
+    elif [ -n "${GOOSE_NPM_CERT_PATH:-}" ]; then
+        certificate="${GOOSE_NPM_CERT_PATH}"
+        runtime_log "GOOSE_NPM_CERT_PATH is a compatibility alias; prefer OBELUS_NPM_CERT_PATH."
+    elif [ -n "${GOOSE_NPM_CERT:-}" ]; then
+        certificate="${GOOSE_NPM_CERT}"
+        runtime_log "GOOSE_NPM_CERT is a compatibility alias; prefer OBELUS_NPM_CERT_PATH."
+    fi
+
+    if [ -n "${certificate}" ]; then
+        case "${certificate}" in
+            http://*|https://*)
+                runtime_error "Remote npm certificates are not downloaded. Save the certificate locally and set OBELUS_NPM_CERT_PATH to that file."
+                ;;
+        esac
+
+        [ -f "${certificate}" ] && [ -r "${certificate}" ] || runtime_error "The configured npm certificate is not a readable local file."
+        certificate_canonical="$(runtime_canonicalize_existing_path "${certificate}")" || runtime_error "The configured npm certificate path could not be resolved."
+        export NODE_EXTRA_CA_CERTS="${certificate_canonical}"
+        runtime_log "Using the explicitly configured local npm certificate."
+    fi
+}
+
+runtime_exec() {
+    local runtime_name="$1"
+    local runtime_binary="$2"
+    local recursion_guard="$3"
+    local runtime_directory
+    shift 3
+
+    runtime_directory="$(cd -P "$(dirname "${runtime_binary}")" && pwd)"
+    if [ -n "${RUNTIME_SAFE_PATH}" ]; then
+        export PATH="${runtime_directory}:${RUNTIME_SAFE_PATH}"
+    else
+        export PATH="${runtime_directory}"
+    fi
+    export "${recursion_guard}=1"
+    runtime_log "Executing installed ${runtime_name} runtime."
+    exec "${runtime_binary}" "$@"
+}
+
+[ -n "${RUNTIME_SHIM_PATH:-}" ] || runtime_error "RUNTIME_SHIM_PATH was not provided by the desktop wrapper."
+RUNTIME_SHIM_CANONICAL="$(runtime_canonicalize_existing_path "${RUNTIME_SHIM_PATH}")" || runtime_error "The desktop runtime shim path could not be resolved."
+RUNTIME_SHIM_DIRECTORY="$(dirname "${RUNTIME_SHIM_CANONICAL}")"
+RUNTIME_SAFE_PATH="$(runtime_path_without_shim)"

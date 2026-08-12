@@ -61,7 +61,9 @@ pnpm run test:run
 pnpm run format:check
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the upstream-compatible development workflow and [ui/desktop/README.md](ui/desktop/README.md) for desktop details.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the Obelus development and
+compatibility workflow and [ui/desktop/README.md](ui/desktop/README.md) for
+desktop details.
 
 ## Brand system
 
@@ -71,4 +73,6 @@ Production-ready logos, licensed fonts, status icons, and interface assets live 
 
 Obelus preserves selected Goose names in internal crates, environment variables, ACP/MCP messages, project hints, and the embedded backend where changing them would break compatibility. User data, credentials, app identity, analytics, and update channels remain isolated from Goose.
 
-This project is licensed under Apache 2.0 and retains the original Goose copyright and attribution. Upstream documentation is available at [goose-docs.ai](https://goose-docs.ai/).
+This project is licensed under Apache 2.0 and retains the original Goose
+copyright and attribution. External Goose documentation is an upstream
+compatibility reference, not Obelus documentation.

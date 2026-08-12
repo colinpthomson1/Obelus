@@ -369,7 +369,7 @@
     "defaultMessage": "Derin bağlantı oluşturuluyor..."
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Upstream recipe guide"
+    "defaultMessage": "Upstream Goose recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Tarif başarıyla kaydedildi ve başlatıldı"
@@ -1148,9 +1148,6 @@
   "extensionsSection.addExtension": {
     "defaultMessage": "Uzantı Ekle"
   },
-  "extensionsSection.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
-  },
   "extensionsSection.saveChanges": {
     "defaultMessage": "Değişiklikleri Kaydet"
   },
@@ -1162,9 +1159,6 @@
   },
   "extensionsView.addExtension": {
     "defaultMessage": "Uzantı Ekle"
-  },
-  "extensionsView.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
   },
   "extensionsView.defaultNote": {
     "defaultMessage": "Burada etkinleştirilen uzantılar, yeni sohbetler için varsayılan olarak kullanılır. Ayrıca sohbet sırasında etkin uzantıları da değiştirebilirsiniz."
@@ -1266,7 +1260,7 @@
     "defaultMessage": "Daha fazla bilgi için {link}'ye bakın."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "the upstream .goosehints guide"
+    "defaultMessage": "the upstream Goose .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Proje ipuçlarını buraya girin..."
@@ -4372,9 +4366,6 @@
   },
   "switchModelModal.providerPlaceholder": {
     "defaultMessage": "Sağlayıcı, aramak için yazın"
-  },
-  "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Upstream Goose quick start guide"
   },
   "switchModelModal.recommended": {
     "defaultMessage": "Önerilen"

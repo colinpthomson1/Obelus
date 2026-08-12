@@ -2,26 +2,30 @@
 set -eu
 
 ##############################################################################
-# goose CLI Install Script
+# Obelus CLI Install Script
 #
-# This script downloads the latest stable 'goose' CLI binary from GitHub releases
-# and installs it to your system.
+# This script downloads the Obelus CLI binary (the compatibility binary remains
+# named 'goose') from verified Obelus GitHub releases and installs it.
 #
 # Supported OS: macOS (darwin), Linux, Windows (MSYS2/Git Bash/WSL), Android (Termux)
 # Supported Architectures: x86_64, arm64
 #
 # Usage:
-#   curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
+#   Download this script from the exact Obelus release you intend to install,
+#   review it, then run: bash download_cli.sh
 #
 # Environment variables:
 #   GOOSE_BIN_DIR  - Directory to which goose will be installed (default: $HOME/.local/bin)
-#   GOOSE_VERSION  - Optional: specific version to install (e.g., "v1.0.25"). Overrides CANARY. Can be in the format vX.Y.Z, vX.Y.Z-suffix, or X.Y.Z
+#   GOOSE_VERSION  - Required first-party release version (e.g., "v1.0.25"). Can be in the format vX.Y.Z, vX.Y.Z-suffix, or X.Y.Z
 #   GOOSE_PROVIDER - Optional: provider for goose
 #   GOOSE_MODEL    - Optional: model for goose
 #   GOOSE_LINUX_VARIANT - Optional: Linux package variant to install (`standard`, `vulkan`, or `musl`)
 #   GOOSE_WINDOWS_VARIANT - Optional: Windows package variant to install (`standard` or `cuda`)
-#   CANARY         - Optional: if set to "true", downloads from canary release instead of stable
 #   CONFIGURE      - Optional: if set to "false", disables running goose configure interactively
+#   OBELUS_RELEASE_SHA256 - Optional: expected SHA-256 for the selected archive. When omitted,
+#                           the installer requires a matching `<archive>.sha256` release asset.
+#   OBELUS_GITHUB_REPO - Optional: alternate owner/repository. Non-first-party repositories also
+#                        require OBELUS_ALLOW_COMPATIBILITY_REPO=true.
 #   ** other provider specific environment variables (eg. DATABRICKS_HOST)
 ##############################################################################
 
@@ -54,8 +58,23 @@ fi
 
 
 # --- 2) Variables ---
-REPO="aaif-goose/goose"
+FIRST_PARTY_REPO="colinpthomson1/Obelus"
+REPO="${OBELUS_GITHUB_REPO:-${GOOSE_GITHUB_REPO:-$FIRST_PARTY_REPO}}"
 OUT_FILE="goose"
+
+if [[ ! "$REPO" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]; then
+  echo "Error: Invalid GitHub repository '$REPO'. Expected owner/repository."
+  exit 1
+fi
+
+if [ "$REPO" != "$FIRST_PARTY_REPO" ]; then
+  if [ "${OBELUS_ALLOW_COMPATIBILITY_REPO:-false}" != "true" ]; then
+    echo "Error: Refusing non-first-party release repository '$REPO'."
+    echo "Set OBELUS_ALLOW_COMPATIBILITY_REPO=true only for an explicit compatibility install."
+    exit 1
+  fi
+  echo "Warning: compatibility mode enabled; installing from non-first-party repository '$REPO'."
+fi
 
 # Set default bin directory based on detected OS environment
 if [[ "${WINDIR:-}" ]] || [[ "${windir:-}" ]] || [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]]; then
@@ -67,13 +86,12 @@ else
 fi
 
 GOOSE_BIN_DIR="${GOOSE_BIN_DIR:-$DEFAULT_BIN_DIR}"
-RELEASE="${CANARY:-false}"
 CONFIGURE="${CONFIGURE:-true}"
 GOOSE_LINUX_VARIANT="${GOOSE_LINUX_VARIANT:-}"
 GOOSE_WINDOWS_VARIANT="${GOOSE_WINDOWS_VARIANT:-standard}"
 if [ -n "${GOOSE_VERSION:-}" ]; then
   # Validate the version format
-  if [[ ! "$GOOSE_VERSION" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-.*)?$ ]]; then
+  if [[ ! "$GOOSE_VERSION" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z]+([.-][0-9A-Za-z]+)*)?$ ]]; then
     echo "[error]: invalid version '$GOOSE_VERSION'."
     echo "  expected: semver format vX.Y.Z, vX.Y.Z-suffix, or X.Y.Z"
     exit 1
@@ -81,8 +99,8 @@ if [ -n "${GOOSE_VERSION:-}" ]; then
   GOOSE_VERSION=$(echo "$GOOSE_VERSION" | sed 's/^v\{0,1\}/v/') # Ensure the version string is prefixed with 'v' if not already present
   RELEASE_TAG="$GOOSE_VERSION"
 else
-  # If GOOSE_VERSION is not set, fall back to existing behavior for backwards compatibility
-  RELEASE_TAG="$([[ "$RELEASE" == "true" ]] && echo "canary" || echo "stable")"
+  echo "Error: GOOSE_VERSION is required; Obelus installers do not follow mutable stable or canary aliases."
+  exit 1
 fi
 
 # --- 3) Detect OS/Architecture ---
@@ -224,86 +242,108 @@ else
 fi
 
 DOWNLOAD_URL="https://github.com/$REPO/releases/download/$RELEASE_TAG/$FILE"
+TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/obelus_install.XXXXXX") || {
+  echo "Error: Could not create temporary installation directory"
+  exit 1
+}
+PACKAGE_DIR="$TMP_DIR/package"
+ARCHIVE_PATH="$TMP_DIR/$FILE"
+CHECKSUM_FILE="$TMP_DIR/${FILE}.sha256"
+mkdir -p "$PACKAGE_DIR"
+trap 'rm -rf "$TMP_DIR"' EXIT
 
 # --- 4) Download & extract 'goose' binary ---
 echo "Downloading $RELEASE_TAG release: $FILE..."
-if ! curl -sLf "$DOWNLOAD_URL" --output "$FILE"; then
-  # If the download fails, only fall back to latest stable when no version was specified and canary was not requested).
-  if ! [ -n "${GOOSE_VERSION:-}" ] && [ "${CANARY:-false}" != "true" ]; then
-    LATEST_TAG=$(curl -s https://api.github.com/repos/aaif-goose/goose/releases/latest | \
-      grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    if [ -z "$LATEST_TAG" ]; then
-      echo "Error: Failed to download $DOWNLOAD_URL and latest tag unavailable"
-      exit 1
-    fi
-
-    DOWNLOAD_URL="https://github.com/$REPO/releases/download/$LATEST_TAG/$FILE"
-    if curl -sLf "$DOWNLOAD_URL" --output "$FILE"; then
-      # Fallback succeeded
-      :
-    else
-      echo "Error: Failed to download from fallback url $DOWNLOAD_URL using latest tag $LATEST_TAG"
-      exit 1
-    fi
-  else
-    echo "Error: Failed to download $DOWNLOAD_URL"
-    exit 1
-  fi
-fi
-
-# Create a temporary directory for extraction
-TMP_DIR="${TMPDIR:-/tmp}/goose_install_$RANDOM"
-if ! mkdir -p "$TMP_DIR"; then
-  echo "Error: Could not create temporary extraction directory"
+if ! curl --proto '=https' --tlsv1.2 --silent --show-error --location --fail \
+  "$DOWNLOAD_URL" --output "$ARCHIVE_PATH"; then
+  echo "Error: Failed to download $DOWNLOAD_URL"
+  echo "No upstream or unverified fallback will be used."
   exit 1
 fi
-# Clean up temporary directory
-trap 'rm -rf "$TMP_DIR"' EXIT
+
+compute_sha256() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1" | awk '{print $1}'
+  elif command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$1" | awk '{print $1}'
+  elif command -v openssl >/dev/null 2>&1; then
+    openssl dgst -sha256 "$1" | awk '{print $NF}'
+  else
+    echo "Error: sha256sum, shasum, or openssl is required to verify the release." >&2
+    return 1
+  fi
+}
+
+EXPECTED_SHA256="${OBELUS_RELEASE_SHA256:-}"
+if [ -z "$EXPECTED_SHA256" ]; then
+  CHECKSUM_URL="${DOWNLOAD_URL}.sha256"
+  echo "Downloading release checksum: ${FILE}.sha256..."
+  if ! curl --proto '=https' --tlsv1.2 --silent --show-error --location --fail \
+    "$CHECKSUM_URL" --output "$CHECKSUM_FILE"; then
+    echo "Error: Failed to download required checksum $CHECKSUM_URL"
+    echo "Set OBELUS_RELEASE_SHA256 to an independently verified digest to install explicitly."
+    exit 1
+  fi
+  EXPECTED_SHA256=$(awk 'NR == 1 { print $1 }' "$CHECKSUM_FILE")
+fi
+
+if [[ ! "$EXPECTED_SHA256" =~ ^[A-Fa-f0-9]{64}$ ]]; then
+  echo "Error: Release checksum must be exactly 64 hexadecimal characters."
+  exit 1
+fi
+
+ACTUAL_SHA256=$(compute_sha256 "$ARCHIVE_PATH") || {
+  exit 1
+}
+if [ "$(printf '%s' "$ACTUAL_SHA256" | tr '[:upper:]' '[:lower:]')" != "$(printf '%s' "$EXPECTED_SHA256" | tr '[:upper:]' '[:lower:]')" ]; then
+  echo "Error: SHA-256 verification failed for $FILE."
+  exit 1
+fi
+rm -f "$CHECKSUM_FILE"
+echo "Verified SHA-256 for $FILE."
 
 echo "Extracting $FILE to temporary directory..."
 set +e  # Disable immediate exit on error
 
 if [ "$EXTRACT_CMD" = "tar" ]; then
-  tar -xjf "$FILE" -C "$TMP_DIR" 2> tar_error.log
+  tar -xjf "$ARCHIVE_PATH" -C "$PACKAGE_DIR" 2> "$TMP_DIR/tar_error.log"
   extract_exit_code=$?
 
   # Check for tar errors
   if [ $extract_exit_code -ne 0 ]; then
-    if grep -iEq "missing.*bzip2|bzip2.*missing|bzip2.*No such file|No such file.*bzip2" tar_error.log; then
+    if grep -iEq "missing.*bzip2|bzip2.*missing|bzip2.*No such file|No such file.*bzip2" "$TMP_DIR/tar_error.log"; then
       echo "Error: Failed to extract $FILE. 'bzip2' is required but not installed. See details below:"
     else
       echo "Error: Failed to extract $FILE. See details below:"
     fi
-    cat tar_error.log
-    rm tar_error.log
+    cat "$TMP_DIR/tar_error.log"
     exit 1
   fi
-  rm tar_error.log
+  rm "$TMP_DIR/tar_error.log"
 else
   # Use unzip for Windows
-  unzip -q "$FILE" -d "$TMP_DIR" 2> unzip_error.log
+  unzip -q "$ARCHIVE_PATH" -d "$PACKAGE_DIR" 2> "$TMP_DIR/unzip_error.log"
   extract_exit_code=$?
 
   # Check for unzip errors
   if [ $extract_exit_code -ne 0 ]; then
     echo "Error: Failed to extract $FILE. See details below:"
-    cat unzip_error.log
-    rm unzip_error.log
+    cat "$TMP_DIR/unzip_error.log"
     exit 1
   fi
-  rm unzip_error.log
+  rm "$TMP_DIR/unzip_error.log"
 fi
 
 set -e  # Re-enable immediate exit on error
 
-rm "$FILE" # clean up the downloaded archive
+rm "$ARCHIVE_PATH"
 
 # Determine the extraction directory (handle subdirectory in Windows packages)
 # Windows releases may contain files in a 'goose-package' subdirectory
-EXTRACT_DIR="$TMP_DIR"
-if [ "$OS" = "windows" ] && [ -d "$TMP_DIR/goose-package" ]; then
+EXTRACT_DIR="$PACKAGE_DIR"
+if [ "$OS" = "windows" ] && [ -d "$PACKAGE_DIR/goose-package" ]; then
   echo "Found goose-package subdirectory, using that as extraction directory"
-  EXTRACT_DIR="$TMP_DIR/goose-package"
+  EXTRACT_DIR="$PACKAGE_DIR/goose-package"
 fi
 
 # Make binary executable
@@ -321,23 +361,26 @@ fi
 
 echo "Moving goose to $GOOSE_BIN_DIR/$OUT_FILE"
 if [ "$OS" = "windows" ]; then
-  mv "$EXTRACT_DIR/goose.exe" "$GOOSE_BIN_DIR/$OUT_FILE"
+  SOURCE_BINARY="$EXTRACT_DIR/goose.exe"
 else
-  # On Linux, if the target binary is currently running, writing to it fails
-  # with ETXTBSY ("Text file busy"). Rename the old binary out of the way
-  # first, then move the new one in. If the move fails, restore the old binary
-  # so the user is never left without an executable.
-  if [ -f "$GOOSE_BIN_DIR/$OUT_FILE" ]; then
-    mv "$GOOSE_BIN_DIR/$OUT_FILE" "$GOOSE_BIN_DIR/$OUT_FILE.old"
-    if ! mv "$EXTRACT_DIR/goose" "$GOOSE_BIN_DIR/$OUT_FILE"; then
-      echo "Error: failed to install new binary, restoring previous version"
-      mv "$GOOSE_BIN_DIR/$OUT_FILE.old" "$GOOSE_BIN_DIR/$OUT_FILE"
-      exit 1
-    fi
-    rm -f "$GOOSE_BIN_DIR/$OUT_FILE.old"
-  else
-    mv "$EXTRACT_DIR/goose" "$GOOSE_BIN_DIR/$OUT_FILE"
+  SOURCE_BINARY="$EXTRACT_DIR/goose"
+fi
+
+DEST_BINARY="$GOOSE_BIN_DIR/$OUT_FILE"
+if [ -f "$DEST_BINARY" ]; then
+  BACKUP_BINARY="$DEST_BINARY.obelus-backup.$$"
+  if ! mv "$DEST_BINARY" "$BACKUP_BINARY"; then
+    echo "Error: could not move the existing binary out of the way. Stop any running process and retry."
+    exit 1
   fi
+  if ! mv "$SOURCE_BINARY" "$DEST_BINARY"; then
+    echo "Error: failed to install new binary, restoring previous version"
+    mv "$BACKUP_BINARY" "$DEST_BINARY"
+    exit 1
+  fi
+  rm -f "$BACKUP_BINARY"
+else
+  mv "$SOURCE_BINARY" "$DEST_BINARY"
 fi
 
 # Copy Windows runtime DLLs if they exist

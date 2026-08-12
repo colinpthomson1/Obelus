@@ -3,6 +3,7 @@
 TypeScript client library for the Goose Agent Client Protocol (ACP).
 
 This package provides:
+
 - TypeScript types and Zod validators for Goose ACP extension methods
 - A client for communicating with the Goose ACP server
 
@@ -76,15 +77,16 @@ npm run build:schema
 Platform-specific npm packages for the `goose` binary are located in
 `ui/goose-binary/`:
 
-| Package | Platform |
-|---------|----------|
+| Package                           | Platform            |
+| --------------------------------- | ------------------- |
 | `@aaif/goose-binary-darwin-arm64` | macOS Apple Silicon |
-| `@aaif/goose-binary-darwin-x64` | macOS Intel |
-| `@aaif/goose-binary-linux-arm64` | Linux ARM64 |
-| `@aaif/goose-binary-linux-x64` | Linux x64 |
-| `@aaif/goose-binary-win32-x64` | Windows x64 |
+| `@aaif/goose-binary-darwin-x64`   | macOS Intel         |
+| `@aaif/goose-binary-linux-arm64`  | Linux ARM64         |
+| `@aaif/goose-binary-linux-x64`    | Linux x64           |
+| `@aaif/goose-binary-win32-x64`    | Windows x64         |
 
-These are published separately from `@aaif/goose-sdk`.
+These are built as separate local compatibility packages for
+`@aaif/goose-sdk`.
 
 ### Building Native Binaries
 
@@ -101,18 +103,10 @@ npx tsx scripts/build-native.ts darwin-arm64 linux-x64
 
 ## Publishing
 
-Publishing is handled by GitHub Actions. See `.github/workflows/publish-npm.yml`.
-
-For manual publishing:
-
-```bash
-# From repository root
-./ui/scripts/publish.sh --real
-```
-
-This will:
-1. Build and publish `@aaif/goose-sdk`
-2. Publish all native binary packages
+Registry publishing is intentionally disabled in this repository. The
+`@aaif/goose-sdk` name remains a compatibility interface; Obelus does not own
+the upstream npm namespace. See the repository's
+[release policy](../../RELEASE.md).
 
 ## Usage
 

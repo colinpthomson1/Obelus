@@ -37,7 +37,7 @@ const i18n = defineMessages({
   },
   helpTextLink: {
     id: 'goosehintsModal.helpTextLink',
-    defaultMessage: 'the upstream .goosehints guide',
+    defaultMessage: 'the upstream Goose .goosehints guide',
   },
   errorReading: {
     id: 'goosehintsModal.errorReading',

@@ -369,7 +369,7 @@
     "defaultMessage": "Đang tạo deeplink..."
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Upstream recipe guide"
+    "defaultMessage": "Upstream Goose recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "Đã lưu và khởi chạy công thức thành công"
@@ -1148,9 +1148,6 @@
   "extensionsSection.addExtension": {
     "defaultMessage": "Thêm tiện ích mở rộng"
   },
-  "extensionsSection.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
-  },
   "extensionsSection.saveChanges": {
     "defaultMessage": "Lưu thay đổi"
   },
@@ -1162,9 +1159,6 @@
   },
   "extensionsView.addExtension": {
     "defaultMessage": "Thêm tiện ích mở rộng"
-  },
-  "extensionsView.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
   },
   "extensionsView.defaultNote": {
     "defaultMessage": "Các tiện ích mở rộng được bật ở đây sẽ được dùng làm mặc định cho các cuộc trò chuyện mới. Bạn cũng có thể bật/tắt các tiện ích mở rộng đang hoạt động trong khi trò chuyện."
@@ -1266,7 +1260,7 @@
     "defaultMessage": "Xem {link} để biết thêm thông tin."
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "the upstream .goosehints guide"
+    "defaultMessage": "the upstream Goose .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "Nhập gợi ý dự án ở đây..."
@@ -4372,9 +4366,6 @@
   },
   "switchModelModal.providerPlaceholder": {
     "defaultMessage": "Nhà cung cấp, nhập để tìm kiếm"
-  },
-  "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Upstream Goose quick start guide"
   },
   "switchModelModal.recommended": {
     "defaultMessage": "Được đề xuất"

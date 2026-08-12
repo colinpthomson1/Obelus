@@ -61,13 +61,9 @@ python-check: python-wheel
     python3 -m pip install --force-reinstall {{python_dir}}/dist/*.whl
     python3 -c 'import goose; print(goose.__name__)'
 
-python-publish repository="pypi": python-wheel
-    UV_NO_CONFIG=1 PIP_CONFIG_FILE=/dev/null PIP_INDEX_URL=https://pypi.org/simple uvx --default-index https://pypi.org/simple twine check {{python_dir}}/dist/*.whl
-    @if [ "{{repository}}" = "pypi" ]; then \
-        UV_NO_CONFIG=1 PIP_CONFIG_FILE=/dev/null PIP_INDEX_URL=https://pypi.org/simple uvx --default-index https://pypi.org/simple twine upload {{python_dir}}/dist/*.whl; \
-    else \
-        UV_NO_CONFIG=1 PIP_CONFIG_FILE=/dev/null PIP_INDEX_URL=https://pypi.org/simple uvx --default-index https://pypi.org/simple twine upload --repository {{repository}} {{python_dir}}/dist/*.whl; \
-    fi
+python-publish repository="disabled":
+    @echo "Python registry publishing is disabled in the Obelus public repository (requested repository: {{repository}})." >&2
+    @exit 1
 
 maven-bindings profile="release":
     @case "{{profile}}" in \
@@ -86,27 +82,13 @@ maven-package: (maven-bindings "release")
 maven-package-clean: maven-clean (maven-bindings "release")
     cd {{maven_dir}} && ./gradlew --no-daemon publishToMavenLocal
 
-maven-publish: (maven-bindings "release")
-    cd {{maven_dir}} && ./gradlew --no-daemon publishAndReleaseToMavenCentral
+maven-publish:
+    @echo "Maven Central publishing is disabled in the Obelus public repository." >&2
+    @exit 1
 
 crates-publish dry_run="true":
-    @set -euo pipefail; \
-    dry_run_flag=""; \
-    if [ "{{dry_run}}" = "true" ]; then \
-        dry_run_flag="--dry-run"; \
-    elif [ "{{dry_run}}" != "false" ]; then \
-        echo 'dry_run must be true or false' >&2; \
-        exit 1; \
-    fi; \
-    for crate in \
-        goose-provider-types \
-        goose-sdk-types \
-        goose-download-manager \
-        goose-local-inference \
-        goose-providers \
-        goose-sdk; do \
-        cargo publish -p "$crate" $dry_run_flag --allow-dirty; \
-    done
+    @echo "crates.io publishing is disabled in the Obelus public repository (requested dry_run={{dry_run}})." >&2
+    @exit 1
 
 bump-version rust_version:
     #!/usr/bin/env bash

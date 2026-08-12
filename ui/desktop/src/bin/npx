@@ -1,16 +1,11 @@
 #!/bin/bash
 
-# Enable strict mode to exit on errors and unset variables
 set -euo pipefail
 
-# Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# Source the common setup script
+RUNTIME_SHIM_PATH="${BASH_SOURCE[0]}"
 source "${SCRIPT_DIR}/node-setup-common.sh"
 
-# Final step: Execute npx with passed arguments
-log "Executing 'npx' command with arguments: ${*}"
-npx "${@}" || log "Failed to execute 'npx' with arguments: ${*}"
-
-log "npx script completed successfully."
+runtime_configure_node_environment
+NPX_BINARY="$(runtime_resolve_binary npx OBELUS_NPX_BINARY GOOSE_NPX_BINARY OBELUS_NPX_SHIM_ACTIVE)"
+runtime_exec npx "${NPX_BINARY}" OBELUS_NPX_SHIM_ACTIVE "$@"

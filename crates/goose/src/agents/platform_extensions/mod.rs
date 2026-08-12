@@ -212,7 +212,8 @@ pub static PLATFORM_EXTENSIONS: Lazy<HashMap<&'static str, PlatformExtensionDef>
             PlatformExtensionDef {
                 name: crate::skills::EXTENSION_NAME,
                 display_name: "Skills",
-                description: "Discover and provide skill instructions from filesystem and builtins",
+                description:
+                    "Discover local skill instructions and explicitly configured compatibility sources",
                 default_enabled: true,
                 unprefixed_tools: true,
                 hidden: false,

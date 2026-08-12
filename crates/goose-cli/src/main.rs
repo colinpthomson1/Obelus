@@ -45,9 +45,9 @@ fn main() -> Result<()> {
                 .expect("Failed to build Tokio runtime");
             runtime.block_on(run())
         })
-        .map_err(|e| anyhow::anyhow!("Failed to spawn goose-cli main thread: {}", e))?;
+        .map_err(|e| anyhow::anyhow!("Failed to start the Obelus CLI: {}", e))?;
 
     handle
         .join()
-        .map_err(|_| anyhow::anyhow!("goose-cli main thread panicked"))?
+        .map_err(|_| anyhow::anyhow!("The Obelus CLI stopped unexpectedly"))?
 }

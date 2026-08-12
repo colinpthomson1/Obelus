@@ -5,13 +5,13 @@ This directory contains the npm package scaffolding for distributing the
 
 ## Packages
 
-| Package | Platform |
-|---------|----------|
+| Package                           | Platform            |
+| --------------------------------- | ------------------- |
 | `@aaif/goose-binary-darwin-arm64` | macOS Apple Silicon |
-| `@aaif/goose-binary-darwin-x64` | macOS Intel |
-| `@aaif/goose-binary-linux-arm64` | Linux ARM64 |
-| `@aaif/goose-binary-linux-x64` | Linux x64 |
-| `@aaif/goose-binary-win32-x64` | Windows x64 |
+| `@aaif/goose-binary-darwin-x64`   | macOS Intel         |
+| `@aaif/goose-binary-linux-arm64`  | Linux ARM64         |
+| `@aaif/goose-binary-linux-x64`    | Linux x64           |
+| `@aaif/goose-binary-win32-x64`    | Windows x64         |
 
 ## Building
 
@@ -39,16 +39,10 @@ distributions.
 
 ## Publishing
 
-Publishing is handled by GitHub Actions. See `.github/workflows/publish-npm.yml`.
-
-For manual publishing:
-
-```bash
-# From repository root
-./ui/scripts/publish.sh --real
-```
-
-This will publish all native packages along with `@aaif/goose-sdk`.
+Registry publishing is intentionally disabled in this repository. The package
+names remain compatibility interfaces, but Obelus must not publish into the
+upstream `@aaif` namespace. See the repository's
+[release policy](../../RELEASE.md).
 
 ## Usage
 

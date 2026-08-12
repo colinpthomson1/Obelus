@@ -1,5 +1,6 @@
 [package]
 name = "goose-test"
+publish = false
 edition.workspace = true
 rust-version.workspace = true
 version.workspace = true

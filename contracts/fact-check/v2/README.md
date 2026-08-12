@@ -8,7 +8,7 @@ The policy version is `obelus-assessment-policy/2.0.0`. A policy-version change 
 
 This directory is a standalone data package at version `2.0.0`. It exports both JSON Schemas and the conformance fixtures without bundling gateway implementation or private policy infrastructure.
 
-To inspect the exact publishable artifact:
+To inspect the exact package artifact:
 
 ```bash
 cd contracts/fact-check/v2
@@ -16,3 +16,7 @@ npm pack --dry-run
 ```
 
 Within a checkout, JavaScript consumers can depend on this directory as a `file:` package and resolve `@obelus/fact-check-contract/assessment` or `@obelus/fact-check-contract/fact-check-packet`. Other runtimes can consume the JSON Schema files directly.
+
+Registry publication is disabled until Obelus establishes and reviews a
+first-party package destination. `npm pack` remains available for conformance
+and release-boundary checks.

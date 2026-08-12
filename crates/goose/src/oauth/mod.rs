@@ -18,9 +18,10 @@ use tokio::sync::{oneshot, Mutex};
 use tracing::warn;
 
 const CALLBACK_TEMPLATE: &str = include_str!("oauth_callback.html");
-const CLIENT_METADATA_URL: &str = "https://goose-docs.ai/oauth/client-metadata.json";
 const DEFAULT_OAUTH_CALLBACK_TIMEOUT_SECS: u64 = 300;
 const OAUTH_CALLBACK_TIMEOUT_ENV: &str = "GOOSE_OAUTH_CALLBACK_TIMEOUT_SECONDS";
+const OAUTH_CLIENT_METADATA_URL_ENV: &str = "OBELUS_OAUTH_CLIENT_METADATA_URL";
+const LEGACY_OAUTH_CLIENT_METADATA_URL_ENV: &str = "GOOSE_OAUTH_CLIENT_METADATA_URL";
 
 #[derive(Clone)]
 struct AppState {
@@ -45,6 +46,56 @@ fn resolve_oauth_callback_timeout(value: Option<&str>) -> Duration {
 fn oauth_callback_timeout() -> Duration {
     let timeout = std::env::var(OAUTH_CALLBACK_TIMEOUT_ENV).ok();
     resolve_oauth_callback_timeout(timeout.as_deref())
+}
+
+fn resolve_oauth_client_metadata_url(
+    obelus_runtime: Option<&str>,
+    obelus_build: Option<&str>,
+    legacy_runtime: Option<&str>,
+    legacy_build: Option<&str>,
+) -> Option<String> {
+    [obelus_runtime, obelus_build, legacy_runtime, legacy_build]
+        .into_iter()
+        .flatten()
+        .find_map(non_empty_value)
+        .map(str::to_owned)
+}
+
+fn non_empty_value(value: &str) -> Option<&str> {
+    let value = value.trim();
+    (!value.is_empty()).then_some(value)
+}
+
+fn oauth_client_metadata_url() -> Result<Option<String>, anyhow::Error> {
+    let obelus_runtime = optional_env(OAUTH_CLIENT_METADATA_URL_ENV)?;
+    let legacy_runtime = optional_env(LEGACY_OAUTH_CLIENT_METADATA_URL_ENV)?;
+    Ok(resolve_oauth_client_metadata_url(
+        obelus_runtime.as_deref(),
+        option_env!("OBELUS_OAUTH_CLIENT_METADATA_URL"),
+        legacy_runtime.as_deref(),
+        option_env!("GOOSE_OAUTH_CLIENT_METADATA_URL"),
+    ))
+}
+
+fn optional_env(name: &str) -> Result<Option<String>, anyhow::Error> {
+    match std::env::var(name) {
+        Ok(value) => Ok(Some(value)),
+        Err(std::env::VarError::NotPresent) => Ok(None),
+        Err(std::env::VarError::NotUnicode(_)) => {
+            Err(anyhow::anyhow!("{} must contain valid Unicode", name))
+        }
+    }
+}
+
+fn authorization_request(
+    redirect_uri: String,
+    client_metadata_url: Option<String>,
+) -> AuthorizationRequest {
+    let request = AuthorizationRequest::new(redirect_uri).with_client_name("Obelus");
+    match client_metadata_url {
+        Some(url) => request.with_client_metadata_url(url),
+        None => request,
+    }
 }
 
 fn announce_authorization_url(name: &str, authorization_url: &str) {
@@ -147,11 +198,10 @@ pub async fn oauth_flow(
 
     let redirect_uri = format!("http://127.0.0.1:{}/oauth_callback", used_addr.port());
     oauth_state
-        .start_authorization(
-            AuthorizationRequest::new(redirect_uri)
-                .with_client_name("goose")
-                .with_client_metadata_url(CLIENT_METADATA_URL),
-        )
+        .start_authorization(authorization_request(
+            redirect_uri,
+            oauth_client_metadata_url()?,
+        ))
         .await?;
 
     let authorization_url = oauth_state.get_authorization_url().await?;
@@ -236,6 +286,51 @@ mod tests {
         assert_eq!(
             resolve_oauth_callback_timeout(Some("42")),
             Duration::from_secs(42)
+        );
+    }
+
+    #[test]
+    fn oauth_identity_defaults_to_obelus_dynamic_registration() {
+        let request = authorization_request("http://127.0.0.1/callback".to_string(), None);
+
+        assert_eq!(request.client_name.as_deref(), Some("Obelus"));
+        assert_eq!(request.client_metadata_url, None);
+    }
+
+    #[test]
+    fn oauth_identity_uses_explicit_client_metadata_url() {
+        let request = authorization_request(
+            "http://127.0.0.1/callback".to_string(),
+            Some("https://auth.obelus.example/client-metadata.json".to_string()),
+        );
+
+        assert_eq!(
+            request.client_metadata_url.as_deref(),
+            Some("https://auth.obelus.example/client-metadata.json")
+        );
+    }
+
+    #[test]
+    fn oauth_identity_prefers_obelus_configuration_and_accepts_legacy_alias() {
+        assert_eq!(
+            resolve_oauth_client_metadata_url(
+                Some(" https://auth.obelus.example/client.json "),
+                Some("https://build.obelus.example/client.json"),
+                Some("https://legacy.example/client.json"),
+                None,
+            )
+            .as_deref(),
+            Some("https://auth.obelus.example/client.json")
+        );
+        assert_eq!(
+            resolve_oauth_client_metadata_url(
+                Some("  "),
+                None,
+                Some("https://legacy.example/client.json"),
+                None,
+            )
+            .as_deref(),
+            Some("https://legacy.example/client.json")
         );
     }
 

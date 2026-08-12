@@ -2,6 +2,7 @@
   "name": "obelus-app",
   "productName": "Obelus",
   "version": "1.45.0",
+  "private": true,
   "description": "A local-first desktop AI agent for research, writing, coding, and automation.",
   "engines": {
     "node": "^24.10.0",

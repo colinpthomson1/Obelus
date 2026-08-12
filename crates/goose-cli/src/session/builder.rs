@@ -217,7 +217,7 @@ async fn load_extensions(
         eprintln!(
             "{}",
             style(format!(
-                "  Hint: once the session starts, ask goose to help debug the '{}' extension",
+                "  Hint: once the session starts, ask Obelus to help debug the '{}' extension",
                 label
             ))
             .dim()
@@ -598,7 +598,7 @@ pub async fn build_session(session_config: SessionBuilderConfig) -> CliSession {
                         "Error {}.\n\
                         Please check your system keychain and run 'goose configure' again.\n\
                         If your system is unable to use the keyring, please try setting secret key(s) via environment variables.\n\
-                        For more info, see: https://goose-docs.ai/docs/troubleshooting/#keychainkeyring-errors",
+                        Keep environment-provided secrets out of shell history and source control.",
                         e2
                     ));
                         process::exit(1);
@@ -610,7 +610,7 @@ pub async fn build_session(session_config: SessionBuilderConfig) -> CliSession {
                 "Error {}.\n\
                 Please check your system keychain and run 'goose configure' again.\n\
                 If your system is unable to use the keyring, please try setting secret key(s) via environment variables.\n\
-                For more info, see: https://goose-docs.ai/docs/troubleshooting/#keychainkeyring-errors",
+                Keep environment-provided secrets out of shell history and source control.",
                 e
             ));
                 process::exit(1);

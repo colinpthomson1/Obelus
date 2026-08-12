@@ -1,23 +1,22 @@
-# goose Release Manual Testing Checklist
+# Obelus release checklist
 
-Download the release builds from this PR. Once a build is ready, the actions bot will post a comment on this PR
-with instructions on how to download and sign.
+This checklist becomes applicable only after the release prerequisites in
+[RELEASE.md](RELEASE.md) are complete.
 
-## Use the following script to create a risk assessment and testing plan:
-```
-./workflow_recipes/release_risk_check/run.sh {{VERSION}}
-```
-
-It will generate an analysis report in `/tmp/release_report_final.md` and perform testing is necessary for high risk pr changes.
-
-## Run the goose self-test recipe
-
-goose run --recipe goose-self-test.yaml
-
-## Have goose produce a test plan
-
-Open the release candidate desktop app and have goose produce a test plan by pointing it at this PR. Use a prompt like
-
-> Look at the notes in PR <release PR> and the report at `/tmp/release_report_final.md` and investigate potential risks in this release. After familiarizing yourself with the scope of each change, produce a suggested test plan that I should follow before publishing the release.
-
-goose will produce a plan. Follow this plan to finish testing.
+- [ ] Release commit is protected, reviewed, and fully green in CI.
+- [ ] Version and release notes match every platform artifact.
+- [ ] Rust, desktop, public-contract, migration, and packaging checks pass.
+- [ ] Artifacts are signed, notarized where required, scanned, and accompanied
+      by checksums, provenance, and an SBOM.
+- [ ] A clean machine installs and launches without reading Goose storage,
+      sessions, keyrings, analytics, or update channels.
+- [ ] Microphone, recording, privacy, provider, and hosted-research disclosures
+      match actual behavior.
+- [ ] Upgrade, downgrade, rollback, and uninstall paths are exercised without
+      silently losing user data.
+- [ ] All external URLs, OAuth identities, provider headers, artifact sources,
+      and support contacts are Obelus-owned or explicitly labeled
+      compatibility dependencies.
+- [ ] The release does not contain credentials, local environment files,
+      customer content, managed-service source, or private evaluation assets.
+- [ ] Public naming and trademark clearance is documented.

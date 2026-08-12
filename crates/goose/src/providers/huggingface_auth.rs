@@ -21,9 +21,9 @@ pub const HUGGINGFACE_OAUTH_CACHE_PATH: &str = "huggingface/oauth/tokens.json";
 const AUTHORIZE_URL: &str = "https://huggingface.co/oauth/authorize";
 const TOKEN_URL: &str = "https://huggingface.co/oauth/token";
 const OAUTH_SCOPES: &str = "read-repos gated-repos inference-api";
-const HUGGINGFACE_OAUTH_CLIENT_METADATA_URL: &str =
-    "https://goose-docs.ai/oauth/huggingface-client-metadata.json";
-// This URI must match the redirect URI in the Hugging Face CIMD metadata.
+const HUGGINGFACE_OAUTH_CLIENT_ID_ENV: &str = "OBELUS_HUGGINGFACE_OAUTH_CLIENT_ID";
+const LEGACY_HUGGINGFACE_OAUTH_CLIENT_ID_ENV: &str = "GOOSE_HUGGINGFACE_OAUTH_CLIENT_ID";
+// This URI must be registered by the configured client or declared in its CIMD metadata.
 const OAUTH_HOST: [u8; 4] = [127, 0, 0, 1];
 const OAUTH_PORT: u16 = 17863;
 const OAUTH_REDIRECT_PATH: &str = "/oauth/huggingface/callback";
@@ -48,10 +48,55 @@ impl HuggingFaceTokenData {
     }
 }
 
-pub fn oauth_client_id() -> &'static str {
-    option_env!("GOOSE_HUGGINGFACE_OAUTH_CLIENT_ID")
-        .filter(|client_id| !client_id.trim().is_empty())
-        .unwrap_or(HUGGINGFACE_OAUTH_CLIENT_METADATA_URL)
+pub fn oauth_client_id() -> Result<String> {
+    let obelus_runtime = optional_env(HUGGINGFACE_OAUTH_CLIENT_ID_ENV)?;
+    let legacy_runtime = optional_env(LEGACY_HUGGINGFACE_OAUTH_CLIENT_ID_ENV)?;
+    resolve_oauth_client_id(
+        obelus_runtime.as_deref(),
+        option_env!("OBELUS_HUGGINGFACE_OAUTH_CLIENT_ID"),
+        legacy_runtime.as_deref(),
+        option_env!("GOOSE_HUGGINGFACE_OAUTH_CLIENT_ID"),
+    )
+}
+
+fn resolve_oauth_client_id(
+    obelus_runtime: Option<&str>,
+    obelus_build: Option<&str>,
+    legacy_runtime: Option<&str>,
+    legacy_build: Option<&str>,
+) -> Result<String> {
+    [
+        obelus_runtime,
+        obelus_build,
+        legacy_runtime,
+        legacy_build,
+    ]
+    .into_iter()
+    .flatten()
+    .find_map(non_empty_value)
+    .map(str::to_owned)
+    .ok_or_else(|| {
+        anyhow!(
+            "Hugging Face OAuth is not configured for Obelus. Set {} to an Obelus-owned Hugging Face OAuth client ID or Client ID Metadata Document URL. {} remains available as an explicit compatibility alias",
+            HUGGINGFACE_OAUTH_CLIENT_ID_ENV,
+            LEGACY_HUGGINGFACE_OAUTH_CLIENT_ID_ENV
+        )
+    })
+}
+
+fn non_empty_value(value: &str) -> Option<&str> {
+    let value = value.trim();
+    (!value.is_empty()).then_some(value)
+}
+
+fn optional_env(name: &str) -> Result<Option<String>> {
+    match std::env::var(name) {
+        Ok(value) => Ok(Some(value)),
+        Err(std::env::VarError::NotPresent) => Ok(None),
+        Err(std::env::VarError::NotUnicode(_)) => {
+            Err(anyhow!("{} must contain valid Unicode", name))
+        }
+    }
 }
 
 pub fn oauth_cache_path() -> PathBuf {
@@ -134,11 +179,7 @@ pub async fn resolve_token_async_with_provider_token(
 ) -> Result<Option<String>> {
     resolve_token_async_from_sources(
         provider_token,
-        refreshed_or_usable_oauth_token_from_path(
-            &oauth_cache_path(),
-            oauth_client_id(),
-            TOKEN_URL,
-        ),
+        refreshed_or_usable_oauth_token_from_path(&oauth_cache_path(), oauth_client_id, TOKEN_URL),
         hf_token_secret,
     )
     .await
@@ -192,7 +233,8 @@ pub fn clear_oauth_token() -> Result<()> {
 }
 
 pub async fn configure_oauth() -> Result<()> {
-    let token_data = perform_loopback_oauth_flow(oauth_client_id()).await?;
+    let client_id = oauth_client_id()?;
+    let token_data = perform_loopback_oauth_flow(&client_id).await?;
     save_oauth_token(token_data)
 }
 
@@ -362,7 +404,7 @@ async fn refresh_access_token(
 
 async fn refreshed_or_usable_oauth_token_from_path(
     path: &Path,
-    client_id: &str,
+    client_id: impl FnOnce() -> Result<String>,
     token_url: &str,
 ) -> Result<Option<String>> {
     let Some(token) = load_oauth_token_from_path(path) else {
@@ -377,7 +419,8 @@ async fn refreshed_or_usable_oauth_token_from_path(
         return Ok(None);
     };
 
-    let refreshed = refresh_access_token(client_id, &refresh_token, token_url).await?;
+    let client_id = client_id()?;
+    let refreshed = refresh_access_token(&client_id, &refresh_token, token_url).await?;
     let refreshed =
         token_data_from_response_with_refresh_fallback(refreshed, Some(refresh_token.clone()));
     let access_token = refreshed.access_token.clone();
@@ -626,10 +669,28 @@ mod tests {
     }
 
     #[test]
-    fn oauth_client_id_defaults_to_cimd_metadata_url() {
-        if option_env!("GOOSE_HUGGINGFACE_OAUTH_CLIENT_ID").is_none() {
-            assert_eq!(oauth_client_id(), HUGGINGFACE_OAUTH_CLIENT_METADATA_URL);
-        }
+    fn oauth_client_id_requires_explicit_obelus_identity() {
+        let error = resolve_oauth_client_id(None, None, None, None).unwrap_err();
+
+        assert!(error.to_string().contains(HUGGINGFACE_OAUTH_CLIENT_ID_ENV));
+    }
+
+    #[test]
+    fn oauth_client_id_prefers_obelus_identity_and_accepts_legacy_alias() {
+        assert_eq!(
+            resolve_oauth_client_id(
+                Some(" obelus-runtime "),
+                Some("obelus-build"),
+                Some("legacy-runtime"),
+                Some("legacy-build"),
+            )
+            .unwrap(),
+            "obelus-runtime"
+        );
+        assert_eq!(
+            resolve_oauth_client_id(None, None, Some("legacy-runtime"), None).unwrap(),
+            "legacy-runtime"
+        );
     }
 
     #[test]
@@ -682,16 +743,46 @@ mod tests {
             .mount(&server)
             .await;
 
-        let token =
-            refreshed_or_usable_oauth_token_from_path(&path, "client-fixture", &server.uri())
-                .await
-                .unwrap();
+        let token = refreshed_or_usable_oauth_token_from_path(
+            &path,
+            || Ok("client-fixture".to_string()),
+            &server.uri(),
+        )
+        .await
+        .unwrap();
 
         assert_eq!(token.as_deref(), Some("refreshed"));
         let saved = load_oauth_token_from_path(&path).unwrap();
         assert_eq!(saved.access_token, "refreshed");
         assert_eq!(saved.refresh_token.as_deref(), Some("refresh"));
         assert!(saved.expires_at.unwrap() > Utc::now());
+    }
+
+    #[tokio::test]
+    async fn unexpired_oauth_token_does_not_require_client_identity() {
+        let dir = TempDir::new().unwrap();
+        let path = token_path(&dir);
+        std::fs::create_dir_all(path.parent().unwrap()).unwrap();
+        std::fs::write(
+            &path,
+            serde_json::to_string(&HuggingFaceTokenData {
+                access_token: "valid".to_string(),
+                refresh_token: None,
+                expires_at: Some(Utc::now() + chrono::Duration::minutes(1)),
+            })
+            .unwrap(),
+        )
+        .unwrap();
+
+        let token = refreshed_or_usable_oauth_token_from_path(
+            &path,
+            || -> Result<String> { panic!("client identity should not be resolved") },
+            TOKEN_URL,
+        )
+        .await
+        .unwrap();
+
+        assert_eq!(token.as_deref(), Some("valid"));
     }
 
     #[test]

@@ -5,13 +5,17 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "goose-sdk"
 version = "0.1.0a5"
-description = "Python bindings for the Goose SDK"
+description = "Python bindings for the Goose-compatible Obelus SDK"
 readme = "README.md"
 requires-python = ">=3.9"
 license = "Apache-2.0"
-authors = [{ name = "AAIF", email = "ai-oss-tools@block.xyz" }]
+authors = [
+    { name = "Obelus contributors" },
+    { name = "AAIF", email = "ai-oss-tools@block.xyz" },
+]
 keywords = ["goose", "sdk", "ai", "agent", "uniffi"]
 classifiers = [
+    "Private :: Do Not Upload",
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
@@ -20,9 +24,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/aaif-goose/goose"
-Repository = "https://github.com/aaif-goose/goose"
-Issues = "https://github.com/aaif-goose/goose/issues"
+Homepage = "https://github.com/colinpthomson1/Obelus"
+Repository = "https://github.com/colinpthomson1/Obelus"
+Issues = "https://github.com/colinpthomson1/Obelus/issues"
 
 [tool.setuptools]
 package-dir = { "" = "src" }

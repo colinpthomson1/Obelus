@@ -36,7 +36,6 @@ jobs:
       version: ${{ inputs.version }}
       ref: ${{ inputs.ref }}
       target: ${{ matrix.target }}
-      signing: false
       package_cli: true
       package_desktop: false
 
@@ -53,7 +52,6 @@ jobs:
     with:
       version: ${{ inputs.version }}
       ref: ${{ inputs.ref }}
-      signing: false
       package_cli: true
       package_desktop: false
       windows_variant: ${{ matrix.windows_variant }}

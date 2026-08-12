@@ -3,7 +3,7 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 const { resolve } = require('path');
 
 const isLinuxVulkanBuild = process.env.GOOSE_DESKTOP_LINUX_VARIANT === 'vulkan';
-const isLocalMacAdHocBuild = process.platform === 'darwin' && !process.env.APPLE_TEAM_ID;
+const isLocalMacAdHocBuild = process.platform === 'darwin';
 
 let cfg = {
   asar: true,
@@ -19,10 +19,6 @@ let cfg = {
   // Windows specific configuration
   win32: {
     icon: 'src/images/icon.ico',
-    certificateFile: process.env.WINDOWS_CERTIFICATE_FILE,
-    signingRole: process.env.WINDOW_SIGNING_ROLE,
-    rfc3161TimeStampServer: 'http://timestamp.digicert.com',
-    signWithParams: '/fd sha256 /tr http://timestamp.digicert.com /td sha256',
   },
   // Protocol registration
   protocols: [
@@ -58,20 +54,7 @@ let cfg = {
   },
 };
 
-// macOS code signing and notarization via Electron Forge
-// Activated when APPLE_TEAM_ID is set (CI signing builds)
-if (process.env.APPLE_TEAM_ID) {
-  cfg.osxSign = {
-    keychain: process.env.KEYCHAIN_PATH || undefined,
-    entitlements: 'entitlements.plist',
-    'entitlements-inherit': 'entitlements.plist',
-  };
-  cfg.osxNotarize = {
-    appleId: process.env.APPLE_ID,
-    appleIdPassword: process.env.APPLE_ID_PASSWORD,
-    teamId: process.env.APPLE_TEAM_ID,
-  };
-} else if (isLocalMacAdHocBuild) {
+if (isLocalMacAdHocBuild) {
   cfg.osxSign = {
     identity: '-',
     identityValidation: false,
@@ -87,19 +70,6 @@ if (process.env.APPLE_TEAM_ID) {
 module.exports = {
   packagerConfig: cfg,
   rebuildConfig: {},
-  publishers: [
-    {
-      name: '@electron-forge/publisher-github',
-      config: {
-        repository: {
-          owner: process.env.GITHUB_OWNER || 'colinpthomson1',
-          name: process.env.GITHUB_REPO || 'Obelus',
-        },
-        prerelease: false,
-        draft: true,
-      },
-    },
-  ],
   makers: [
     {
       name: '@electron-forge/maker-zip',

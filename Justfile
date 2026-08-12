@@ -137,11 +137,6 @@ run-ui-windows:
     @just copy-binary-windows
     @powershell.exe -Command "Write-Host 'Running UI...'; Set-Location ui/desktop; pnpm install; pnpm run start-gui"
 
-# Run Docusaurus server for documentation
-run-docs:
-    @echo "Running docs server..."
-    cd documentation && yarn && yarn start
-
 # Run server
 run-server:
     @echo "Running external ACP backend..."
@@ -224,7 +219,6 @@ run-dev:
 # Install all dependencies (run once after fresh clone)
 install-deps:
     cd ui/desktop && pnpm install
-    cd documentation && yarn
 
 ensure-release-branch:
     #!/usr/bin/env bash
@@ -295,31 +289,23 @@ bump-version version:
 build-canonical-models:
     @cargo run --bin build_canonical_models
 
-# bump version, rebuild canonical models, and commit
+# Release mutation is intentionally disabled until Obelus owns a reviewed pipeline.
 prepare-release version:
-    @just bump-version {{ version }}
-    @just build-canonical-models
-    @git add \
-        Cargo.toml \
-        Cargo.lock \
-        ui/desktop/package.json \
-        ui/pnpm-lock.yaml \
-        crates/goose-provider-types/src/canonical/data/canonical_models.json \
-        crates/goose-provider-types/src/canonical/data/provider_metadata.json
-    @git commit --message "chore(release): release version {{ version }}"
+    @echo "Release preparation is disabled in the Obelus public repository (requested version: {{ version }})." >&2
+    @exit 1
 
 # extract version from Cargo.toml
 get-tag-version:
     @uvx --from=toml-cli toml get --toml-path=Cargo.toml "workspace.package.version"
 
-# create the git tag from Cargo.toml, checking we're on a release branch
-tag: ensure-release-branch
-    git tag v$(just get-tag-version)
+# Release tags are created only by a future reviewed first-party release pipeline.
+tag:
+    @echo "Release tagging is disabled in the Obelus public repository." >&2
+    @exit 1
 
-# create tag and push to origin (use this when release branch is merged to main)
-tag-push: tag
-    # this will kick of ci for release
-    git push origin tag v$(just get-tag-version)
+tag-push:
+    @echo "Release tag publishing is disabled in the Obelus public repository." >&2
+    @exit 1
 
 # generate release notes from git commits
 release-notes old:

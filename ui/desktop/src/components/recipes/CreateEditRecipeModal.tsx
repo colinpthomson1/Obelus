@@ -35,7 +35,7 @@ const i18n = defineMessages({
   },
   learnMore: {
     id: 'createEditRecipe.learnMore',
-    defaultMessage: 'Upstream recipe guide',
+    defaultMessage: 'Upstream Goose recipe guide',
   },
   copyLinkDescription: {
     id: 'createEditRecipe.copyLinkDescription',

@@ -369,7 +369,7 @@
     "defaultMessage": "डीपलिंक जनरेट किया जा रहा है..."
   },
   "createEditRecipe.learnMore": {
-    "defaultMessage": "Upstream recipe guide"
+    "defaultMessage": "Upstream Goose recipe guide"
   },
   "createEditRecipe.recipeSavedAndLaunchedMsg": {
     "defaultMessage": "रेसिपी सहेजी गई और सफलतापूर्वक लॉन्च की गई"
@@ -1148,9 +1148,6 @@
   "extensionsSection.addExtension": {
     "defaultMessage": "एक्सटेंशन जोड़ें"
   },
-  "extensionsSection.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
-  },
   "extensionsSection.saveChanges": {
     "defaultMessage": "परिवर्तन सहेजें"
   },
@@ -1162,9 +1159,6 @@
   },
   "extensionsView.addExtension": {
     "defaultMessage": "एक्सटेंशन जोड़ें"
-  },
-  "extensionsView.browseExtensions": {
-    "defaultMessage": "Upstream extension guide"
   },
   "extensionsView.defaultNote": {
     "defaultMessage": "यहां सक्षम एक्सटेंशन नई चैट के लिए डिफ़ॉल्ट के रूप में उपयोग किए जाते हैं। आप चैट के दौरान सक्रिय एक्सटेंशन भी टॉगल कर सकते हैं।"
@@ -1266,7 +1260,7 @@
     "defaultMessage": "अधिक जानकारी के लिए {link} देखें।"
   },
   "goosehintsModal.helpTextLink": {
-    "defaultMessage": "the upstream .goosehints guide"
+    "defaultMessage": "the upstream Goose .goosehints guide"
   },
   "goosehintsModal.placeholder": {
     "defaultMessage": "प्रोजेक्ट संकेत यहां दर्ज करें..."
@@ -4372,9 +4366,6 @@
   },
   "switchModelModal.providerPlaceholder": {
     "defaultMessage": "प्रदाता, खोजने के लिए टाइप करें"
-  },
-  "switchModelModal.quickStartGuide": {
-    "defaultMessage": "Upstream Goose quick start guide"
   },
   "switchModelModal.recommended": {
     "defaultMessage": "अनुशंसित"

@@ -114,7 +114,7 @@ fn build_template(messages: &[&str], prefill: Option<&str>) -> String {
 /// Create temporary markdown file with conversation history and optional prefill text
 fn create_temp_file(messages: &[&str], prefill: Option<&str>) -> Result<NamedTempFile> {
     let temp_file = Builder::new()
-        .prefix("goose_prompt_")
+        .prefix("obelus_prompt_")
         .suffix(".md")
         .tempfile()?;
 
@@ -197,7 +197,7 @@ pub fn get_editor_input(
     let temp_file = create_temp_file(messages, prefill)?;
     let temp_path = temp_file.path().to_path_buf();
 
-    let symlink_path = PathBuf::from(".goose_prompt_temp.md");
+    let symlink_path = PathBuf::from(".obelus_prompt_temp.md");
 
     if symlink_path.exists() {
         std::fs::remove_file(&symlink_path)?;
@@ -315,7 +315,7 @@ This is the user's input
         let path = temp_file.path();
 
         assert!(path.exists());
-        assert!(path.to_str().unwrap().contains("goose_prompt_"));
+        assert!(path.to_str().unwrap().contains("obelus_prompt_"));
         assert!(path.to_str().unwrap().ends_with(".md"));
 
         let content = fs::read_to_string(path).unwrap();
