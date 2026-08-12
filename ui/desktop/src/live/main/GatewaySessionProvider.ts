@@ -11,6 +11,7 @@ export interface GatewayIdentityAdapter {
   getSession(): Promise<GatewayIdentitySession | null>;
   refreshSession(session: GatewayIdentitySession): Promise<GatewayIdentitySession | null>;
   clearSession?(): Promise<void>;
+  getAvailability?(): GatewaySessionAvailability;
 }
 
 export interface GatewaySessionProviderOptions {
@@ -77,7 +78,7 @@ export class GatewaySessionProvider {
         reason: 'A signed-in Obelus session is required for live research.',
       };
     }
-    return { available: true };
+    return this.options.identityAdapter.getAvailability?.() ?? { available: true };
   }
 
   async getAuthorizationHeader(): Promise<string> {

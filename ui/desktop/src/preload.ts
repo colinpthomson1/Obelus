@@ -235,6 +235,10 @@ const electronAPI: ElectronAPI = {
   live: {
     getSnapshot: () => invokeLive(LIVE_IPC_CHANNELS.getSnapshot),
     getSupportStatus: () => invokeLive(LIVE_IPC_CHANNELS.getSupportStatus),
+    getGatewayAuthenticationStatus: () =>
+      invokeLive(LIVE_IPC_CHANNELS.getGatewayAuthenticationStatus),
+    signInGateway: () => invokeLive(LIVE_IPC_CHANNELS.signInGateway),
+    signOutGateway: () => invokeLive(LIVE_IPC_CHANNELS.signOutGateway),
     start: async (config) => {
       const snapshot = await invokeLive<Awaited<ReturnType<LiveElectronApi['start']>>>(
         LIVE_IPC_CHANNELS.start,

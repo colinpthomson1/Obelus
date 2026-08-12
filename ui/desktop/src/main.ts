@@ -73,6 +73,14 @@ import {
   GatewaySessionProvider,
   resolveGatewayIdentityAdapter,
 } from './live/main/GatewaySessionProvider';
+import {
+  Auth0GatewayIdentityAdapter,
+  isAuth0GatewayProtocolUrl,
+  parseAuth0GatewayIdentityConfig,
+  type InteractiveGatewayIdentityAdapter,
+} from './live/main/Auth0GatewayIdentityAdapter';
+import { InstallationIdentityStore } from './live/main/InstallationIdentityStore';
+import { resolveHostedResearchDeploymentConfig } from './live/main/hostedResearchDeploymentConfig';
 import { LiveCaptureCoordinator } from './live/main/LiveCaptureCoordinator';
 import { LocalSttService, resolveLocalSttWorkerPath } from './live/main/LocalSttService';
 import { LocalFactCheckService } from './live/main/LocalFactCheckService';
@@ -515,7 +523,13 @@ if (process.platform !== 'darwin') {
     app.on('second-instance', (_event, commandLine) => {
       const protocolUrl = commandLine.find((arg) => arg.startsWith(PRODUCT_DEEP_LINK_PREFIX));
       if (protocolUrl) {
-        const parsedUrl = new URL(protocolUrl);
+        let parsedUrl: URL;
+        try {
+          parsedUrl = new URL(protocolUrl);
+        } catch (error) {
+          log.warn('[Main] Ignoring invalid second-instance protocol URL:', errorMessage(error));
+          return;
+        }
         // If it's a bot/recipe URL, handle it directly by creating a new window
         if (parsedUrl.hostname === 'bot' || parsedUrl.hostname === 'recipe') {
           app.whenReady().then(async () => {
@@ -560,7 +574,9 @@ if (process.platform !== 'darwin') {
         }
 
         // For non-bot URLs, continue with normal handling
-        handleProtocolUrl(protocolUrl, parsedUrl);
+        void handleProtocolUrl(protocolUrl, parsedUrl).catch((error) => {
+          log.error('[Main] Failed to handle protocol URL:', errorMessage(error));
+        });
       }
 
       // Only focus existing windows for non-bot/recipe URLs
@@ -587,7 +603,7 @@ if (process.platform !== 'darwin') {
         return;
       }
 
-      openUrlHandledLaunch = true;
+      openUrlHandledLaunch = !isAuth0GatewayProtocolUrl(protocolUrl);
       try {
         await handleProtocolUrl(protocolUrl, parsedUrl);
       } catch (error) {
@@ -685,6 +701,8 @@ async function createResumeChatWindow(parsedUrl: URL, dir?: string): Promise<boo
 async function handleProtocolUrl(url: string, parsedUrl: URL) {
   if (!url) return;
 
+  if (await handleGatewayIdentityProtocolUrl(url)) return;
+
   const recentDirs = loadRecentDirs();
   const openDir = recentDirs.length > 0 ? recentDirs[0] : null;
 
@@ -753,6 +771,29 @@ async function processProtocolUrl(url: string, parsedUrl: URL, window: BrowserWi
 
 let windowDeeplinkURL: string | null = null;
 
+let activeGatewayIdentityAdapter: InteractiveGatewayIdentityAdapter | null = null;
+let pendingGatewayIdentityProtocolUrl: string | null = null;
+
+async function handleGatewayIdentityProtocolUrl(url: string): Promise<boolean> {
+  if (!isAuth0GatewayProtocolUrl(url)) return false;
+  if (!activeGatewayIdentityAdapter) {
+    if (pendingGatewayIdentityProtocolUrl && pendingGatewayIdentityProtocolUrl !== url) {
+      throw new Error('Another Obelus identity callback is already pending');
+    }
+    pendingGatewayIdentityProtocolUrl = url;
+    return true;
+  }
+  await activeGatewayIdentityAdapter.handleProtocolUrl(url);
+  const windows = BrowserWindow.getAllWindows();
+  const target = windows[windows.length - 1];
+  if (target) {
+    if (target.isMinimized()) target.restore();
+    target.show();
+    target.focus();
+  }
+  return true;
+}
+
 app.on('open-url', async (event, url) => {
   event.preventDefault();
   if (process.platform !== 'win32') {
@@ -765,6 +806,16 @@ app.on('open-url', async (event, url) => {
     }
     if (parsedUrl.protocol !== `${PRODUCT_PROTOCOL}:`) {
       log.warn(`[Main] Ignoring unsupported deep-link protocol: ${parsedUrl.protocol}`);
+      return;
+    }
+
+    if (isAuth0GatewayProtocolUrl(url)) {
+      try {
+        await app.whenReady();
+        await handleGatewayIdentityProtocolUrl(url);
+      } catch (error) {
+        log.warn('[Main] Obelus identity callback was rejected:', errorMessage(error));
+      }
       return;
     }
 
@@ -2580,6 +2631,41 @@ async function appMain() {
   const obelusSession = session.fromPartition(OBELUS_SESSION_PARTITION);
   const appEntryUrl = getAppUrl();
   const isTrustedRendererUrl = createTrustedRendererUrlPredicate(appEntryUrl);
+  const hostedResearchConfig = resolveHostedResearchDeploymentConfig({
+    OBELUS_GATEWAY_URL: process.env.OBELUS_GATEWAY_URL,
+    OBELUS_AUTH0_ISSUER: process.env.OBELUS_AUTH0_ISSUER,
+    OBELUS_AUTH0_CLIENT_ID: process.env.OBELUS_AUTH0_CLIENT_ID,
+    OBELUS_AUTH0_AUDIENCE: process.env.OBELUS_AUTH0_AUDIENCE,
+  });
+
+  const registeredIdentityAdapter = resolveGatewayIdentityAdapter();
+  let identityAdapter = registeredIdentityAdapter;
+  if (!identityAdapter) {
+    const identityConfig = parseAuth0GatewayIdentityConfig(
+      hostedResearchConfig.identityEnvironment
+    );
+    if (identityConfig) {
+      const installationIdentity = new InstallationIdentityStore(app.getPath('userData'));
+      identityAdapter = new Auth0GatewayIdentityAdapter(identityConfig, {
+        getInstallationDeviceId: () => installationIdentity.getOrCreateDeviceId(),
+        openExternal: (url) => shell.openExternal(url),
+      });
+    }
+  }
+  activeGatewayIdentityAdapter = isInteractiveGatewayIdentityAdapter(identityAdapter)
+    ? identityAdapter
+    : null;
+  if (pendingGatewayIdentityProtocolUrl) {
+    const pendingUrl = pendingGatewayIdentityProtocolUrl;
+    pendingGatewayIdentityProtocolUrl = null;
+    if (activeGatewayIdentityAdapter) {
+      try {
+        await activeGatewayIdentityAdapter.handleProtocolUrl(pendingUrl);
+      } catch (error) {
+        log.warn('[Main] Pending Obelus identity callback was rejected:', errorMessage(error));
+      }
+    }
+  }
 
   liveAudioStore = new AudioAssetWriter(
     path.join(app.getPath('userData'), 'live-meetings', 'audio')
@@ -2593,10 +2679,10 @@ async function appMain() {
     devToken: process.env.OBELUS_GATEWAY_DEV_TOKEN,
     isPackaged: app.isPackaged && !IS_LOCAL_ADHOC_BUILD,
     isProduction: process.env.NODE_ENV === 'production',
-    identityAdapter: resolveGatewayIdentityAdapter(),
+    identityAdapter,
   });
   const gateway = new GatewayClient({
-    baseUrl: process.env.OBELUS_GATEWAY_URL,
+    baseUrl: hostedResearchConfig.gatewayUrl,
     sessionProvider: gatewaySessionProvider,
     resolveAudioAsset: (meetingId, assetId, sourceKind) =>
       liveAudioStore!.resolveFinalizedAsset(meetingId, assetId, sourceKind),
@@ -2655,12 +2741,13 @@ async function appMain() {
       const external = getExternalBackendForCsp(getSettings());
       return external?.enabled ? external.url : undefined;
     },
-    gatewayBaseUrl: process.env.OBELUS_GATEWAY_URL,
+    gatewayBaseUrl: hostedResearchConfig.gatewayUrl,
   });
   liveIpcRegistration = registerLiveIpc({
     ipcMain,
     coordinator: liveCaptureCoordinator,
     gateway,
+    gatewayIdentity: activeGatewayIdentityAdapter ?? undefined,
     localStt: liveLocalSttService,
     localFactCheck: liveLocalFactCheckService ?? undefined,
     factCheckRouting: {
@@ -3322,6 +3409,19 @@ async function appMain() {
       throw error;
     }
   });
+}
+
+function isInteractiveGatewayIdentityAdapter(
+  adapter: ReturnType<typeof resolveGatewayIdentityAdapter>
+): adapter is InteractiveGatewayIdentityAdapter {
+  return Boolean(
+    adapter &&
+    typeof (adapter as Partial<InteractiveGatewayIdentityAdapter>).getAuthenticationStatus ===
+      'function' &&
+    typeof (adapter as Partial<InteractiveGatewayIdentityAdapter>).signIn === 'function' &&
+    typeof (adapter as Partial<InteractiveGatewayIdentityAdapter>).signOut === 'function' &&
+    typeof (adapter as Partial<InteractiveGatewayIdentityAdapter>).handleProtocolUrl === 'function'
+  );
 }
 
 app.whenReady().then(async () => {

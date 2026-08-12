@@ -81,6 +81,27 @@ pnpm run start-gui
 
 `GOOSE_*` configuration names are intentionally supported for backend compatibility. Obelus desktop supplies its own isolated storage root when it launches the bundled backend.
 
+## Hosted research sign-in
+
+The desktop main process supports an Auth0 Native application using Authorization Code with S256 PKCE. Release builds bundle Obelus's public staging gateway, issuer, Native client ID, and audience, so a packaged app launched from Finder or the Start menu does not depend on shell environment variables. None of these public identifiers is a credential.
+
+For local development or tests, runtime environment variables take precedence over the bundled values:
+
+```bash
+OBELUS_GATEWAY_URL=https://your-staging-gateway.example.com
+OBELUS_AUTH0_ISSUER=https://your-tenant.us.auth0.com/
+OBELUS_AUTH0_CLIENT_ID=your-public-native-client-id
+OBELUS_AUTH0_AUDIENCE=urn:obelus:staging:gateway
+```
+
+Release variants can replace the bundled public values at build time with `OBELUS_BUILD_GATEWAY_URL`, `OBELUS_BUILD_AUTH0_ISSUER`, `OBELUS_BUILD_AUTH0_CLIENT_ID`, and `OBELUS_BUILD_AUTH0_AUDIENCE`. Runtime `OBELUS_*` values remain available as overrides; never use these public configuration fields for client secrets or provider credentials.
+
+Register the exact callback `obelus://auth/callback` and logout callback `obelus://auth/logout`. The Native application must use token-endpoint authentication method `none`, allow only the Authorization Code grant, and issue RS256 gateway access tokens for no more than 600 seconds. Do not configure a client secret or refresh-token grant.
+
+The client sends a stable, random per-installation `obelus_device_id` authorization parameter. A tenant Post-Login Action must validate it and add the signed access-token claims `https://obelus.ai/claims/device_id` and `https://obelus.ai/claims/email`; the email claim must come from a verified identity. This identifier partitions quota and tenancy but is not hardware attestation. The desktop verifies signature, issuer, audience, authorized party, nonce, subject, expiry, email, and exact device claim before retaining the access token in main-process memory. The renderer never receives the token.
+
+Auth0 Essentials cannot safely persist the per-installation claim through refresh-token rotation. Staging therefore requests no `offline_access`, stores no refresh token, and requires a fresh interactive sign-in after the ten-minute access token expires or the process exits.
+
 ## Upstream
 
 Obelus is derived from [Goose](https://github.com/aaif-goose/goose). Retain upstream attribution when redistributing the application, and label links to [Goose documentation](https://goose-docs.ai/) as upstream documentation until Obelus-specific documentation exists.
